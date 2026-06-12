@@ -1,19 +1,17 @@
 import Navbar from "./Navbar";
-import Sidebar from "./Sidebar";
 
 export default function Layout({ children }) {
   return (
-    <div className="flex h-screen overflow-hidden bg-[var(--color-brand-bg)]">
-      {/* Sidebar izquierdo */}
-      <Sidebar />
+    <div className="flex flex-col min-h-screen bg-[var(--color-brand-bg)]">
+      {/* Navbar arriba a pantalla completa */}
+      <Navbar />
 
-      {/* Contenido principal con Navbar arriba */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Navbar />
-        <main className="flex-1 overflow-y-auto p-6">
+      {/* Contenido principal centrado */}
+      <main className="flex-1 flex justify-center p-6 w-full">
+        <div className="w-full max-w-[1280px]">
           {children}
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }
