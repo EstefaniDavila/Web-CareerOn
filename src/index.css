@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #1C6B72;
+  --color-brand-hover: #132E41;
+  --color-brand-accent: #ED7B32;
+  --color-brand-cards: #F5A844;
+  --color-brand-bg: #F0F4F8;
+  --color-brand-surface: #FFFFFF;
+  --color-brand-text: #1C1C1C;
+  --color-brand-subtext: #5F6368;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--color-brand-bg);
+  color: var(--color-brand-text);
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
