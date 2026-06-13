@@ -15,14 +15,20 @@ export default function Layout({ children }) {
     );
   }
 
-  const isRecruiter = userType === "Empresa" || location.pathname === "/recruiter/dashboard";
+  const isRecruiter =
+    userType === "Empresa" ||
+    location.pathname === "/recruiter/dashboard";
 
   return (
-    <div className={`flex flex-col min-h-screen ${isRecruiter ? 'recruiter-theme bg-[var(--color-brand-bg)]' : 'bg-[var(--color-brand-bg)]'}`}>
-      {/* Navbar arriba a pantalla completa */}
+    <div
+      className={`flex flex-col min-h-screen ${
+        isRecruiter
+          ? "recruiter-theme bg-[var(--color-brand-bg)]"
+          : "bg-[var(--color-brand-bg)]"
+      }`}
+    >
       {isRecruiter ? <RecruiterNavbar /> : <Navbar />}
 
-      {/* Contenido principal centrado */}
       <main className="flex-1 flex justify-center p-6 w-full">
         <div className="w-full max-w-[1280px]">
           {children}
