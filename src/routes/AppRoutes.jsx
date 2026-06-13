@@ -7,7 +7,7 @@ import NotFound from "../pages/errors/NotFound";
 import Layout from "../components/Layout";
 import ProtectedRoute from "./ProtectedRoute";
 import Unauthorized from "../pages/errors/Unauthorized";
-
+import Postulation from "../pages/Recluter/Postulation/postulation"
 export default function AppRoutes() {
   const isAuthenticated = useIsAuthenticated();
 
@@ -52,6 +52,18 @@ export default function AppRoutes() {
       />
 
       {/* Aquí podemos agregar más rutas protegidas para CV Optimizer, Talent Search, etc */}
+
+      <Route
+        path="/recruiter/postulation"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Postulation />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      
 
       <Route path="*" element={<NotFound />} />
     </Routes>
