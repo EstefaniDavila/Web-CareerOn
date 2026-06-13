@@ -9,7 +9,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("mock_token");
     localStorage.removeItem("user_data");
-    navigate("/");
+    window.location.href = "/";
   };
 
   const userName = "Estudiante";
@@ -24,15 +24,6 @@ const Navbar = () => {
         <div className="navbar-logo">
           <span className="logo-career">Career</span>
           <span className="logo-on">On</span>
-        </div>
-
-        {/* Search Bar */}
-        <div className="navbar-search">
-          <svg className="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-          <input type="text" placeholder="Buscar talento, empleos, publicaciones..." />
         </div>
 
         {/* Navigation Items */}
@@ -58,6 +49,7 @@ const Navbar = () => {
 
         {/* Profile Circle & Dropdown */}
         <div className="navbar-profile" onClick={() => setMenuOpen(!menuOpen)}>
+          <span className="profile-name hidden md:block text-sm font-bold text-gray-700 mr-3">{userName}</span>
           <div className="profile-circle">{initials}</div>
           
           {menuOpen && (

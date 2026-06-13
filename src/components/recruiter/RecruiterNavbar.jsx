@@ -13,7 +13,7 @@ const RecruiterNavbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("mock_token");
     localStorage.removeItem("user_data");
-    navigate("/");
+    window.location.href = "/";
   };
 
   const companyName = userData?.company_name || "Yape Perú";
