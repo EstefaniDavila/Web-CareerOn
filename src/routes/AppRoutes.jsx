@@ -23,20 +23,20 @@ export default function AppRoutes() {
       <Route
         path="/onboarding"
         element={
-          <ProtectedRoute>
+         /* <ProtectedRoute>*/
             <Onboarding />
-          </ProtectedRoute>
+          /*</ProtectedRoute>*/
         }
       />
 
       <Route
         path="/dashboard"
         element={
-          <ProtectedRoute>
+          /*<ProtectedRoute>*/
             <Layout>
               <Dashboard />
             </Layout>
-          </ProtectedRoute>
+          /*</ProtectedRoute>*/
         }
       />
 
