@@ -46,7 +46,7 @@ const RightSidebar = () => {
       <div className="glass-card cta-card">
         <h3 className="cta-title">✦ Simular entrevista IA</h3>
         <p className="cta-text">Practica con Gemini antes de tu próxima entrevista técnica. Personalizado a la oferta que elijas.</p>
-        <button className="btn-primary cta-btn">Comenzar ahora →</button>
+        <button className="btn-primary student-btn cta-btn">Comenzar ahora →</button>
       </div>
     </div>
   );

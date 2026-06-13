@@ -9,9 +9,9 @@ const MOCK_OFFERS = [
 ];
 
 const STATUS_CONFIG = {
-  active: { label: "Activa",  className: "s-active" },
-  paused: { label: "Pausada", className: "s-paused" },
-  closed: { label: "Cerrada", className: "s-closed" },
+  active: { label: "Activa",  className: "bg-emerald-50 text-emerald-800" },
+  paused: { label: "Pausada", className: "bg-amber-50 text-amber-800" },
+  closed: { label: "Cerrada", className: "bg-red-50 text-red-800" },
 };
 
 const OffersList = ({ onEdit, onDeletePick }) => {
@@ -26,53 +26,83 @@ const OffersList = ({ onEdit, onDeletePick }) => {
 
   return (
     <>
-      <div className="panel-header">
-        <span className="panel-title">Mis ofertas publicadas</span>
-        <span className="badge-count">{activeCount} activas</span>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <span className="text-[15px] font-medium text-[#1C1C1C]">
+          Mis ofertas publicadas
+        </span>
+        <span className="bg-[#5B34F2] text-white text-[11px] font-medium px-3 py-0.5 rounded-full">
+          {activeCount} activas
+        </span>
       </div>
 
-      <div className="search-row">
+      {/* Search */}
+      <div className="flex gap-2 mb-4">
         <input
-          className="search-input"
+          type="text"
           placeholder="Buscar por título o área..."
           value={search}
           onChange={e => setSearch(e.target.value)}
+          className="flex-1 h-9 border border-gray-200 rounded-lg px-3 text-sm text-[#1C1C1C] bg-white outline-none focus:border-[#5B34F2] transition-colors"
         />
-        <button className="btn">⚙ Filtrar</button>
+        <button className="h-9 px-4 rounded-lg border border-gray-200 bg-white text-sm text-[#5F6368] hover:bg-gray-100 transition-colors">
+          ⚙ Filtrar
+        </button>
       </div>
 
-      <div className="offers-list">
+      {/* List */}
+      <div className="flex flex-col gap-2">
         {filtered.length === 0 && (
-          <div className="offers-empty">No se encontraron ofertas.</div>
+          <p className="text-center py-10 text-sm text-[#5F6368]">
+            No se encontraron ofertas.
+          </p>
         )}
+
         {filtered.map(offer => {
           const st = STATUS_CONFIG[offer.status] ?? STATUS_CONFIG.active;
           return (
-            <div key={offer.id} className="offer-card">
-              <div className="offer-card-top">
-                <span className="offer-title">{offer.title}</span>
-                <span className={`status-pill ${st.className}`}>{st.label}</span>
-              </div>
-              <div className="offer-meta">
-                <span className="meta-item">📍 {offer.location}</span>
-                <span className="meta-item">💼 {offer.type}</span>
-                <span className="meta-item">📅 {offer.publishedAt}</span>
-              </div>
-              <div className="offer-footer">
-                <span className="apps-count">
-                  <strong>{offer.applicants}</strong> postulantes
+            <div
+              key={offer.id}
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 flex flex-col gap-2"
+            >
+              {/* Top */}
+              <div className="flex items-start justify-between gap-2">
+                <span className="text-sm font-medium text-[#1C1C1C] leading-snug">
+                  {offer.title}
                 </span>
-                <div className="action-btns">
+                <span className={`text-[11px] font-medium px-2.5 py-0.5 rounded-full whitespace-nowrap ${st.className}`}>
+                  {st.label}
+                </span>
+              </div>
+
+              {/* Meta */}
+              <div className="flex gap-3 flex-wrap">
+                <span className="text-[11px] text-[#5F6368]">📍 {offer.location}</span>
+                <span className="text-[11px] text-[#5F6368]">💼 {offer.type}</span>
+                <span className="text-[11px] text-[#5F6368]">📅 {offer.publishedAt}</span>
+              </div>
+
+              {/* Footer */}
+              <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                <span className="text-xs text-[#5F6368]">
+                  <strong className="text-[#5B34F2]">{offer.applicants}</strong> postulantes
+                </span>
+                <div className="flex gap-2">
                   {offer.status !== "closed" ? (
-                    <button className="btn btn-sm" onClick={() => onEdit(offer)}>
+                    <button
+                      onClick={() => onEdit(offer)}
+                      className="h-7 px-3 rounded-md border border-gray-200 bg-white text-xs text-[#5F6368] hover:bg-gray-100 transition-colors"
+                    >
                       ✏ Editar
                     </button>
                   ) : (
-                    <button className="btn btn-sm">⧉ Duplicar</button>
+                    <button className="h-7 px-3 rounded-md border border-gray-200 bg-white text-xs text-[#5F6368] hover:bg-gray-100 transition-colors">
+                      ⧉ Duplicar
+                    </button>
                   )}
                   <button
-                    className="btn btn-sm btn-danger"
                     onClick={() => onDeletePick(offer)}
+                    className="h-7 px-3 rounded-md bg-[#F25F63] text-xs text-white hover:bg-[#d94f53] transition-colors"
                   >
                     🗑 Eliminar
                   </button>
