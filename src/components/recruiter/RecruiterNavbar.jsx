@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMsal } from "@azure/msal-react";
+import { useNavigate } from 'react-router-dom';
 import { useUserStatus } from "../../hooks/useUserStatus";
 import './RecruiterNavbar.css';
 
@@ -7,9 +8,12 @@ const RecruiterNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { instance, accounts } = useMsal();
   const { userData } = useUserStatus();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    instance.logoutRedirect();
+    localStorage.removeItem("mock_token");
+    localStorage.removeItem("user_data");
+    navigate("/");
   };
 
   const companyName = userData?.company_name || "Yape Perú";

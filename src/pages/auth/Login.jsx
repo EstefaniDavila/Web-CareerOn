@@ -1,14 +1,49 @@
-import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../../authConfig";
+import { useNavigate } from "react-router-dom";
 import { Briefcase } from "lucide-react";
 
 export default function Login() {
-  const { instance } = useMsal();
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    instance.loginRedirect(loginRequest).catch((e) => {
-      console.error(e);
-    });
+  const handleLogin = async (role) => {
+    try {
+      let mockUser;
+      if (role === 'student') {
+        mockUser = {
+          email: "estudiante0@utp.edu.pe",
+          name: "Estudiante Demo",
+          microsoft_id: "mock_student_123"
+        };
+      } else {
+        mockUser = {
+          email: "hr0@google.com",
+          name: "Google HR",
+          microsoft_id: "mock_hr_123"
+        };
+      }
+
+      const response = await fetch("http://localhost:8000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(mockUser)
+      });
+
+      const data = await response.json();
+      console.log("Respuesta del Backend:", data);
+
+      if (data.status === "success" || data.status === "warning") {
+        localStorage.setItem("mock_token", data.user.email);
+        localStorage.setItem("user_data", JSON.stringify(data.user));
+
+        if (data.user.type === "Recruiter") {
+          navigate("/recruiter/dashboard");
+        } else {
+          navigate(data.user.type === "Pending" ? "/onboarding" : "/dashboard");
+        }
+      }
+    } catch (e) {
+      console.error("Error conectando al backend:", e);
+      alert("Error conectando al backend. ¿Está encendido uvicorn?");
+    }
   };
 
   return (
@@ -28,7 +63,6 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Lado Derecho - Login Form */}
       <div className="md:w-1/2 flex items-center justify-center p-8 bg-[var(--color-brand-surface)]">
         <div className="max-w-md w-full bg-white p-10 rounded-3xl shadow-lg border border-gray-100">
           <div className="text-center mb-10">
@@ -36,18 +70,28 @@ export default function Login() {
             <p className="text-[var(--color-brand-subtext)]">Ingresa con tu cuenta institucional de la universidad para continuar.</p>
           </div>
 
-          <button
-            onClick={handleLogin}
-            className="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-200 hover:border-[var(--color-brand-primary)] hover:bg-gray-50 text-[var(--color-brand-text)] font-semibold py-4 px-4 rounded-xl shadow-sm transition-all duration-200"
-          >
-            <svg width="24" height="24" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-              <rect x="1" y="1" width="9" height="9" fill="#f25022" />
-              <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
-              <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
-              <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
-            </svg>
-            Continuar con Microsoft
-          </button>
+          <div className="flex flex-col gap-4">
+            <button
+              onClick={() => handleLogin('student')}
+              className="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-200 hover:border-[var(--color-brand-primary)] hover:bg-gray-50 text-[var(--color-brand-text)] font-semibold py-4 px-4 rounded-xl shadow-sm transition-all duration-200"
+            >
+              <svg width="24" height="24" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="9" height="9" fill="#f25022" />
+                <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
+                <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
+                <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
+              </svg>
+              Demo: Ingresar como Estudiante
+            </button>
+
+            <button
+              onClick={() => handleLogin('recruiter')}
+              className="w-full flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-900 text-white font-semibold py-4 px-4 rounded-xl shadow-sm transition-all duration-200"
+            >
+              <Briefcase className="w-5 h-5" />
+              Demo: Ingresar como Reclutador B2B
+            </button>
+          </div>
         </div>
       </div>
     </div>

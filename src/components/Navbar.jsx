@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { useMsal } from "@azure/msal-react";
+import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { instance, accounts } = useMsal();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    instance.logoutRedirect();
+    localStorage.removeItem("mock_token");
+    localStorage.removeItem("user_data");
+    navigate("/");
   };
 
-  const userName = accounts[0]?.name || "Estudiante";
-  const userEmail = accounts[0]?.username || "";
+  const userName = "Estudiante";
+  const userEmail = "";
   const initials = userName.substring(0, 2).toUpperCase();
 
   return (
@@ -35,7 +37,7 @@ const Navbar = () => {
 
         {/* Navigation Items */}
         <div className="navbar-links">
-          <div className="nav-item active">
+          <div className="nav-item active" onClick={() => navigate('/dashboard')} style={{cursor: 'pointer'}}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
             <span>Inicio</span>
           </div>
@@ -43,7 +45,7 @@ const Navbar = () => {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
             <span>Estadísticas</span>
           </div>
-          <div className="nav-item">
+          <div className="nav-item" onClick={() => navigate('/explorar')} style={{cursor: 'pointer'}}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
             <span>Empleos</span>
           </div>
