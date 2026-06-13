@@ -73,7 +73,7 @@ const FeedCentral = () => {
   );
 
   return (
-    <div className="feed-central-container">
+    <div className="feed-central-container flex-1 w-full min-w-0">
       
       {/* Search Bar Header */}
       <div className="glass-card search-header-card p-6 mb-6">
