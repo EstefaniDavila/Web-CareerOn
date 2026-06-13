@@ -50,6 +50,8 @@ export default function AppRoutes() {
         }
       />
 
+      
+
       {/* Aquí podemos agregar más rutas protegidas para CV Optimizer, Talent Search, etc */}
       
       <Route path="*" element={<NotFound />} />
