@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 import { useUserStatus } from "../hooks/useUserStatus";
-import { useNavigate } from "react-router-dom";
 import FeedCentral from "../components/FeedCentral";
 import RightSidebar from "../components/RightSidebar";
 import LeftSidebar from "../components/LeftSidebar";
@@ -11,7 +10,6 @@ import RecruiterRightSidebar from "../components/recruiter/RecruiterRightSidebar
 export default function Dashboard() {
   const { userType, loading } = useUserStatus();
   const location = useLocation();
-  const navigate = useNavigate();
 
   if (loading) {
     return (
