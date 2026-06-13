@@ -9,7 +9,7 @@ import Unauthorized from "../pages/errors/Unauthorized";
 import Offers from "../pages/offers/Offers";
 import CvOptimizer from "../pages/cv/CvOptimizer";
 import JobSwipe from "../pages/student/JobSwipe";
-import Profile from "../pages/student/Profile";
+import Rprofile from "../pages/recruiter/Rprofile";
 
 export default function AppRoutes() {
   const isAuthenticated = !!localStorage.getItem("mock_token");
@@ -80,15 +80,16 @@ export default function AppRoutes() {
           </Layout>
         }
       />
+      
       <Route
-        path="/profile"
+        path="/recruiter/profile"
         element={
           <Layout>
-            <Profile />
+            <Rprofile/>
           </Layout>
         }
       />
-      
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
