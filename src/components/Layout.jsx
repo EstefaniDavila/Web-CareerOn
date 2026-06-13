@@ -18,6 +18,7 @@ export default function Layout({ children }) {
   const isRecruiter =
     userType === "Empresa" ||
     location.pathname === "/recruiter/dashboard" ||
+    location.pathname === "/recruiter/profile" ||
     location.pathname === "/offers";
 
   return (
