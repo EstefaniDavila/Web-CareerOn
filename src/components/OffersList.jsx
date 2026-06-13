@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MOCK_OFFERS = [
   { id: 1, title: "Desarrollador Frontend React", location: "Arequipa, PE", type: "Tiempo completo", publishedAt: "Hace 2 días", status: "active", applicants: 12 },
@@ -15,6 +16,7 @@ const STATUS_CONFIG = {
 
 const OffersList = ({ onEdit, onDeletePick }) => {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const filtered = MOCK_OFFERS.filter(o =>
     o.title.toLowerCase().includes(search.toLowerCase())
@@ -74,7 +76,18 @@ const OffersList = ({ onEdit, onDeletePick }) => {
                   >
                     🗑 Eliminar
                   </button>
-                  <button className="btn btn-sm btn-primary">👁 Ver</button>
+                  <button
+                    className="btn btn-sm btn-primary"
+                    onClick={() =>
+                      navigate(`/offers/${offer.id}`, {
+                        state: {
+                          offer,
+                        },
+                      })
+                    }
+                  >
+                    👁 Ver
+                  </button>
                 </div>
               </div>
             </div>

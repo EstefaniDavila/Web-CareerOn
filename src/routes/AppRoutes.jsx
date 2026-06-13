@@ -9,6 +9,7 @@ import Unauthorized from "../pages/errors/Unauthorized";
 import Offers from "../pages/offers/Offers";
 import CvOptimizer from "../pages/cv/CvOptimizer";
 import JobSwipe from "../pages/student/JobSwipe";
+import OfferDetail from "../pages/Recluter/Postulation/postulation";
 
 export default function AppRoutes() {
   const isAuthenticated = !!localStorage.getItem("mock_token");
@@ -59,6 +60,15 @@ export default function AppRoutes() {
               <Dashboard />
             </Layout>
           //</ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/offers/:id"
+        element={
+          <Layout>
+            <OfferDetail />
+          </Layout>
         }
       />
 
