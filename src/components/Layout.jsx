@@ -29,8 +29,8 @@ export default function Layout({ children }) {
     >
       {isRecruiter ? <RecruiterNavbar /> : <Navbar />}
 
-      <main className="flex-1 flex justify-center p-6 w-full">
-        <div className="w-full max-w-[1280px]">
+      <main className="flex-1 flex justify-center py-6 px-4 md:px-8 w-full">
+        <div className="w-full">
           {children}
         </div>
       </main>

@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useIsAuthenticated } from "@azure/msal-react";
 import Login from "../pages/auth/Login";
 import Dashboard from "../pages/Dashboard";
 import Onboarding from "../pages/onboarding/Onboarding";
@@ -8,9 +7,11 @@ import Layout from "../components/Layout";
 import ProtectedRoute from "./ProtectedRoute";
 import Unauthorized from "../pages/errors/Unauthorized";
 import Offers from "../pages/offers/Offers";
+import CvOptimizer from "../pages/cv/CvOptimizer";
+import JobSwipe from "../pages/student/JobSwipe";
 
 export default function AppRoutes() {
-  const isAuthenticated = useIsAuthenticated();
+  const isAuthenticated = !!localStorage.getItem("mock_token");
 
   return (
     <Routes>
@@ -62,6 +63,22 @@ export default function AppRoutes() {
       />
 
       {/* Aquí podemos agregar más rutas protegidas para CV Optimizer, Talent Search, etc */}
+      <Route
+        path="/explorar"
+        element={
+          <Layout>
+            <JobSwipe />
+          </Layout>
+        }
+      />
+      <Route
+        path="/cv-optimizer"
+        element={
+          <Layout>
+            <CvOptimizer />
+          </Layout>
+        }
+      />
       
       <Route path="*" element={<NotFound />} />
     </Routes>

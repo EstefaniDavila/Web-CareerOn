@@ -1,6 +1,6 @@
 import { useMsal } from "@azure/msal-react";
 import { FiHome, FiFileText, FiTarget, FiLogOut, FiUser } from "react-icons/fi";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useUserStatus } from "../hooks/useUserStatus";
 
 export default function Sidebar() {
@@ -8,18 +8,19 @@ export default function Sidebar() {
   const userName = accounts[0]?.name || "Usuario";
   const userEmail = accounts[0]?.username || "";
 
+  const navigate = useNavigate();
   const { userType } = useUserStatus();
 
   const handleLogout = () => {
-    sessionStorage.clear();
-    localStorage.clear();
+    localStorage.removeItem("mock_token");
+    localStorage.removeItem("user_data");
     window.location.href = "/";
   };
 
   const studentItems = [
     { to: "/dashboard", icon: FiHome, label: "Dashboard" },
+    { to: "/explorar", icon: FiTarget, label: "Explorar Empleos" },
     { to: "/cv-optimizer", icon: FiFileText, label: "CV Optimizer" },
-    { to: "/misiones", icon: FiTarget, label: "Misiones" },
   ];
 
   const recruiterItems = [
