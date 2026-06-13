@@ -68,7 +68,7 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary), #8B3DFF);
+  background: linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-hover));
   color: white;
   border: none;
   padding: 10px 20px;

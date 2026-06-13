@@ -10,6 +10,9 @@ import Offers from "../pages/offers/Offers";
 import CvOptimizer from "../pages/cv/CvOptimizer";
 import JobSwipe from "../pages/student/JobSwipe";
 import Profile from "../pages/student/Profile";
+import Favorites from "../pages/student/Favorites";
+import Events from "../pages/student/Events";
+import Stats from "../pages/student/Stats";
 
 export default function AppRoutes() {
   const isAuthenticated = !!localStorage.getItem("mock_token");
@@ -85,6 +88,30 @@ export default function AppRoutes() {
         element={
           <Layout>
             <Profile />
+          </Layout>
+        }
+      />
+      <Route
+        path="/favorites"
+        element={
+          <Layout>
+            <Favorites />
+          </Layout>
+        }
+      />
+      <Route
+        path="/events"
+        element={
+          <Layout>
+            <Events />
+          </Layout>
+        }
+      />
+      <Route
+        path="/stats"
+        element={
+          <Layout>
+            <Stats />
           </Layout>
         }
       />

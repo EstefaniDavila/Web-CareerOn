@@ -4,11 +4,13 @@ import { InteractionStatus } from "@azure/msal-browser";
 import AppRoutes from "./routes/AppRoutes";
 import { ToastProvider } from "./components/ui/use-toast";
 import { ConfirmProvider } from "./components/custom/alert";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 function App() {
   const { inProgress } = useMsal();
 
-  // Mientras MSAL carga, mostramos un loader
   if (inProgress !== InteractionStatus.None) {
     return (
       <div className="h-screen w-screen flex items-center justify-center bg-[var(--color-brand-bg)]">
@@ -21,13 +23,15 @@ function App() {
   }
 
   return (
-    <ToastProvider>
-      <ConfirmProvider>
-        <Router>
-          <AppRoutes />
-        </Router>
-      </ConfirmProvider>
-    </ToastProvider>
+    <QueryClientProvider client={queryClient}>
+      <ToastProvider>
+        <ConfirmProvider>
+          <Router>
+            <AppRoutes />
+          </Router>
+        </ConfirmProvider>
+      </ToastProvider>
+    </QueryClientProvider>
   );
 }
 
