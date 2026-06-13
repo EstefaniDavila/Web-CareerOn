@@ -14,7 +14,7 @@ export default function Sidebar() {
   const handleLogout = () => {
     localStorage.removeItem("mock_token");
     localStorage.removeItem("user_data");
-    navigate("/");
+    window.location.href = "/";
   };
 
   const studentItems = [

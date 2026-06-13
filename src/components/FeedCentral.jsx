@@ -73,7 +73,7 @@ const FeedCentral = () => {
   );
 
   return (
-    <div className="feed-central-container">
+    <div className="feed-central-container flex-1 w-full min-w-0">
       
       {/* Search Bar Header */}
       <div className="glass-card search-header-card p-6 mb-6">
@@ -166,7 +166,7 @@ const FeedCentral = () => {
           <div className="w-8 h-8 border-4 border-[var(--color-brand-primary)] border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredJobs.length > 0 ? (
             filteredJobs.map(job => (
               <div key={job.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow flex flex-col h-full">
