@@ -7,6 +7,7 @@ import NotFound from "../pages/errors/NotFound";
 import Layout from "../components/Layout";
 import ProtectedRoute from "./ProtectedRoute";
 import Unauthorized from "../pages/errors/Unauthorized";
+import Offers from "../pages/offers/Offers";
 
 export default function AppRoutes() {
   const isAuthenticated = useIsAuthenticated();
@@ -23,36 +24,34 @@ export default function AppRoutes() {
       <Route
         path="/onboarding"
         element={
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <Onboarding />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         }
       />
 
       <Route
         path="/dashboard"
         element={
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <Layout>
               <Dashboard />
             </Layout>
-          </ProtectedRoute>
+          //</ProtectedRoute>
         }
       />
 
       <Route
-        path="/recruiter/dashboard"
+        path="/offers"
         element={
-          <ProtectedRoute>
-            <Layout>
-              <Dashboard />
-            </Layout>
-          </ProtectedRoute>
+          <Layout>
+            <Offers />
+          </Layout>
         }
       />
 
       {/* Aquí podemos agregar más rutas protegidas para CV Optimizer, Talent Search, etc */}
-
+      
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
