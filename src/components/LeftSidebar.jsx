@@ -1,9 +1,12 @@
 import React from 'react';
 import { useMsal } from "@azure/msal-react";
+import { useNavigate, useLocation } from 'react-router-dom';
 import './LeftSidebar.css';
 
 const LeftSidebar = () => {
   const { accounts } = useMsal();
+  const navigate = useNavigate();
+  const location = useLocation();
   
   const userName = accounts[0]?.name || "Estudiante";
   const initials = userName.substring(0, 2).toUpperCase();
@@ -41,13 +44,12 @@ const LeftSidebar = () => {
         </div>
       </div>
 
-      {/* Navigation Menu */}
       <div className="glass-card nav-menu-card">
         <ul className="side-nav-list">
-          <li className="active">
+          <li className={location.pathname === '/dashboard' ? 'active' : ''} onClick={() => navigate('/dashboard')}>
             <span className="icon">㗊</span> Panel principal
           </li>
-          <li>
+          <li className={location.pathname === '/profile' ? 'active' : ''} onClick={() => navigate('/profile')}>
             <span className="icon">👤</span> Mi perfil
           </li>
           <li>

@@ -6,12 +6,9 @@ import { useUserStatus } from "../hooks/useUserStatus";
 export default function ProtectedRoute({ children }) {
   const isAuthenticated = useIsAuthenticated();
   const { inProgress } = useMsal();
-  
-  // Llamamos al hook para asegurarnos de que el backend auto-registre al usuario
-  // apenas entra a cualquier ruta protegida (incluyendo el Onboarding).
+
   useUserStatus();
 
-  // Mientras MSAL está cargando/verificando la sesión, mostramos un loader
   if (inProgress !== InteractionStatus.None) {
     return (
       <div className="h-screen w-screen flex items-center justify-center bg-[var(--color-brand-bg)]">

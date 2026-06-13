@@ -148,7 +148,7 @@ const FeedCentral = () => {
                     Postular de todos modos
                   </button>
                   <button 
-                    onClick={() => navigate('/cv-optimizer')}
+                    onClick={() => navigate('/profile')}
                     className="flex-1 py-3 bg-[var(--color-brand-cards)] text-white font-bold rounded-xl hover:bg-orange-500 shadow-md transition-colors flex items-center justify-center gap-2"
                   >
                     <FiCheckCircle /> ¡Optimicemos tu CV en tu Perfil!
@@ -166,51 +166,66 @@ const FeedCentral = () => {
           <div className="w-8 h-8 border-4 border-[var(--color-brand-primary)] border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="flex flex-col gap-5">
           {filteredJobs.length > 0 ? (
             filteredJobs.map(job => (
-              <div key={job.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow flex flex-col h-full">
-                <div className="flex justify-between items-start mb-3">
-                  <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center font-bold text-[var(--color-brand-primary)] text-xl border border-gray-100">
-                    {job.company.charAt(0)}
+              <div key={job.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 md:p-6 hover:shadow-md transition-shadow flex flex-col md:flex-row gap-5 items-start">
+                
+                {/* Logo Empresa */}
+                <div className="w-16 h-16 shrink-0 bg-gray-50 rounded-xl flex items-center justify-center font-bold text-[var(--color-brand-primary)] text-2xl border border-gray-100">
+                  {job.company.charAt(0)}
+                </div>
+                
+                {/* Detalles Centrales */}
+                <div className="flex-1 min-w-0 w-full">
+                  <div className="flex justify-between items-start mb-1">
+                    <h3 className="font-bold text-gray-900 text-xl truncate pr-4">{job.title}</h3>
+                    {/* Botón guardar visible solo en móvil */}
+                    <button 
+                      onClick={() => handleSaveJob(job)}
+                      className="p-2 -mr-2 text-gray-400 hover:text-[var(--color-brand-accent)] hover:bg-orange-50 rounded-full transition-colors md:hidden shrink-0"
+                    >
+                      <FiBookmark size={20} />
+                    </button>
                   </div>
+                  
+                  <p className="text-[var(--color-brand-primary)] font-semibold text-base mb-3">{job.company}</p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-3 text-xs md:text-sm text-gray-600 font-medium">
+                    <span className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-lg">
+                      <FiMapPin /> {job.location}
+                    </span>
+                    <span className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-lg">
+                      <FiBriefcase /> {job.type}
+                    </span>
+                  </div>
+                  
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed pr-0 md:pr-4">
+                    {job.description}
+                  </p>
+                </div>
+                
+                {/* Acciones (Columna Derecha) */}
+                <div className="w-full md:w-56 flex flex-col gap-3 shrink-0 mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
                   <button 
                     onClick={() => handleSaveJob(job)}
-                    className="p-2 text-gray-400 hover:text-[var(--color-brand-accent)] hover:bg-orange-50 rounded-full transition-colors"
-                    title="Guardar a Favoritos"
+                    className="hidden md:flex items-center justify-center gap-2 p-2.5 text-gray-500 hover:text-[var(--color-brand-accent)] hover:bg-orange-50 rounded-xl transition-colors font-medium border border-transparent hover:border-orange-100"
                   >
-                    <FiBookmark size={20} />
+                    <FiBookmark size={18} /> Guardar Oferta
                   </button>
-                </div>
-                
-                <h3 className="font-bold text-gray-900 text-lg leading-tight mb-1">{job.title}</h3>
-                <p className="text-[var(--color-brand-primary)] font-medium text-sm mb-3">{job.company}</p>
-                
-                <div className="flex flex-wrap gap-2 mb-4 text-xs text-gray-500 font-medium">
-                  <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-md">
-                    <FiMapPin /> {job.location}
-                  </span>
-                  <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-md">
-                    <FiBriefcase /> {job.type}
-                  </span>
-                </div>
-                
-                <p className="text-gray-600 text-sm line-clamp-2 mb-5 flex-1">
-                  {job.description}
-                </p>
-                
-                <div className="flex gap-2 mt-auto">
+                  
                   <button 
                     onClick={() => toast({title: "Postulación enviada", description: "Has postulado a " + job.company, variant: "success"})}
-                    className="flex-1 bg-gray-900 text-white font-bold text-sm py-2.5 rounded-lg hover:bg-gray-800 transition-colors"
+                    className="w-full bg-gray-900 text-white font-bold text-sm py-3.5 rounded-xl hover:bg-gray-800 transition-colors"
                   >
-                    Postular
+                    Postular Ahora
                   </button>
+                  
                   <button 
                     onClick={() => handleEvaluateCV(job)}
-                    className="flex-1 border-2 border-[var(--color-brand-primary)] text-[var(--color-brand-primary)] font-bold text-sm py-2.5 rounded-lg hover:bg-blue-50 transition-colors flex items-center justify-center gap-1"
+                    className="w-full border-2 border-[var(--color-brand-primary)] text-[var(--color-brand-primary)] font-bold text-sm py-3.5 rounded-xl hover:bg-blue-50 transition-colors flex items-center justify-center gap-2 shadow-sm"
                   >
-                    <FiCpu /> Evaluar CV
+                    <FiCpu size={18}/> Evaluar CV IA
                   </button>
                 </div>
               </div>
