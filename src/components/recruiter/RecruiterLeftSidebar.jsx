@@ -52,7 +52,7 @@ const RecruiterLeftSidebar = () => {
             </div>
             <span className="nav-badge">47</span>
           </li>
-          <li onClick={() => navigate('/offers')} style={{ cursor: 'pointer' }}> {/* ✅ Navegación */}
+          <li onClick={() => navigate('/offers')} style={{ cursor: 'pointer' }}>
             <span className="icon">➕</span> Nueva oferta
           </li>
           <li>

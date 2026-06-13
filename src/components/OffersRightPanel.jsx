@@ -2,11 +2,10 @@ import React from "react";
 import OffersList from "./OffersList";
 import OfferForm from "./OfferForm";
 import DeleteConfirmModal from "./DeleteConfirmModal";
-import "./OffersRightPanel.css";
 
 const OffersRightPanel = ({ view, selectedOffer, onViewChange, onEdit, onDeletePick }) => {
   return (
-    <div className="offers-right-panel">
+    <div className="flex-1 bg-[#F3F3F3] rounded-xl p-5 min-w-0">
       {view === "list" && (
         <OffersList
           onEdit={onEdit}

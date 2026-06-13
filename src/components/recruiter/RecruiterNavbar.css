@@ -96,7 +96,38 @@
   font-weight: 500;
 }
 
-.recruiter-navbar-links .badge {
+.recruiter-navbar-profile .dropdown-divider {
+  height: 1px;
+  background-color: #E2E8F0;
+}
+
+.recruiter-navbar-profile .dropdown-item {
+  width: 100%;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+  /* Rojo institucional para cerrar sesión */
+  font-weight: 600;
+  font-size: 14px;
+  text-align: left;
+  transition: background 0.2s;
+}
+
+.recruiter-navbar-profile .dropdown-item:hover {
+  background: #FFF5F5;
+}
+
+.recruiter-navbar-profile .dropdown-item svg {
+  width: 18px;
+  height: 18px;
+}
+
+.recruiter-navbar-links .nav-item .badge {
   position: absolute;
   top: -5px;
   right: 5px;

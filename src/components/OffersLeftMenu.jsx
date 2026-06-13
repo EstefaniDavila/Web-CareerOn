@@ -1,10 +1,9 @@
 import React from "react";
 import { useMsal } from "@azure/msal-react";
-import "./LeftSidebar.css";
 
 const NAV_ITEMS = [
-  { view: "list",    icon: "㗊", label: "Ver ofertas"      },
-  { view: "create",  icon: "＋", label: "Crear oferta"     }
+  { view: "list",   icon: "㗊", label: "Ver ofertas"   },
+  { view: "create", icon: "＋", label: "Crear oferta"  },
 ];
 
 const OffersLeftMenu = ({ activeView, onViewChange }) => {
@@ -13,23 +12,26 @@ const OffersLeftMenu = ({ activeView, onViewChange }) => {
   const initials = userName.substring(0, 2).toUpperCase();
 
   return (
-    <div className="left-sidebar">
-      <div className="glass-card nav-menu-card">
-        <ul className="side-nav-list">
-          {NAV_ITEMS.map(({ view, icon, label }) => (
-            <li
-              key={view}
-              className={activeView === view || (activeView === "delete-confirm" && view === "delete") ? "active" : ""}
-              onClick={() => onViewChange(view === "delete" ? "delete-pick" : view)}
-            >
-              <span className="icon">{icon}</span> {label}
-            </li>
-          ))}
-        </ul>
-        <div>
-          <img src="src/assets/ReclutadorPetPes.png" alt="" />
-        </div>
-      </div>
+    <div className="w-56 flex-shrink-0 bg-[#F3F3F3] rounded-xl p-4">
+      <ul className="flex flex-col gap-1">
+        {NAV_ITEMS.map(({ view, icon, label }) => (
+          <li
+            key={view}
+            onClick={() => onViewChange(view)}
+            className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm cursor-pointer transition-colors ${
+              activeView === view
+                ? "bg-[#5B34F2] text-white font-medium"
+                : "text-[#5F6368] hover:bg-gray-200"
+            }`}
+          >
+            <span>{icon}</span>
+            {label}
+          </li>
+        ))}
+        <li>
+          <img src="/src/assets/ReclutadorPetPes.png" alt="" />
+        </li>
+      </ul>
     </div>
   );
 };
