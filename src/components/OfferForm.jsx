@@ -19,6 +19,13 @@ const STATUSES = [
   { value: "closed", label: "Cerrada" },
 ];
 
+const inputClass = (hasError) =>
+  `w-full border rounded-lg px-3 py-2 text-sm text-[#1C1C1C] bg-white outline-none transition-colors ${
+    hasError
+      ? "border-[#F25F63] focus:border-[#F25F63]"
+      : "border-gray-200 focus:border-[#5B34F2]"
+  }`;
+
 const OfferForm = ({ mode = "create", offer = null, onBack }) => {
   const [form, setForm] = useState(EMPTY_FORM);
   const [errors, setErrors] = useState({});
@@ -63,111 +70,126 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
 
   return (
     <>
-      <div className="form-back" onClick={onBack}>
-        <span className="back-arrow">←</span> Volver a mis ofertas
-      </div>
+      {/* Back */}
+      <button
+        onClick={onBack}
+        className="flex items-center gap-1.5 text-sm text-[#5F6368] hover:text-[#5B34F2] transition-colors mb-3"
+      >
+        ← Volver a mis ofertas
+      </button>
 
-      <div className="form-title">
+      <p className="text-[15px] font-medium text-[#1C1C1C] mb-4">
         {isEdit ? "Editar oferta" : "Nueva oferta laboral"}
+      </p>
+
+      <div className="grid grid-cols-2 gap-3 mb-4">
+
+        {/* Título */}
+        <div className="col-span-2 flex flex-col gap-1">
+          <label className="text-xs font-medium text-[#5F6368]">Título del puesto</label>
+          <input
+            type="text"
+            placeholder="Ej: Desarrollador Backend Python"
+            value={form.title}
+            onChange={set("title")}
+            className={inputClass(errors.title)}
+          />
+          {errors.title && <span className="text-[11px] text-[#F25F63]">{errors.title}</span>}
+        </div>
+
+        {/* Área */}
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-medium text-[#5F6368]">Área</label>
+          <select value={form.area} onChange={set("area")} className={inputClass(false)}>
+            {AREAS.map(a => <option key={a}>{a}</option>)}
+          </select>
+        </div>
+
+        {/* Modalidad */}
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-medium text-[#5F6368]">Modalidad</label>
+          <select value={form.modality} onChange={set("modality")} className={inputClass(false)}>
+            {MODALITIES.map(m => <option key={m}>{m}</option>)}
+          </select>
+        </div>
+
+        {/* Ubicación */}
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-medium text-[#5F6368]">Ubicación</label>
+          <input
+            type="text"
+            placeholder="Ciudad o Remoto"
+            value={form.location}
+            onChange={set("location")}
+            className={inputClass(errors.location)}
+          />
+          {errors.location && <span className="text-[11px] text-[#F25F63]">{errors.location}</span>}
+        </div>
+
+        {/* Salario */}
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-medium text-[#5F6368]">Rango salarial</label>
+          <input
+            type="text"
+            placeholder="Ej: S/. 3000 – 4500"
+            value={form.salary}
+            onChange={set("salary")}
+            className={inputClass(false)}
+          />
+        </div>
+
+        {/* Estado — solo en edición */}
+        {isEdit && (
+          <div className="col-span-2 flex flex-col gap-1">
+            <label className="text-xs font-medium text-[#5F6368]">Estado de la oferta</label>
+            <select value={form.status} onChange={set("status")} className={inputClass(false)}>
+              {STATUSES.map(s => (
+                <option key={s.value} value={s.value}>{s.label}</option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Descripción */}
+        <div className="col-span-2 flex flex-col gap-1">
+          <label className="text-xs font-medium text-[#5F6368]">Descripción del puesto</label>
+          <textarea
+            rows={5}
+            placeholder="Describe las responsabilidades principales..."
+            value={form.description}
+            onChange={set("description")}
+            className={inputClass(errors.description)}
+          />
+          {errors.description && <span className="text-[11px] text-[#F25F63]">{errors.description}</span>}
+        </div>
+
+        {/* Requisitos */}
+        <div className="col-span-2 flex flex-col gap-1">
+          <label className="text-xs font-medium text-[#5F6368]">Requisitos</label>
+          <textarea
+            rows={4}
+            placeholder="Experiencia mínima, habilidades técnicas, idiomas, etc."
+            value={form.requirements}
+            onChange={set("requirements")}
+            className={inputClass(false)}
+          />
+        </div>
       </div>
 
-      <div className="form-section">
-
-        <div className="form-row">
-          <div className="form-group full">
-            <label htmlFor="f-title">Título del puesto</label>
-            <input
-              id="f-title"
-              type="text"
-              placeholder="Ej: Desarrollador Backend Python"
-              value={form.title}
-              onChange={set("title")}
-              className={errors.title ? "input-error" : ""}
-            />
-            {errors.title && <span className="field-error">{errors.title}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="f-area">Área</label>
-            <select id="f-area" value={form.area} onChange={set("area")}>
-              {AREAS.map(a => <option key={a}>{a}</option>)}
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="f-modality">Modalidad</label>
-            <select id="f-modality" value={form.modality} onChange={set("modality")}>
-              {MODALITIES.map(m => <option key={m}>{m}</option>)}
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="f-location">Ubicación</label>
-            <input
-              id="f-location"
-              type="text"
-              placeholder="Ciudad o Remoto"
-              value={form.location}
-              onChange={set("location")}
-              className={errors.location ? "input-error" : ""}
-            />
-            {errors.location && <span className="field-error">{errors.location}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="f-salary">Rango salarial</label>
-            <input
-              id="f-salary"
-              type="text"
-              placeholder="Ej: S/. 3000 – 4500"
-              value={form.salary}
-              onChange={set("salary")}
-            />
-          </div>
-
-          {isEdit && (
-            <div className="form-group full">
-              <label htmlFor="f-status">Estado de la oferta</label>
-              <select id="f-status" value={form.status} onChange={set("status")}>
-                {STATUSES.map(s => (
-                  <option key={s.value} value={s.value}>{s.label}</option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          <div className="form-group full">
-            <label htmlFor="f-desc">Descripción del puesto</label>
-            <textarea
-              id="f-desc"
-              rows={5}
-              placeholder="Describe las responsabilidades principales..."
-              value={form.description}
-              onChange={set("description")}
-              className={errors.description ? "input-error" : ""}
-            />
-            {errors.description && <span className="field-error">{errors.description}</span>}
-          </div>
-
-          <div className="form-group full">
-            <label htmlFor="f-req">Requisitos</label>
-            <textarea
-              id="f-req"
-              rows={4}
-              placeholder="Experiencia mínima, habilidades técnicas, idiomas, etc."
-              value={form.requirements}
-              onChange={set("requirements")}
-            />
-          </div>
-        </div>
-
-        <div className="form-actions">
-          <button className="btn" onClick={onBack}>Cancelar</button>
-          <button className="btn btn-primary" onClick={handleSubmit}>
-            ✓ {isEdit ? "Guardar cambios" : "Publicar oferta"}
-          </button>
-        </div>
-
+      {/* Actions */}
+      <div className="flex justify-end gap-2">
+        <button
+          onClick={onBack}
+          className="h-9 px-4 rounded-lg border border-gray-200 bg-white text-sm text-[#5F6368] hover:bg-gray-100 transition-colors"
+        >
+          Cancelar
+        </button>
+        <button
+          onClick={handleSubmit}
+          className="h-9 px-4 rounded-lg bg-[#5B34F2] text-sm text-white hover:bg-[#4320C9] transition-colors"
+        >
+          ✓ {isEdit ? "Guardar cambios" : "Publicar oferta"}
+        </button>
       </div>
     </>
   );
