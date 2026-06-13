@@ -13,9 +13,24 @@
 }
 
 :root {
+  --white: #ffffff;
   --glass-bg: rgba(255, 255, 255, 0.85);
   --glass-border: 1px solid rgba(255, 255, 255, 0.6);
   --glass-shadow: 0 8px 32px 0 rgba(28, 107, 114, 0.05);
+}
+
+.recruiter-theme {
+  --white: #ffffff;
+  --color-brand-primary: #5B34F2;
+  --color-brand-hover: #4320C9;
+  --color-brand-accent: #F25F63;
+  --color-brand-cards: #0F6C7A;
+  --color-brand-bg: #DCE5EC;
+  --color-brand-surface: #F3F3F3;
+  --color-brand-text: #1C1C1C;
+  --color-brand-subtext: #5F6368;
+
+  --glass-shadow: 0 8px 32px 0 rgba(91, 52, 242, 0.05);
 }
 
 body {
