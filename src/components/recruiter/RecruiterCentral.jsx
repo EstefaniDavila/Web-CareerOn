@@ -79,10 +79,10 @@ const RecruiterCentral = () => {
         </div>
       </div>
 
-      {/* Actividad Reciente Card */}
+      {/* Actividad Reciente Card dd*/}
       <div className="glass-card recent-activity-card">
         <h3>ACTIVIDAD RECIENTE</h3>
-        
+
         <div className="activity-list">
           <div className="activity-item">
             <div className="activity-dot dot-purple"></div>
