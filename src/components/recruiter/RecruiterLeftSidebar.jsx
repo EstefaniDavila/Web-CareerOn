@@ -1,12 +1,14 @@
 import React from 'react';
 import { useMsal } from "@azure/msal-react";
+import { useNavigate } from "react-router-dom";
 import { useUserStatus } from "../../hooks/useUserStatus";
 import './RecruiterLeftSidebar.css';
 
 const RecruiterLeftSidebar = () => {
   const { accounts } = useMsal();
   const { userData } = useUserStatus();
-  
+  const navigate = useNavigate();
+
   const companyName = userData?.company_name || "Yape Perú";
   const initials = companyName ? companyName.substring(0, 2).toUpperCase() : "YP";
 
@@ -16,13 +18,11 @@ const RecruiterLeftSidebar = () => {
       <div className="glass-card profile-summary-card">
         <div className="profile-banner"></div>
         <div className="profile-avatar">{initials}</div>
-        
         <div className="profile-info">
           <h2>{companyName}</h2>
           <p>Fintech · Lima, Perú</p>
           <span className="badge-utp-partner">✦ Partner UTP</span>
         </div>
-
         <div className="profile-stats">
           <div className="stat-item">
             <span className="stat-value">3</span>
@@ -52,7 +52,7 @@ const RecruiterLeftSidebar = () => {
             </div>
             <span className="nav-badge">47</span>
           </li>
-          <li>
+          <li onClick={() => navigate('/offers')} style={{ cursor: 'pointer' }}> {/* ✅ Navegación */}
             <span className="icon">➕</span> Nueva oferta
           </li>
           <li>
