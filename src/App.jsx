@@ -2,6 +2,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { useMsal } from "@azure/msal-react";
 import { InteractionStatus } from "@azure/msal-browser";
 import AppRoutes from "./routes/AppRoutes";
+import { ToastProvider } from "./components/ui/use-toast";
+import { ConfirmProvider } from "./components/custom/alert";
 
 function App() {
   const { inProgress } = useMsal();
@@ -19,9 +21,13 @@ function App() {
   }
 
   return (
-    <Router>
-      <AppRoutes />
-    </Router>
+    <ToastProvider>
+      <ConfirmProvider>
+        <Router>
+          <AppRoutes />
+        </Router>
+      </ConfirmProvider>
+    </ToastProvider>
   );
 }
 

@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useIsAuthenticated } from "@azure/msal-react";
 import Login from "../pages/auth/Login";
 import Dashboard from "../pages/Dashboard";
 import Onboarding from "../pages/onboarding/Onboarding";
@@ -7,9 +6,12 @@ import NotFound from "../pages/errors/NotFound";
 import Layout from "../components/Layout";
 import ProtectedRoute from "./ProtectedRoute";
 import Unauthorized from "../pages/errors/Unauthorized";
-import Postulation from "../pages/Recluter/Postulation/postulation"
+import Offers from "../pages/offers/Offers";
+import CvOptimizer from "../pages/cv/CvOptimizer";
+import JobSwipe from "../pages/student/JobSwipe";
+
 export default function AppRoutes() {
-  const isAuthenticated = useIsAuthenticated();
+  const isAuthenticated = !!localStorage.getItem("mock_token");
 
   return (
     <Routes>
@@ -23,48 +25,61 @@ export default function AppRoutes() {
       <Route
         path="/onboarding"
         element={
-         /* <ProtectedRoute>*/
+          //<ProtectedRoute>
             <Onboarding />
-          /*</ProtectedRoute>*/
+          //</ProtectedRoute>
         }
       />
 
       <Route
         path="/dashboard"
         element={
-          /*<ProtectedRoute>*/
+          //<ProtectedRoute>
             <Layout>
               <Dashboard />
             </Layout>
-          /*</ProtectedRoute>*/
+          //</ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/offers"
+        element={
+          <Layout>
+            <Offers />
+          </Layout>
         }
       />
 
       <Route
         path="/recruiter/dashboard"
         element={
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <Layout>
               <Dashboard />
             </Layout>
-          </ProtectedRoute>
+          //</ProtectedRoute>
         }
       />
 
       {/* Aquí podemos agregar más rutas protegidas para CV Optimizer, Talent Search, etc */}
-
       <Route
-        path="/recruiter/postulation"
+        path="/explorar"
         element={
-          <ProtectedRoute>
-            <Layout>
-              <Postulation />
-            </Layout>
-          </ProtectedRoute>
+          <Layout>
+            <JobSwipe />
+          </Layout>
+        }
+      />
+      <Route
+        path="/cv-optimizer"
+        element={
+          <Layout>
+            <CvOptimizer />
+          </Layout>
         }
       />
       
-
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
