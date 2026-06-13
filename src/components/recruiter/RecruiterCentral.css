@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 600px;
+  flex: 1;
+  min-width: 0;
 }
 
 .metrics-grid {
@@ -27,18 +28,18 @@
 
 .metric-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(91, 52, 242, 0.08);
+  box-shadow: 0 10px 25px rgba(28, 107, 114, 0.08);
 }
 
 .metric-value {
   font-size: 24px;
   font-weight: 800;
-  color: #1C1C1C;
+  color: #1C6B72;
   margin-bottom: 4px;
 }
 
 .metric-value.highlight-purple {
-  color: #5B34F2;
+  color: #1C6B72;
 }
 
 .metric-label {
@@ -73,7 +74,7 @@
 .add-offer-btn {
   background: none;
   border: none;
-  color: #5B34F2;
+  color: #1C6B72;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
@@ -105,7 +106,8 @@
 
 /* Accent border using Azul Petroleo */
 .job-card.border-accent-teal {
-  border-left: 4px solid #0F6C7A; /* Azul petróleo */
+  border-left: 4px solid #0F6C7A;
+  /* Azul petróleo */
 }
 
 .job-card:hover {
@@ -125,8 +127,8 @@
 }
 
 .job-icon-container.tech-bg {
-  background-color: #EEF2FF;
-  color: #5B34F2;
+  background-color: #E8F0F0;
+  color: #1C6B72;
 }
 
 .job-icon-container.data-bg {
@@ -185,13 +187,14 @@
 }
 
 .active-badge {
-  background-color: #ECFDF5;
-  color: #10B981;
+  background-color: rgba(15, 108, 122, 0.1);
+  color: #0F6C7A;
 }
 
 .paused-badge {
-  background-color: #FEE2E2;
-  color: #EF4444;
+  background-color: rgba(242, 95, 99, 0.1);
+  color: var(--color-brand-accent);
+  /* #F25F63 */
 }
 
 .recent-activity-card {
@@ -229,8 +232,8 @@
 }
 
 .dot-purple {
-  background-color: #5B34F2;
-  box-shadow: 0 0 8px rgba(91, 52, 242, 0.5);
+  background-color: #1C6B72;
+  box-shadow: 0 0 8px rgba(28, 107, 114, 0.5);
 }
 
 .dot-teal {
