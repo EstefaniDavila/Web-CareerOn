@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { FiFileText, FiAward, FiCheckCircle, FiCpu, FiLayout, FiChevronDown } from 'react-icons/fi';
+import { FiUploadCloud, FiFileText, FiCpu, FiCheckCircle, FiChevronDown, FiAward, FiLayout } from 'react-icons/fi';
 import CvTemplates from '../../components/cv/CvTemplates';
+import useEntityMutation from '../../hooks/useEntityMutation';
 
 export default function CvOptimizer() {
   const [analysis, setAnalysis] = useState(null);
@@ -77,6 +78,28 @@ export default function CvOptimizer() {
       alert(error.message);
     } finally {
       setIsPending(false);
+    }
+  };
+
+  const cvMutation = useEntityMutation({ entityName: 'cv' });
+
+  const handleGenerateFromProfile = async () => {
+    setIsAnalyzing(true);
+    setError(null);
+    try {
+      const result = await cvMutation.mutateAsync({
+        action: "create",
+        entity: {},
+        endpoint: "/api/ai/generate-cv-from-profile"
+      });
+      // The result should contain the data object
+      setAnalysis(result.data);
+      setShowTemplates(true);
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Error al generar CV desde el perfil");
+    } finally {
+      setIsAnalyzing(false);
     }
   };
 
@@ -162,6 +185,17 @@ export default function CvOptimizer() {
             )}
             {isPending ? "Analizando con IA..." : "Subir y Analizar con IA"}
           </button>
+
+          <button
+            onClick={handleGenerateFromProfile}
+            disabled={isPending}
+            className="mt-4 w-full py-4 border-2 border-[var(--color-brand-primary)] text-[var(--color-brand-primary)] hover:bg-blue-50 font-bold rounded-xl transition-all flex justify-center items-center gap-3 disabled:opacity-50 text-lg"
+          >
+            ✨ No tengo CV: Generar mágicamente usando mi Perfil
+          </button>
+          <p className="text-center text-sm text-gray-500 mt-3">
+            ⚠️ Recuerda completar tu experiencia y habilidades en "Mi Perfil" antes de usar esta opción.
+          </p>
 
           {isPending && (
             <div className="mt-4 flex items-center justify-center gap-2 text-[var(--color-brand-primary)] animate-bounce">

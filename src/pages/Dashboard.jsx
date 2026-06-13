@@ -36,9 +36,15 @@ export default function Dashboard() {
   return (
     <div className="w-full flex flex-col gap-6">
       <div className="flex gap-6 w-full items-start justify-center">
-        <LeftSidebar />
-        <FeedCentral />
-        <RightSidebar />
+        <div className="hidden lg:block shrink-0 self-start sticky top-[88px] h-[calc(100vh-88px)] overflow-y-auto custom-scrollbar">
+          <LeftSidebar />
+        </div>
+        <div className="flex-1 min-w-0 pb-12">
+          <FeedCentral />
+        </div>
+        <div className="hidden xl:block shrink-0 self-start sticky top-[88px] h-[calc(100vh-88px)] overflow-y-auto custom-scrollbar">
+          <RightSidebar />
+        </div>
       </div>
     </div>
   );

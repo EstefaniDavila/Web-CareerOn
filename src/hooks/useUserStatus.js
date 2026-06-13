@@ -22,7 +22,7 @@ export function useUserStatus() {
         setUserData(response.data.user);
       } catch (err) {
         console.warn("No se pudo verificar el status del usuario, usando modo demo", err);
-        setUserType("Pending"); // Modo demo: asumir que es nuevo
+        setUserType("Pending");
       }
       setLoading(false);
     };

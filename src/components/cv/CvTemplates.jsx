@@ -13,19 +13,19 @@ function TemplateHarvard({ data }) {
   const resumen = data.cv_optimizado || '';
 
   return (
-    <div className="bg-white text-gray-900 font-serif" style={{ minHeight: '1056px', padding: '56px 72px' }}>
+    <div className="bg-[#ffffff] text-[#111827] font-serif" style={{ minHeight: '1056px', padding: '56px 72px' }}>
       {/* Nombre */}
-      <div className="text-center border-b-2 border-gray-900 pb-4 mb-4">
+      <div className="text-center border-b-2 border-[#111827] pb-4 mb-4">
         <h1 className="text-4xl font-bold uppercase tracking-widest mb-2" style={{ fontFamily: 'Georgia, serif' }}>
           {nombre || 'Tu Nombre Aquí'}
         </h1>
-        <div className="flex justify-center flex-wrap gap-x-4 gap-y-1 text-sm text-gray-700">
+        <div className="flex justify-center flex-wrap gap-x-4 gap-y-1 text-sm text-[#374151]">
           {email && <span>{email}</span>}
-          {telefono && <><span className="text-gray-400">•</span><span>{telefono}</span></>}
+          {telefono && <><span className="text-[#9ca3af]">•</span><span>{telefono}</span></>}
           {enlaces && enlaces.filter(Boolean).map((link, i) => (
             <React.Fragment key={i}>
-              <span className="text-gray-400">•</span>
-              <span className="text-blue-700">{link}</span>
+              <span className="text-[#9ca3af]">•</span>
+              <span className="text-[#1d4ed8]">{link}</span>
             </React.Fragment>
           ))}
         </div>
@@ -34,27 +34,27 @@ function TemplateHarvard({ data }) {
       {/* Resumen */}
       {resumen && (
         <section className="mb-5">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-gray-900 border-b border-gray-400 pb-1 mb-3">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-[#111827] border-b border-[#9ca3af] pb-1 mb-3">
             Summary
           </h2>
-          <p className="text-sm leading-relaxed text-gray-800">{resumen}</p>
+          <p className="text-sm leading-relaxed text-[#1f2937]">{resumen}</p>
         </section>
       )}
 
       {/* Experiencia */}
       {experiencia && experiencia.length > 0 && (
         <section className="mb-5">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-gray-900 border-b border-gray-400 pb-1 mb-3">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-[#111827] border-b border-[#9ca3af] pb-1 mb-3">
             Professional Experience
           </h2>
           {experiencia.map((exp, i) => (
             <div key={i} className="mb-4">
               <div className="flex justify-between items-baseline">
                 <p className="font-bold text-sm">{exp.cargo}</p>
-                <p className="text-xs text-gray-600 italic">{exp.fechas}</p>
+                <p className="text-xs text-[#4b5563] italic">{exp.fechas}</p>
               </div>
-              <p className="text-sm text-gray-700 italic mb-1">{exp.empresa}</p>
-              <p className="text-sm text-gray-800 leading-snug">{exp.descripcion}</p>
+              <p className="text-sm text-[#374151] italic mb-1">{exp.empresa}</p>
+              <p className="text-sm text-[#1f2937] leading-snug">{exp.descripcion}</p>
             </div>
           ))}
         </section>
@@ -63,16 +63,16 @@ function TemplateHarvard({ data }) {
       {/* Educación */}
       {educacion && educacion.length > 0 && (
         <section className="mb-5">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-gray-900 border-b border-gray-400 pb-1 mb-3">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-[#111827] border-b border-[#9ca3af] pb-1 mb-3">
             Education
           </h2>
           {educacion.map((edu, i) => (
             <div key={i} className="flex justify-between items-baseline mb-2">
               <div>
                 <p className="font-bold text-sm">{edu.titulo}</p>
-                <p className="text-sm text-gray-700">{edu.institucion}</p>
+                <p className="text-sm text-[#374151]">{edu.institucion}</p>
               </div>
-              <p className="text-xs text-gray-600 italic">{edu.fechas}</p>
+              <p className="text-xs text-[#4b5563] italic">{edu.fechas}</p>
             </div>
           ))}
         </section>
@@ -81,10 +81,10 @@ function TemplateHarvard({ data }) {
       {/* Habilidades */}
       {habilidades && habilidades.length > 0 && (
         <section>
-          <h2 className="text-xs font-bold uppercase tracking-widest text-gray-900 border-b border-gray-400 pb-1 mb-3">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-[#111827] border-b border-[#9ca3af] pb-1 mb-3">
             Skills
           </h2>
-          <p className="text-sm text-gray-800">{habilidades.join(' · ')}</p>
+          <p className="text-sm text-[#1f2937]">{habilidades.join(' · ')}</p>
         </section>
       )}
     </div>
@@ -102,34 +102,34 @@ function TemplateTechModern({ data }) {
   const resumen = data.cv_optimizado || '';
 
   return (
-    <div className="bg-white text-gray-900 flex" style={{ minHeight: '1056px', fontFamily: 'Inter, sans-serif' }}>
+    <div className="bg-[#ffffff] text-[#111827] flex" style={{ minHeight: '1056px', fontFamily: 'Inter, sans-serif' }}>
       {/* Sidebar */}
-      <aside className="bg-gray-900 text-white flex flex-col" style={{ width: '240px', minWidth: '240px', padding: '40px 24px' }}>
+      <aside className="bg-[#111827] text-[#ffffff] flex flex-col" style={{ width: '240px', minWidth: '240px', padding: '40px 24px' }}>
         <div className="mb-8">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-4">
+          <div className="w-20 h-20 rounded-full bg-[#4f46e5] flex items-center justify-center text-3xl font-bold text-[#ffffff] mb-4">
             {(nombre || 'U').charAt(0).toUpperCase()}
           </div>
-          <h1 className="text-xl font-bold leading-tight text-white">{nombre || 'Tu Nombre'}</h1>
+          <h1 className="text-xl font-bold leading-tight text-[#ffffff]">{nombre || 'Tu Nombre'}</h1>
         </div>
 
         <div className="mb-8">
-          <h3 className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-3">Contacto</h3>
-          <div className="space-y-2 text-xs text-gray-300 break-words">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-[#60a5fa] mb-3">Contacto</h3>
+          <div className="space-y-2 text-xs text-[#d1d5db] break-words">
             {email && <p>✉ {email}</p>}
             {telefono && <p>📞 {telefono}</p>}
             {enlaces && enlaces.filter(Boolean).map((link, i) => (
-              <p key={i} className="text-blue-300">🔗 {link}</p>
+              <p key={i} className="text-[#93c5fd]">🔗 {link}</p>
             ))}
           </div>
         </div>
 
         {habilidades && habilidades.length > 0 && (
           <div className="mb-8">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-3">Skills</h3>
+            <h3 className="text-xs font-bold uppercase tracking-widest text-[#60a5fa] mb-3">Skills</h3>
             <div className="flex flex-col gap-2">
               {habilidades.map((skill, i) => (
-                <div key={i} className="flex items-center gap-2 text-xs text-gray-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0"></span>
+                <div key={i} className="flex items-center gap-2 text-xs text-[#d1d5db]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#60a5fa] flex-shrink-0"></span>
                   {skill}
                 </div>
               ))}
@@ -139,12 +139,12 @@ function TemplateTechModern({ data }) {
 
         {educacion && educacion.length > 0 && (
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-3">Educación</h3>
+            <h3 className="text-xs font-bold uppercase tracking-widest text-[#60a5fa] mb-3">Educación</h3>
             {educacion.map((edu, i) => (
               <div key={i} className="mb-3">
-                <p className="text-xs font-bold text-white leading-tight">{edu.titulo}</p>
-                <p className="text-xs text-gray-400">{edu.institucion}</p>
-                <p className="text-xs text-gray-500">{edu.fechas}</p>
+                <p className="text-xs font-bold text-[#ffffff] leading-tight">{edu.titulo}</p>
+                <p className="text-xs text-[#9ca3af]">{edu.institucion}</p>
+                <p className="text-xs text-[#6b7280]">{edu.fechas}</p>
               </div>
             ))}
           </div>
@@ -155,27 +155,27 @@ function TemplateTechModern({ data }) {
       <main className="flex-1 p-10">
         {resumen && (
           <section className="mb-7">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-indigo-600 border-b border-indigo-100 pb-1 mb-3">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-[#4f46e5] border-b border-[#e0e7ff] pb-1 mb-3">
               Perfil Profesional
             </h2>
-            <p className="text-sm leading-relaxed text-gray-700">{resumen}</p>
+            <p className="text-sm leading-relaxed text-[#374151]">{resumen}</p>
           </section>
         )}
 
         {experiencia && experiencia.length > 0 && (
           <section>
-            <h2 className="text-xs font-bold uppercase tracking-widest text-indigo-600 border-b border-indigo-100 pb-1 mb-4">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-[#4f46e5] border-b border-[#e0e7ff] pb-1 mb-4">
               Experiencia Profesional
             </h2>
             <div className="space-y-5">
               {experiencia.map((exp, i) => (
-                <div key={i} className="relative pl-4 border-l-2 border-indigo-200">
+                <div key={i} className="relative pl-4 border-l-2 border-[#c7d2fe]">
                   <div className="flex justify-between items-start mb-1">
-                    <p className="font-bold text-sm text-gray-900">{exp.cargo}</p>
-                    <span className="text-xs text-white bg-indigo-500 px-2 py-0.5 rounded-full ml-2 whitespace-nowrap">{exp.fechas}</span>
+                    <p className="font-bold text-sm text-[#111827]">{exp.cargo}</p>
+                    <span className="text-xs text-[#ffffff] bg-[#6366f1] px-2 py-0.5 rounded-full ml-2 whitespace-nowrap">{exp.fechas}</span>
                   </div>
-                  <p className="text-xs font-semibold text-indigo-600 mb-1">{exp.empresa}</p>
-                  <p className="text-sm text-gray-700 leading-snug">{exp.descripcion}</p>
+                  <p className="text-xs font-semibold text-[#4f46e5] mb-1">{exp.empresa}</p>
+                  <p className="text-sm text-[#374151] leading-snug">{exp.descripcion}</p>
                 </div>
               ))}
             </div>
@@ -197,15 +197,15 @@ function TemplateExecutive({ data }) {
   const resumen = data.cv_optimizado || '';
 
   return (
-    <div className="bg-white text-gray-900" style={{ minHeight: '1056px', fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
+    <div className="bg-[#ffffff] text-[#111827]" style={{ minHeight: '1056px', fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
       {/* Header con color */}
-      <header className="bg-slate-800 text-white" style={{ padding: '36px 56px' }}>
+      <header className="bg-[#1e293b] text-[#ffffff]" style={{ padding: '36px 56px' }}>
         <h1 className="text-4xl font-light tracking-tight mb-2">{nombre || 'Tu Nombre Aquí'}</h1>
-        <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-slate-300 mt-3">
+        <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-[#cbd5e1] mt-3">
           {email && <span>✉ {email}</span>}
           {telefono && <span>📞 {telefono}</span>}
           {enlaces && enlaces.filter(Boolean).map((link, i) => (
-            <span key={i} className="text-blue-300">🔗 {link}</span>
+            <span key={i} className="text-[#93c5fd]">🔗 {link}</span>
           ))}
         </div>
       </header>
@@ -213,33 +213,33 @@ function TemplateExecutive({ data }) {
       <div style={{ padding: '36px 56px' }}>
         {/* Resumen */}
         {resumen && (
-          <section className="mb-6 pb-6 border-b border-gray-200">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-slate-700 mb-3">
+          <section className="mb-6 pb-6 border-b border-[#e5e7eb]">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-[#334155] mb-3">
               Perfil Ejecutivo
             </h2>
-            <p className="text-sm leading-relaxed text-gray-700">{resumen}</p>
+            <p className="text-sm leading-relaxed text-[#374151]">{resumen}</p>
           </section>
         )}
 
         {/* Experiencia */}
         {experiencia && experiencia.length > 0 && (
-          <section className="mb-6 pb-6 border-b border-gray-200">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-slate-700 mb-4">
+          <section className="mb-6 pb-6 border-b border-[#e5e7eb]">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-[#334155] mb-4">
               Trayectoria Profesional
             </h2>
             {experiencia.map((exp, i) => (
               <div key={i} className="mb-5 flex gap-4">
                 <div className="flex flex-col items-center">
-                  <div className="w-3 h-3 rounded-full bg-slate-700 mt-1 flex-shrink-0"></div>
-                  {i < experiencia.length - 1 && <div className="w-px bg-gray-300 flex-1 mt-1"></div>}
+                  <div className="w-3 h-3 rounded-full bg-[#334155] mt-1 flex-shrink-0"></div>
+                  {i < experiencia.length - 1 && <div className="w-px bg-[#d1d5db] flex-1 mt-1"></div>}
                 </div>
                 <div className="flex-1 pb-2">
                   <div className="flex justify-between items-start">
-                    <p className="font-bold text-sm text-gray-900">{exp.cargo}</p>
-                    <p className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded">{exp.fechas}</p>
+                    <p className="font-bold text-sm text-[#111827]">{exp.cargo}</p>
+                    <p className="text-xs text-[#6b7280] bg-[#f3f4f6] px-2 py-0.5 rounded">{exp.fechas}</p>
                   </div>
-                  <p className="text-sm text-slate-600 font-semibold mt-0.5">{exp.empresa}</p>
-                  <p className="text-sm text-gray-700 leading-snug mt-1">{exp.descripcion}</p>
+                  <p className="text-sm text-[#475569] font-semibold mt-0.5">{exp.empresa}</p>
+                  <p className="text-sm text-[#374151] leading-snug mt-1">{exp.descripcion}</p>
                 </div>
               </div>
             ))}
@@ -250,22 +250,22 @@ function TemplateExecutive({ data }) {
         <div className="grid grid-cols-2 gap-8">
           {educacion && educacion.length > 0 && (
             <section>
-              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-700 mb-3">Formación</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widest text-[#334155] mb-3">Formación</h2>
               {educacion.map((edu, i) => (
                 <div key={i} className="mb-3">
                   <p className="font-bold text-sm">{edu.titulo}</p>
-                  <p className="text-sm text-gray-600">{edu.institucion}</p>
-                  <p className="text-xs text-gray-500">{edu.fechas}</p>
+                  <p className="text-sm text-[#4b5563]">{edu.institucion}</p>
+                  <p className="text-xs text-[#6b7280]">{edu.fechas}</p>
                 </div>
               ))}
             </section>
           )}
           {habilidades && habilidades.length > 0 && (
             <section>
-              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-700 mb-3">Competencias</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widest text-[#334155] mb-3">Competencias</h2>
               <div className="flex flex-wrap gap-2">
                 {habilidades.map((skill, i) => (
-                  <span key={i} className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded font-medium">
+                  <span key={i} className="text-xs bg-[#f1f5f9] text-[#334155] px-2 py-1 rounded font-medium">
                     {skill}
                   </span>
                 ))}
@@ -318,10 +318,8 @@ export default function CvTemplates({ data, onSaveToProfile }) {
 
   const handlePrint = () => {
     setShowPrint(true);
-    // Pequeño delay para que React monte el portal antes de imprimir
     setTimeout(() => {
       window.print();
-      // Limpiar el portal después de imprimir
       setTimeout(() => setShowPrint(false), 500);
     }, 150);
   };
@@ -330,17 +328,19 @@ export default function CvTemplates({ data, onSaveToProfile }) {
     setIsSaving(true);
     setSaved(false);
     
-    // Generar PDF usando html2pdf en background
-    const element = document.getElementById('cv-preview-container');
-    const opt = {
-      margin: 0,
-      filename: `cv_optimizado_${new Date().getTime()}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-    };
-
+    // Como html2pdf (html2canvas) crashea con oklch de Tailwind v4,
+    // usamos jsPDF básico para generar el blob que se guarda en la DB.
+    // El usuario siempre puede usar el botón "Descargar" para obtener la versión con estilos.
     try {
+      const element = document.getElementById('cv-print-container');
+      const opt = {
+        margin: 0,
+        filename: `cv_optimizado_${new Date().getTime()}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' }
+      };
+
       const pdfBlob = await html2pdf().from(element).set(opt).output('blob');
       
       const formData = new FormData();
@@ -449,6 +449,12 @@ export default function CvTemplates({ data, onSaveToProfile }) {
       {/* ── Estilos de impresión ── */}
       <style dangerouslySetInnerHTML={{ __html: `
         @media print {
+          /* Forzar impresión de colores de fondo en Chrome/Safari/Firefox */
+          * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
           /* Ocultar TODO lo que hay en la página */
           body > * {
             display: none !important;

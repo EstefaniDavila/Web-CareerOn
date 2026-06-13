@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import LeftSidebar from '../../components/LeftSidebar';
 import CvOptimizer from '../cv/CvOptimizer';
-import { FiCpu, FiBriefcase, FiFolder, FiFileText, FiUploadCloud, FiEdit3 } from 'react-icons/fi';
+import { FiCpu, FiBriefcase, FiFolder, FiFileText, FiUploadCloud, FiEdit3, FiTrash2 } from 'react-icons/fi';
+import useCrud from '../../hooks/useCrud';
+import { useToast } from '../../components/ui/use-toast';
 
 const Profile = () => {
+  const { deleteModel } = useCrud();
+  const { toast } = useToast();
+  
   const [activeView, setActiveView] = useState('dashboard');
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -92,10 +97,33 @@ const Profile = () => {
     }
   };
 
+  const [itemToDelete, setItemToDelete] = useState(null);
+
+  const confirmDeleteProject = async (projectId) => {
+    try {
+      await deleteModel(`/api/student/project/${projectId}`);
+      toast({
+        title: "Proyecto eliminado",
+        description: "El proyecto se eliminó correctamente.",
+        variant: "success",
+        icon: <FiCheckCircle className="text-green-500" />
+      });
+      await fetchProfile();
+    } catch (error) {
+      console.error("Error eliminando proyecto:", error);
+      toast({
+        title: "Error al eliminar",
+        description: error.response?.data?.detail || "No se pudo eliminar el proyecto. Intenta nuevamente.",
+        variant: "destructive",
+        icon: <FiTrash2 className="text-white" />
+      });
+    }
+  };
+
   return (
     <div className="flex gap-6 w-full items-start">
       {/* Sidebar Izquierda — sticky */}
-      <div className="hidden lg:block shrink-0 self-start sticky top-[88px]">
+      <div className="hidden lg:block shrink-0 self-start sticky top-[88px] h-[calc(100vh-88px)] overflow-y-auto custom-scrollbar">
         <LeftSidebar />
       </div>
 
@@ -202,7 +230,13 @@ const Profile = () => {
                           <p className="text-xs text-gray-500">Documento Activo (Default)</p>
                         </div>
                       </div>
-                      <a href={profileData.current_cv.file_url} target="_blank" rel="noreferrer" className="text-sm font-bold text-[var(--color-brand-primary)] hover:underline">Ver</a>
+                      <div className="flex items-center gap-4">
+                        <a href={profileData.current_cv.file_url} target="_blank" rel="noreferrer" className="text-sm font-bold text-[var(--color-brand-primary)] hover:underline">Ver</a>
+                        <label className="cursor-pointer text-sm font-bold text-gray-500 hover:text-[var(--color-brand-accent)] transition-colors flex items-center gap-1">
+                          <FiUploadCloud size={16} /> Reemplazar
+                          <input type="file" accept=".pdf" className="hidden" onChange={handleDirectUploadCV} />
+                        </label>
+                      </div>
                     </div>
                   ) : (
                     <div className="bg-[#ED7B32]/5 border border-[#ED7B32]/30 rounded-xl p-4 flex flex-col items-start gap-4 text-[#C45E1E]">
@@ -238,8 +272,15 @@ const Profile = () => {
                    profileData?.projects?.length > 0 ? (
                     <div className="space-y-4">
                       {profileData.projects.map((proj, idx) => (
-                        <div key={idx} className="border border-gray-100 rounded-xl p-4 hover:border-[var(--color-brand-primary)] transition-colors">
-                          <h4 className="font-bold text-gray-900 mb-1">{proj.title}</h4>
+                        <div key={idx} className="border border-gray-100 rounded-xl p-4 hover:border-[var(--color-brand-primary)] transition-colors relative group">
+                          <button 
+                            onClick={() => setItemToDelete({ type: 'project', id: proj.id })}
+                            className="text-gray-400 hover:text-red-500 transition-colors p-1 absolute top-4 right-4"
+                            title="Eliminar proyecto"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                          </button>
+                          <h4 className="font-bold text-gray-900 mb-1 pr-6">{proj.title}</h4>
                           <p className="text-gray-600 text-sm mb-3 line-clamp-2">{proj.description}</p>
                           {proj.repository_url && (
                             <a href={proj.repository_url} target="_blank" rel="noreferrer" className="text-[var(--color-brand-primary)] text-xs font-bold hover:underline">
@@ -360,6 +401,38 @@ const Profile = () => {
         )}
 
       </div>
+      {/* Modal de confirmación de eliminación */}
+      {itemToDelete && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white rounded-2xl w-full max-w-sm shadow-2xl overflow-hidden p-6 text-center animate-in zoom-in-95">
+            <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center text-red-500 mx-auto mb-4">
+              <FiTrash2 size={32} />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">¿Eliminar registro?</h2>
+            <p className="text-gray-500 mb-6">Esta acción no se puede deshacer.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setItemToDelete(null)}
+                className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={async () => {
+                  if (itemToDelete.type === 'project') {
+                    await confirmDeleteProject(itemToDelete.id);
+                  }
+                  setItemToDelete(null);
+                }}
+                className="flex-1 px-4 py-3 bg-red-500 text-white font-bold rounded-xl hover:bg-red-600 transition-colors"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
