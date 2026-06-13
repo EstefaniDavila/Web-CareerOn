@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiHeart, FiX, FiInfo, FiCpu, FiFileText } from 'react-icons/fi';
+import { FiHeart, FiX, FiInfo, FiCpu, FiFileText, FiTarget } from 'react-icons/fi';
 import { useToast } from '../../components/ui/use-toast';
 import { useConfirm } from '../../components/custom/alert';
 import CvOptimizer from '../cv/CvOptimizer';
