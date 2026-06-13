@@ -40,8 +40,19 @@ export default function AppRoutes() {
         }
       />
 
+      <Route
+        path="/recruiter/dashboard"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Dashboard />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
       {/* Aquí podemos agregar más rutas protegidas para CV Optimizer, Talent Search, etc */}
-      
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
