@@ -151,18 +151,6 @@ const RecruiterLeftSidebar = () => {
           <li onClick={() => navigate('/offers')} style={{ cursor: 'pointer' }}>
             <span className="icon">➕</span> Nueva oferta
           </li>
-          <li>
-            <span className="icon">✨</span> Matchmaking IA
-          </li>
-          <li>
-            <span className="icon">📊</span> Estadísticas
-          </li>
-          <li className={location.pathname === '/recruiter/profile' ? 'active' : ''} onClick={() => navigate('/recruiter/profile')} style={{ cursor: 'pointer' }}>
-            <span className="icon">🏢</span> Perfil empresa
-          </li>
-          <li>
-            <span className="icon">⚙️</span> Configuración
-          </li>
         </ul>
       </div>
     </div>
