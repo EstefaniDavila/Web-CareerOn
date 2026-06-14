@@ -30,7 +30,7 @@ export default function EditCompanyModal({
     >
 
       {/* Header */}
-      <div className="bg-[#1D9E75] px-5 py-4 flex items-center justify-between">
+      <div className="bg-[#5B34F2] px-5 py-4 flex items-center justify-between">
 
         <div>
           <h2 className="text-lg font-semibold text-white">
@@ -77,9 +77,9 @@ export default function EditCompanyModal({
                 px-4 py-2.5
                 outline-none
                 transition
-                focus:border-[#1D9E75]
+                focus:border-[#5B34F2]
                 focus:ring-4
-                focus:ring-[#1D9E75]/10
+                focus:ring-[#5B34F2]/10
               "
               value={formData.name}
               onChange={(e) =>
@@ -107,9 +107,9 @@ export default function EditCompanyModal({
                   px-4 py-2.5
                   outline-none
                   transition
-                  focus:border-[#1D9E75]
+                  focus:border-[#5B34F2]
                   focus:ring-4
-                  focus:ring-[#1D9E75]/10
+                  focus:ring-[#5B34F2]/10
                 "
                 value={formData.position}
                 onChange={(e) =>
@@ -134,9 +134,9 @@ export default function EditCompanyModal({
                   px-4 py-2.5
                   outline-none
                   transition
-                  focus:border-[#1D9E75]
+                  focus:border-[#5B34F2]
                   focus:ring-4
-                  focus:ring-[#1D9E75]/10
+                  focus:ring-[#5B34F2]/10
                 "
                 value={formData.location}
                 onChange={(e) =>
@@ -166,9 +166,9 @@ export default function EditCompanyModal({
                 resize-none
                 outline-none
                 transition
-                focus:border-[#1D9E75]
+                focus:border-[#5B34F2]
                 focus:ring-4
-                focus:ring-[#1D9E75]/10
+                focus:ring-[#5B34F2]/10
               "
               value={formData.description}
               onChange={(e) =>
@@ -196,9 +196,9 @@ export default function EditCompanyModal({
                 resize-none
                 outline-none
                 transition
-                focus:border-[#1D9E75]
+                focus:border-[#5B34F2]
                 focus:ring-4
-                focus:ring-[#1D9E75]/10
+                focus:ring-[#5B34F2]/10
               "
               value={formData.mission}
               onChange={(e) =>
@@ -226,9 +226,9 @@ export default function EditCompanyModal({
                 resize-none
                 outline-none
                 transition
-                focus:border-[#1D9E75]
+                focus:border-[#5B34F2]
                 focus:ring-4
-                focus:ring-[#1D9E75]/10
+                focus:ring-[#5B34F2]/10
               "
               value={formData.vision}
               onChange={(e) =>
@@ -269,10 +269,10 @@ export default function EditCompanyModal({
           className="
             px-5 py-2
             rounded-xl
-            bg-[#1D9E75]
+            bg-[#5B34F2]
             text-white
             hover:bg-[#17815f]
-            shadow-lg shadow-[#1D9E75]/20
+            shadow-lg shadow-[#5B34F2]/20
             transition
           "
         >

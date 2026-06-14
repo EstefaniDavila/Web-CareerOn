@@ -10,7 +10,7 @@ export default function Layout({ children }) {
   if (loading) {
     return (
       <div className="min-h-screen w-full flex items-center justify-center bg-[#F0F4F8]">
-        <div className="w-12 h-12 border-4 border-[#1C6B72] border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-[#5B34F2] border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }

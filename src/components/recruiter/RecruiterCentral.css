@@ -34,12 +34,12 @@
 .metric-value {
   font-size: 24px;
   font-weight: 800;
-  color: #1C6B72;
+  color: #5B34F2;
   margin-bottom: 4px;
 }
 
 .metric-value.highlight-purple {
-  color: #1C6B72;
+  color: #5B34F2;
 }
 
 .metric-label {
@@ -74,7 +74,7 @@
 .add-offer-btn {
   background: none;
   border: none;
-  color: #1C6B72;
+  color: #5B34F2;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
@@ -106,7 +106,7 @@
 
 /* Accent border using Azul Petroleo */
 .job-card.border-accent-teal {
-  border-left: 4px solid #0F6C7A;
+  border-left: 4px solid #4320C9;
   /* Azul petróleo */
 }
 
@@ -127,13 +127,13 @@
 }
 
 .job-icon-container.tech-bg {
-  background-color: #E8F0F0;
-  color: #1C6B72;
+  background-color: #F0EDFC;
+  color: #5B34F2;
 }
 
 .job-icon-container.data-bg {
-  background-color: #ECFDF5;
-  color: #0F6C7A;
+  background-color: #F0EDFC;
+  color: #4320C9;
 }
 
 .job-icon-container.design-bg {
@@ -188,7 +188,7 @@
 
 .active-badge {
   background-color: rgba(15, 108, 122, 0.1);
-  color: #0F6C7A;
+  color: #4320C9;
 }
 
 .paused-badge {
@@ -232,12 +232,12 @@
 }
 
 .dot-purple {
-  background-color: #1C6B72;
+  background-color: #5B34F2;
   box-shadow: 0 0 8px rgba(28, 107, 114, 0.5);
 }
 
 .dot-teal {
-  background-color: #0F6C7A;
+  background-color: #4320C9;
   box-shadow: 0 0 8px rgba(15, 108, 122, 0.5);
 }
 

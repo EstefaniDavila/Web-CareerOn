@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-primary: #1C6B72;
+  --color-brand-primary: #5B34F2;
   --color-brand-hover: #132E41;
   --color-brand-accent: #ED7B32;
   --color-brand-cards: #F5A844;
@@ -25,7 +25,7 @@
   /* Morado oscuro */
   --color-brand-accent: #F25F63;
   /* Rojo institucional */
-  --color-brand-cards: #0F6C7A;
+  --color-brand-cards: #4320C9;
   /* Azul petróleo */
   --color-brand-bg: #DCE5EC;
   /* Fondo reclutador */

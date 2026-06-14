@@ -26,7 +26,7 @@ const STATUSES = [
 
 const inputClass = (hasError) =>
   `w-full border rounded-lg px-3 py-2 text-sm text-[#1C1C1C] bg-white outline-none transition-colors ${
-    hasError ? "border-[#F25F63] focus:border-[#F25F63]" : "border-gray-200 focus:border-[#1D9E75]"
+    hasError ? "border-[#F25F63] focus:border-[#F25F63]" : "border-gray-200 focus:border-[#5B34F2]"
   }`;
 
 const OfferForm = ({ mode = "create", offer = null, onBack }) => {
@@ -156,7 +156,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
     <>
       <button
         onClick={onBack}
-        className="flex items-center gap-1.5 text-sm text-[#5F6368] hover:text-[#1D9E75] transition-colors mb-3"
+        className="flex items-center gap-1.5 text-sm text-[#5F6368] hover:text-[#5B34F2] transition-colors mb-3"
       >
         ← Volver a mis ofertas
       </button>
@@ -165,7 +165,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
         <p className="text-[15px] font-medium text-[#1C1C1C]">
           {isEdit ? "Editar oferta" : "Nueva oferta laboral"}
         </p>
-        <button className="flex items-center gap-2 h-9 px-4 rounded-lg border border-[#1D9E75] text-sm text-[#1D9E75] bg-white hover:bg-[#E1F5EE] transition-colors">
+        <button className="flex items-center gap-2 h-9 px-4 rounded-lg border border-[#5B34F2] text-sm text-[#5B34F2] bg-white hover:bg-[#F0EDFC] transition-colors">
           ✨ Generar oferta con IA
         </button>
       </div>
@@ -257,8 +257,8 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
                   onClick={() => toggleLevel(level)}
                   className={`h-8 px-4 rounded-full text-xs font-medium border transition-colors capitalize ${
                     active
-                      ? "bg-[#1D9E75] text-white border-[#1D9E75]"
-                      : "bg-white text-[#5F6368] border-gray-200 hover:border-[#1D9E75] hover:text-[#1D9E75]"
+                      ? "bg-[#5B34F2] text-white border-[#5B34F2]"
+                      : "bg-white text-[#5F6368] border-gray-200 hover:border-[#5B34F2] hover:text-[#5B34F2]"
                   }`}
                 >
                   {level}
@@ -274,7 +274,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
           <label className="text-xs font-medium text-[#5F6368]">
             Habilidades requeridas
             {form.skills_required.length > 0 && (
-              <span className="ml-2 bg-[#1D9E75] text-white text-[10px] px-2 py-0.5 rounded-full">
+              <span className="ml-2 bg-[#5B34F2] text-white text-[10px] px-2 py-0.5 rounded-full">
                 {form.skills_required.length} seleccionadas
               </span>
             )}
@@ -303,8 +303,8 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
                     onClick={() => toggleSkill(skill.id)}
                     className={`h-7 px-3 rounded-full text-[11px] font-medium border transition-colors ${
                       active
-                        ? "bg-[#1D9E75] text-white border-[#1D9E75]"
-                        : "bg-white text-[#5F6368] border-gray-200 hover:border-[#1D9E75] hover:text-[#1D9E75]"
+                        ? "bg-[#5B34F2] text-white border-[#5B34F2]"
+                        : "bg-white text-[#5F6368] border-gray-200 hover:border-[#5B34F2] hover:text-[#5B34F2]"
                     }`}
                   >
                     {skill.name}
@@ -337,7 +337,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
               id="is_active"
               checked={form.is_active ?? true}
               onChange={e => setForm(prev => ({ ...prev, is_active: e.target.checked }))}
-              className="accent-[#1D9E75] w-4 h-4 cursor-pointer"
+              className="accent-[#5B34F2] w-4 h-4 cursor-pointer"
             />
             <label htmlFor="is_active" className="text-sm text-[#5F6368] cursor-pointer">
               Oferta activa
@@ -358,7 +358,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="h-9 px-4 rounded-lg bg-[#1D9E75] text-sm text-white hover:bg-[#0F6E56] transition-colors disabled:opacity-60 flex items-center gap-2"
+          className="h-9 px-4 rounded-lg bg-[#5B34F2] text-sm text-white hover:bg-[#4320C9] transition-colors disabled:opacity-60 flex items-center gap-2"
         >
           {loading ? (
             <>

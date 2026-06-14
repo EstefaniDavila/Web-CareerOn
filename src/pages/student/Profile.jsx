@@ -154,7 +154,7 @@ const Profile = () => {
                 onClick={() => setActiveView('optimizer')}
                 className="bg-white hover:border-[var(--color-brand-primary)] border-2 border-transparent shadow-sm rounded-2xl p-6 text-left transition-all group"
               >
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform bg-[#1C6B72]/10 text-[var(--color-brand-primary)]">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform bg-[#5B34F2]/10 text-[var(--color-brand-primary)]">
                   <FiFileText size={24} />
                 </div>
                 <h3 className="font-bold text-gray-900 text-lg mb-1">Optimizar tu CV</h3>
@@ -222,7 +222,7 @@ const Profile = () => {
                    profileData?.current_cv ? (
                     <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-[#1C6B72]/10 text-[var(--color-brand-primary)] rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 bg-[#5B34F2]/10 text-[var(--color-brand-primary)] rounded-lg flex items-center justify-center">
                           <FiFileText size={20} />
                         </div>
                         <div>
@@ -308,7 +308,7 @@ const Profile = () => {
                       {profileData?.skills?.length > 0 || profileData?.languages?.length > 0 ? (
                         <div className="flex flex-wrap gap-2">
                           {profileData?.skills?.map((skill, idx) => (
-                            <span key={`s-${idx}`} className="bg-[#1C6B72]/10 text-[var(--color-brand-primary)] border border-[#1C6B72]/20 px-3 py-1 rounded-full text-xs font-bold">
+                            <span key={`s-${idx}`} className="bg-[#5B34F2]/10 text-[var(--color-brand-primary)] border border-[#5B34F2]/20 px-3 py-1 rounded-full text-xs font-bold">
                               {skill.Skill?.name || skill.name} ({skill.level})
                             </span>
                           ))}

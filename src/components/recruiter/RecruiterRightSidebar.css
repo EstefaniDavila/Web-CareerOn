@@ -126,7 +126,7 @@
 }
 
 .avatar-teal {
-  background-color: #0F6C7A;
+  background-color: #4320C9;
 }
 
 .avatar-blue {
@@ -183,7 +183,7 @@
 }
 
 .fill-teal {
-  background-color: #0F6C7A;
+  background-color: #4320C9;
 }
 
 .fill-blue {
@@ -211,18 +211,18 @@
 .candidate-btn.btn-secondary {
   background: rgba(15, 108, 122, 0.08);
   border: 1px solid rgba(15, 108, 122, 0.3);
-  color: #0F6C7A;
+  color: #4320C9;
 }
 
 .candidate-btn.btn-secondary:hover {
   background-color: rgba(15, 108, 122, 0.15);
-  color: #0F6C7A;
-  border-color: #0F6C7A;
+  color: #4320C9;
+  border-color: #4320C9;
 }
 
 .candidate-btn.btn-primary-recruiter {
-  background-color: #1C6B72;
-  border: 1px solid #1C6B72;
+  background-color: #5B34F2;
+  border: 1px solid #5B34F2;
   color: #FFFFFF;
   box-shadow: 0 4px 10px rgba(28, 107, 114, 0.15);
 }
@@ -235,7 +235,7 @@
 
 /* Insight IA Card */
 .insight-ia-card {
-  background: linear-gradient(135deg, #132E41, #1C6B72);
+  background: linear-gradient(135deg, #132E41, #5B34F2);
   color: white;
   border-radius: 16px;
   padding: 24px;

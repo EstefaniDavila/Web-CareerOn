@@ -78,7 +78,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
         <span className="text-[15px] font-medium text-[#1C1C1C]">
           Mis ofertas publicadas
         </span>
-        <span className="bg-[#1D9E75] text-white text-[11px] font-medium px-3 py-0.5 rounded-full">
+        <span className="bg-[#5B34F2] text-white text-[11px] font-medium px-3 py-0.5 rounded-full">
           {activeCount} activas
         </span>
       </div>
@@ -90,7 +90,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
           placeholder="Buscar por título o área..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="flex-1 h-9 border border-gray-200 rounded-lg px-3 text-sm text-[#1C1C1C] bg-white outline-none focus:border-[#1D9E75] transition-colors"
+          className="flex-1 h-9 border border-gray-200 rounded-lg px-3 text-sm text-[#1C1C1C] bg-white outline-none focus:border-[#5B34F2] transition-colors"
         />
         <button className="h-9 px-4 rounded-lg border border-gray-200 bg-white text-sm text-[#5F6368] hover:bg-gray-100 transition-colors">
           ⚙ Filtrar
@@ -141,7 +141,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
               {/* Footer */}
               <div className="flex items-center justify-between pt-2 border-t border-gray-100">
                 <span className="text-xs text-[#5F6368]">
-                  <strong className="text-[#1D9E75]">{offer.applicants_count}</strong> postulantes
+                  <strong className="text-[#5B34F2]">{offer.applicants_count}</strong> postulantes
                 </span>
                 <div className="flex gap-2">
                   {offer.is_active ? (
@@ -162,7 +162,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
                   >
                     🗑 Eliminar
                   </button>
-                  <button className="h-7 px-3 rounded-md bg-[#1D9E75] text-xs text-white hover:bg-[#0F6E56] transition-colors">
+                  <button className="h-7 px-3 rounded-md bg-[#5B34F2] text-xs text-white hover:bg-[#4320C9] transition-colors">
                     👁 Ver
                   </button>
                 </div>
