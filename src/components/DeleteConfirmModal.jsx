@@ -7,24 +7,20 @@ const DeleteConfirmModal = ({ offer, onCancel, onConfirm }) => {
     <div className="flex items-center justify-center py-16 px-4">
       <div className="bg-white rounded-2xl p-7 w-full max-w-sm shadow-sm border border-gray-100">
 
-        {/* Icon */}
         <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mb-4 text-2xl">
           🗑
         </div>
 
-        {/* Heading */}
         <p className="text-[15px] font-medium text-[#1C1C1C] mb-2">
           ¿Eliminar esta oferta?
         </p>
 
-        {/* Body */}
         <p className="text-sm text-[#5F6368] leading-relaxed mb-3">
           Estás a punto de eliminar{" "}
           <span className="font-medium text-[#1C1C1C]">"{offer.title}"</span>.
           Esta acción no se puede deshacer y se perderán todos los postulantes asociados.
         </p>
 
-        {/* Warning si tiene postulantes */}
         {offer.applicants > 0 && (
           <div className="bg-amber-50 text-amber-800 text-xs rounded-lg px-3 py-2 mb-5">
             ⚠ Esta oferta tiene{" "}
@@ -32,7 +28,6 @@ const DeleteConfirmModal = ({ offer, onCancel, onConfirm }) => {
           </div>
         )}
 
-        {/* Actions */}
         <div className="flex justify-end gap-2">
           <button
             onClick={onCancel}

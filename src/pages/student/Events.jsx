@@ -10,7 +10,7 @@ export default function Events() {
 
   return (
     <div className="flex gap-6 w-full items-start">
-      <div className="hidden lg:block shrink-0 self-start sticky top-[88px]">
+      <div className="hidden lg:block shrink-0 self-start sticky top-[76px]">
         <LeftSidebar />
       </div>
       

@@ -4,7 +4,6 @@ import './RecruiterRightSidebar.css';
 const RecruiterRightSidebar = () => {
   return (
     <div className="recruiter-right-sidebar">
-      {/* Quick Action Buttons */}
       <div className="quick-actions-container">
         <button className="quick-action-btn talent-search-btn">
           <span className="action-icon">✨</span>
@@ -15,7 +14,6 @@ const RecruiterRightSidebar = () => {
         </button>
       </div>
 
-      {/* Actividad Reciente Card */}
       <div className="glass-card recent-activity-card">
         <h3 className="section-title">ACTIVIDAD RECIENTE</h3>
 
@@ -45,7 +43,6 @@ const RecruiterRightSidebar = () => {
           </div>
         </div>
       </div>
-      {/* Insight IA Card */}
       <div className="insight-ia-card">
         <div className="insight-header">
           <span className="insight-icon">✨</span>
