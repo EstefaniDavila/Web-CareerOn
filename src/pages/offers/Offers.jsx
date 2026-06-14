@@ -12,7 +12,7 @@ export default function Offers() {
     if (location.state?.view) {
       setView(location.state.view);
     }
-    if (location.state?.selectedOffer) {
+    if (location.state?.offer) {
       setSelectedOffer(location.state.offer);
     }
   }, [location.state]);
