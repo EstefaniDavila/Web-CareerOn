@@ -1,7 +1,7 @@
-import { useLocation } from "react-router-dom";
 import { useUserStatus } from "../hooks/useUserStatus";
 import Navbar from "./Navbar";
 import RecruiterNavbar from "./recruiter/RecruiterNavbar";
+import { useLocation, matchPath } from "react-router-dom";
 
 export default function Layout({ children }) {
   const { userType, loading } = useUserStatus();
@@ -19,7 +19,8 @@ export default function Layout({ children }) {
     userType === "Empresa" ||
     location.pathname === "/recruiter/dashboard" ||
     location.pathname === "/recruiter/profile" ||
-    location.pathname === "/offers";
+    location.pathname === "/offers" ||
+     matchPath("/offers/:id", location.pathname);
 
   return (
     <div
