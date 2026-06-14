@@ -201,7 +201,7 @@ const MockInterview = () => {
           <button 
             onClick={handleFinish}
             disabled={isProcessing || isFinished}
-            className="px-4 py-2 bg-[#F25F63] text-white rounded-lg font-medium hover:bg-red-600 disabled:opacity-50"
+            className="px-4 py-2 bg-[#ED7B32] text-white rounded-lg font-medium hover:bg-red-600 disabled:opacity-50"
           >
             Finalizar Entrevista
           </button>
@@ -209,7 +209,7 @@ const MockInterview = () => {
 
         {/* Instrucciones */}
         {!isFinished && (
-          <div className="bg-[#E8E4FD] border border-[#5B34F2] text-[#4A2BC4] px-4 py-3 rounded-xl shadow-sm flex items-start gap-3">
+          <div className="bg-[#E8E4FD] border border-[#1C6B72] text-[#4A2BC4] px-4 py-3 rounded-xl shadow-sm flex items-start gap-3">
             <span className="text-xl">💡</span>
             <div>
               <p className="font-bold text-sm mb-1">¿Cómo funciona esta entrevista?</p>
@@ -244,7 +244,7 @@ const MockInterview = () => {
                   onTouchEnd={handleToggleRecording}
                   disabled={isProcessing}
                   className={`px-8 py-3 rounded-full font-semibold text-white shadow-lg transition-all transform active:scale-95 flex items-center gap-2 ${
-                    isRecording ? "bg-red-500 animate-pulse" : "bg-[#5B34F2] hover:bg-[#4A2BC4]"
+                    isRecording ? "bg-red-500 animate-pulse" : "bg-[#1C6B72] hover:bg-[#4A2BC4]"
                   }`}
                 >
                   {isRecording ? "🔴 Grabando (Suelta para enviar)" : "🎤 Mantén presionado para hablar"}
@@ -273,7 +273,7 @@ const MockInterview = () => {
                   <div key={idx} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                     <div className={`max-w-[80%] rounded-2xl px-4 py-3 ${
                       msg.role === "user" 
-                        ? "bg-[#5B34F2] text-white rounded-br-none" 
+                        ? "bg-[#1C6B72] text-white rounded-br-none" 
                         : "bg-gray-100 text-[#1C1C1C] rounded-bl-none"
                     }`}>
                       {msg.content}
@@ -294,7 +294,7 @@ const MockInterview = () => {
                 <input 
                   type="text" 
                   placeholder="O escribe tu respuesta aquí si el micrófono falla..."
-                  className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 focus:outline-none focus:border-[#5B34F2] text-sm"
+                  className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 focus:outline-none focus:border-[#1C6B72] text-sm"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && e.currentTarget.value.trim() && !isProcessing) {
                       handleSendResponse(e.currentTarget.value);
@@ -311,7 +311,7 @@ const MockInterview = () => {
                     }
                   }}
                   disabled={isProcessing}
-                  className="px-4 py-2 bg-[#5B34F2] text-white rounded-xl text-sm font-semibold hover:bg-[#4A2BC4] disabled:opacity-50"
+                  className="px-4 py-2 bg-[#1C6B72] text-white rounded-xl text-sm font-semibold hover:bg-[#4A2BC4] disabled:opacity-50"
                 >
                   Enviar
                 </button>
@@ -332,7 +332,7 @@ const MockInterview = () => {
             <div className="flex gap-6 mb-8">
               <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 w-48">
                 <p className="text-sm text-[#5F6368] font-medium mb-1">Puntuación</p>
-                <p className="text-4xl font-bold text-[#5B34F2]">{evaluation?.evaluation?.score}/100</p>
+                <p className="text-4xl font-bold text-[#1C6B72]">{evaluation?.evaluation?.score}/100</p>
               </div>
               <div className="bg-[#FFF4E5] p-6 rounded-2xl border border-[#FFE0B2] w-48">
                 <p className="text-sm text-[#E65100] font-medium mb-1">Monedas Ganadas</p>
@@ -346,7 +346,7 @@ const MockInterview = () => {
 
             <button 
               onClick={() => navigate("/")}
-              className="px-8 py-3 bg-[#5B34F2] text-white rounded-xl font-medium hover:bg-[#4A2BC4] transition-colors"
+              className="px-8 py-3 bg-[#1C6B72] text-white rounded-xl font-medium hover:bg-[#4A2BC4] transition-colors"
             >
               Volver al Inicio
             </button>

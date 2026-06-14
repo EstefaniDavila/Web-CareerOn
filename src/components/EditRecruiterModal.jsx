@@ -28,7 +28,7 @@ export default function EditRecruiterModal({
       ">
 
         {/* Header */}
-        <div className="bg-[#1D9E75] px-5 py-4 flex justify-between items-center">
+        <div className="bg-[#1C6B72] px-5 py-4 flex justify-between items-center">
 
           <div>
             <h2 className="text-lg font-semibold text-white">
@@ -67,8 +67,8 @@ export default function EditRecruiterModal({
               className="
                 w-full rounded-xl border border-gray-200
                 px-4 py-2.5 outline-none
-                focus:border-[#1D9E75]
-                focus:ring-4 focus:ring-[#1D9E75]/10
+                focus:border-[#1C6B72]
+                focus:ring-4 focus:ring-[#1C6B72]/10
               "
               value={formData.name}
               onChange={(e) =>
@@ -89,8 +89,8 @@ export default function EditRecruiterModal({
               className="
                 w-full rounded-xl border border-gray-200
                 px-4 py-2.5 outline-none
-                focus:border-[#1D9E75]
-                focus:ring-4 focus:ring-[#1D9E75]/10
+                focus:border-[#1C6B72]
+                focus:ring-4 focus:ring-[#1C6B72]/10
               "
               value={formData.position}
               onChange={(e) =>
@@ -111,8 +111,8 @@ export default function EditRecruiterModal({
               className="
                 w-full rounded-xl border border-gray-200
                 px-4 py-2.5 outline-none
-                focus:border-[#1D9E75]
-                focus:ring-4 focus:ring-[#1D9E75]/10
+                focus:border-[#1C6B72]
+                focus:ring-4 focus:ring-[#1C6B72]/10
               "
               value={formData.email}
               onChange={(e) =>
@@ -150,10 +150,10 @@ export default function EditRecruiterModal({
             className="
               px-5 py-2
               rounded-xl
-              bg-[#1D9E75]
+              bg-[#1C6B72]
               text-white
               hover:bg-[#17815f]
-              shadow-lg shadow-[#1D9E75]/20
+              shadow-lg shadow-[#1C6B72]/20
             "
           >
             Guardar cambios

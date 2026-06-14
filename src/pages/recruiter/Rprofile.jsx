@@ -39,14 +39,14 @@ export default function Rprofile() {
 
                     {/* Card empresa */}
                     <div className="bg-white border border-black/10 rounded-xl overflow-hidden">
-                        <div className="h-20 bg-[#1D9E75] relative">
+                        <div className="h-20 bg-[#1C6B72] relative">
                             <div
                                 className="
                 absolute bottom-[-26px] left-5
                 w-[52px] h-[52px]
                 rounded-lg bg-white border-2 border-black/10
                 flex items-center justify-center
-                text-[18px] font-medium text-[#0F6E56]
+                text-[18px] font-medium text-[#132E41]
               "
                             >
                                 {initials}
@@ -260,7 +260,7 @@ export default function Rprofile() {
                             <div className="
                                 w-11 h-11
                                 rounded-full
-                                bg-[#E1F5EE]
+                                bg-[#F0F4F8]
                                 flex items-center justify-center
                                 text-sm font-medium
                                 text-[#085041]

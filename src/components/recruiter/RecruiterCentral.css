@@ -106,7 +106,7 @@
 
 /* Accent border using Azul Petroleo */
 .job-card.border-accent-teal {
-  border-left: 4px solid #0F6C7A;
+  border-left: 4px solid #132E41;
   /* Azul petróleo */
 }
 
@@ -127,18 +127,18 @@
 }
 
 .job-icon-container.tech-bg {
-  background-color: #E8F0F0;
+  background-color: #F0F4F8;
   color: #1C6B72;
 }
 
 .job-icon-container.data-bg {
-  background-color: #ECFDF5;
-  color: #0F6C7A;
+  background-color: #F0F4F8;
+  color: #132E41;
 }
 
 .job-icon-container.design-bg {
   background-color: #FFF1F2;
-  color: #F25F63;
+  color: #ED7B32;
 }
 
 .job-icon {
@@ -188,13 +188,13 @@
 
 .active-badge {
   background-color: rgba(15, 108, 122, 0.1);
-  color: #0F6C7A;
+  color: #132E41;
 }
 
 .paused-badge {
   background-color: rgba(242, 95, 99, 0.1);
   color: var(--color-brand-accent);
-  /* #F25F63 */
+  /* #ED7B32 */
 }
 
 .recent-activity-card {
@@ -237,12 +237,12 @@
 }
 
 .dot-teal {
-  background-color: #0F6C7A;
+  background-color: #132E41;
   box-shadow: 0 0 8px rgba(15, 108, 122, 0.5);
 }
 
 .dot-red {
-  background-color: #F25F63;
+  background-color: #ED7B32;
   box-shadow: 0 0 8px rgba(242, 95, 99, 0.5);
 }
 

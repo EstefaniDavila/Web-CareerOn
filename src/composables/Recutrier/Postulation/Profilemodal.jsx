@@ -39,18 +39,18 @@ export default function ProfileModal({
           {/* HEADER */}
       
          <div className="flex items-center gap-5 mb-8"> 
-            <div className="w-20 h-20 rounded-full bg-[#5B34F2] text-white flex items-center justify-center text-3xl font-bold"> 
+            <div className="w-20 h-20 rounded-full bg-[#1C6B72] text-white flex items-center justify-center text-3xl font-bold"> 
               {applicant.name .split(" ") .map((n) => n[0]) .join("")} </div>
             <div> 
               <h2 className="text-2xl font-bold text-[#1C1C1C]"> {applicant.name} </h2> 
               <p className="text-[#5F6368]"> {applicant.career} </p>
               <p className="mb-6 text-sm text-gray-500">Estado: {applicant.status}</p>
-              <span className="inline-block mt-2 bg-[#0F6C7A] text-white px-3 py-1 rounded-full text-sm"> 
+              <span className="inline-block mt-2 bg-[#F5A844] text-white px-3 py-1 rounded-full text-sm"> 
                 Ciclo {applicant.cycle} </span> </div> </div> <div className="mb-6"> 
                   <h3 className="font-bold text-lg text-[#1C1C1C] mb-3"> Medio de contacto </h3> 
                   <div className="flex flex-wrap gap-2"> 
-                    <span className="inline-block mt-2 bg-[#0F6C7A] text-white px-3 py-1 rounded-full text-sm"> {applicant.email} </span> 
-                    <span className="inline-block mt-2 bg-[#0F6C7A] text-white px-3 py-1 rounded-full text-sm"> {applicant.cellphone} </span> 
+                    <span className="inline-block mt-2 bg-[#F5A844] text-white px-3 py-1 rounded-full text-sm"> {applicant.email} </span> 
+                    <span className="inline-block mt-2 bg-[#F5A844] text-white px-3 py-1 rounded-full text-sm"> {applicant.cellphone} </span> 
                     </div> 
             </div> 
             {/* Habilidades blandas */} 
@@ -66,7 +66,7 @@ export default function ProfileModal({
             <div className="mb-8"> 
               <h3 className="font-bold text-lg text-[#1C1C1C] mb-3"> Conocimientos </h3> 
               <div className="flex flex-wrap gap-2">
-               {applicant.knowledge.map((item) => ( <span key={item} className="bg-[#DCE5EC] text-[#0F6C7A] px-3 py-2 rounded-full text-sm font-medium" > {item} </span> ))} 
+               {applicant.knowledge.map((item) => ( <span key={item} className="bg-[#F0F4F8] text-[#F5A844] px-3 py-2 rounded-full text-sm font-medium" > {item} </span> ))} 
               </div> 
             </div>
 
@@ -124,7 +124,7 @@ export default function ProfileModal({
                     setAction("ganador");
                     setConfirm(true);
                   }}
-                  className="bg-[#5B34F2] text-white px-4 py-2 rounded-xl"
+                  className="bg-[#1C6B72] text-white px-4 py-2 rounded-xl"
                 >
                   Elegir ganador
                 </button>
@@ -164,7 +164,7 @@ export default function ProfileModal({
 
               <button
                 onClick={handleConfirm}
-                className="bg-[#5B34F2] text-white px-4 py-2 rounded-xl"
+                className="bg-[#1C6B72] text-white px-4 py-2 rounded-xl"
               >
                 Confirmar
               </button>
