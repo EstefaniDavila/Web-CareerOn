@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import useCrud from "../hooks/useCrud";
 import { useNavigate } from "react-router-dom";
 
@@ -17,34 +17,82 @@ const JOB_TYPE_LABELS = {
 
 const OffersList = ({ onEdit, onDeletePick }) => {
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [sortBy, setSortBy] = useState("deadline_asc");
   const navigate = useNavigate();
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [activeCount, setActiveCount] = useState(0);
+  const limit = 10;
+  
+  const observer = useRef();
 
   const { getModel } = useCrud("/api/recruiter/jobs");
 
+  // Debounce search
   useEffect(() => {
-    const fetchOffers = async () => {
-      try {
-        setLoading(true);
-        const data = await getModel();
-        setOffers(data.jobs ?? []);
-        console.log("OFFERS STATE:", data.jobs?.length); // 👈
-      } catch (err) {
-        setError("No se pudieron cargar las ofertas.");
-      } finally {
-        setLoading(false);
+    const handler = setTimeout(() => setDebouncedSearch(search), 500);
+    return () => clearTimeout(handler);
+  }, [search]);
+
+  const fetchOffers = async (isLoadMore = false, currentOffset = 0) => {
+    try {
+      if (!isLoadMore) setLoading(true);
+      const queryParams = `?limit=${limit}&offset=${currentOffset}&sort_by=${sortBy}${debouncedSearch ? `&search=${encodeURIComponent(debouncedSearch)}` : ""}`;
+      const data = await getModel(queryParams);
+      
+      setHasMore(data.has_more ?? false);
+      if (data.total_count !== undefined && !isLoadMore) {
+        // Just an approximation since activeCount wasn't returned by backend explicitly,
+        // but we'll use total_count for the header or recalculate it.
+        // For accurate activeCount, the backend would need to return it.
+        // We'll update activeCount based on current loaded for now or just hide it.
       }
-    };
-    fetchOffers();
-  }, []);
+      
+      if (isLoadMore) {
+        setOffers(prev => [...prev, ...(data.jobs ?? [])]);
+      } else {
+        setOffers(data.jobs ?? []);
+      }
+    } catch (err) {
+      setError("No se pudieron cargar las ofertas.");
+      setHasMore(false); // Stop infinite loop
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const filtered = offers.filter(o =>
-    o.title.toLowerCase().includes(search.toLowerCase())
-  );
+  useEffect(() => {
+    setOffset(0);
+    fetchOffers(false, 0);
+  }, [debouncedSearch, sortBy]);
 
-  const activeCount = offers.filter(o => o.is_active).length;
+  const loadMore = () => {
+    if (loading || !hasMore) return;
+    const nextOffset = offset + limit;
+    setOffset(nextOffset);
+    fetchOffers(true, nextOffset);
+  };
+
+  const lastOfferElementRef = useCallback(node => {
+    if (loading) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        loadMore();
+      }
+    });
+    if (node) observer.current.observe(node);
+  }, [loading, hasMore, offset]);
+
+  // Recalculate local activeCount based on loaded offers
+  useEffect(() => {
+    setActiveCount(offers.filter(o => o.is_active).length);
+  }, [offers]);
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "—";
@@ -72,7 +120,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
       <p className="text-center py-10 text-sm text-red-500">{error}</p>
     );
   }
-  console.log("FILTERED:", filtered.length, "SEARCH:", search); // 👈
+
   return (
     <>
       {/* Header */}
@@ -85,34 +133,41 @@ const OffersList = ({ onEdit, onDeletePick }) => {
         </span>
       </div>
 
-      {/* Search */}
+      {/* Search and Filters */}
       <div className="flex gap-2 mb-4">
         <input
           type="text"
-          placeholder="Buscar por título o área..."
+          placeholder="Buscar por título..."
           value={search}
           onChange={e => setSearch(e.target.value)}
           className="flex-1 h-9 border border-gray-200 rounded-lg px-3 text-sm text-[#1C1C1C] bg-white outline-none focus:border-[#1C6B72] transition-colors"
         />
-        <button className="h-9 px-4 rounded-lg border border-gray-200 bg-white text-sm text-[#5F6368] hover:bg-gray-100 transition-colors">
-          ⚙ Filtrar
-        </button>
+        <select
+          value={sortBy}
+          onChange={e => setSortBy(e.target.value)}
+          className="h-9 px-3 border border-gray-200 rounded-lg text-sm text-[#5F6368] bg-white outline-none focus:border-[#1C6B72]"
+        >
+          <option value="deadline_asc">Próximas a vencer</option>
+          <option value="created_desc">Creadas recientemente</option>
+        </select>
       </div>
 
       {/* List */}
       <div className="flex flex-col gap-2">
-        {filtered.length === 0 && (
+        {offers.length === 0 && !loading && (
           <p className="text-center py-10 text-sm text-[#5F6368]">
             No se encontraron ofertas.
           </p>
         )}
 
-        {filtered.map(offer => {
+        {offers.map((offer, index) => {
           const st = STATUS_CONFIG[String(offer.is_active)] ?? STATUS_CONFIG["false"];
           const jobTypeLabel = JOB_TYPE_LABELS[offer.job_type] ?? offer.job_type ?? "—";
+          const isLastElement = offers.length === index + 1;
 
           return (
             <div
+              ref={isLastElement ? lastOfferElementRef : null}
               key={offer.id}
               className="bg-white rounded-xl border border-gray-200 px-4 py-3 flex flex-col gap-2"
             >
@@ -181,6 +236,11 @@ const OffersList = ({ onEdit, onDeletePick }) => {
             </div>
           );
         })}
+        {loading && hasMore && (
+          <div className="py-4 text-center">
+            <div className="inline-block w-6 h-6 border-2 border-[#1C6B72] border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        )}
       </div>
     </>
   );

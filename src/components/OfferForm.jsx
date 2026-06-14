@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useCrud from "../hooks/useCrud";
+import AIOfferModal from "./recruiter/AIOfferModal";
 
 const LEVELS = ["básico", "intermedio", "avanzado"];
 
@@ -38,6 +39,8 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
   const [skills, setSkills]           = useState([]);
   const [skillSearch, setSkillSearch] = useState("");
   const [skillsLoading, setSkillsLoading] = useState(true);
+  
+  const [isAiModalOpen, setIsAiModalOpen] = useState(false);
 
   const { insertModel, updateModel } = useCrud("/api/recruiter/jobs");
   const { getModel: getSkills }      = useCrud("/api/skill");
@@ -161,12 +164,46 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
         ← Volver a mis ofertas
       </button>
 
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-[15px] font-medium text-[#1C1C1C]">
+      {/* AI Modal */}
+      <AIOfferModal 
+        isOpen={isAiModalOpen} 
+        onClose={() => setIsAiModalOpen(false)} 
+        availableSkills={skills}
+        onGenerated={async (data) => {
+          // If the backend created new skills, we need to refresh the local list
+          if (data.skills_required && data.skills_required.length > 0) {
+            try {
+              const freshSkills = await getSkills();
+              setSkills(freshSkills.skills ?? []);
+            } catch (e) {
+              console.error("Failed to refresh skills", e);
+            }
+          }
+          setForm(prev => ({
+            ...prev,
+            title: data.title || prev.title,
+            job_type: data.job_type || prev.job_type,
+            location: data.location || prev.location,
+            salary_range: data.salary_range || prev.salary_range,
+            description: data.description || prev.description,
+            deadline: data.deadline || prev.deadline,
+            skills_required: data.skills_required || prev.skills_required,
+            required_levels: data.skills_required ? data.skills_required.map(() => "intermedio") : prev.required_levels
+          }));
+          setIsAiModalOpen(false);
+        }} 
+      />
+
+      {/* Header */}
+      <div className="flex items-center justify-between pb-5 border-b border-gray-100 mb-6">
+        <p className="text-sm font-bold text-[#1C1C1C]">
           {isEdit ? "Editar oferta" : "Nueva oferta laboral"}
         </p>
-        <button className="flex items-center gap-2 h-9 px-4 rounded-lg border border-[#1C6B72] text-sm text-[#1C6B72] bg-white hover:bg-[#F0F4F8] transition-colors">
-          ✨ Generar oferta con IA
+        <button 
+          type="button"
+          onClick={() => setIsAiModalOpen(true)}
+          className="flex items-center gap-2 h-9 px-4 rounded-lg border border-[#1C6B72] text-sm text-[#1C6B72] bg-white hover:bg-[#F0F4F8] transition-colors">
+          ✨ Generar con IA (2 monedas)
         </button>
       </div>
 

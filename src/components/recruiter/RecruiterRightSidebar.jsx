@@ -13,13 +13,37 @@ const RecruiterRightSidebar = () => {
             <span className="action-subtitle">Matchmaking automático UTP</span>
           </div>
         </button>
-        
-        <button className="quick-action-btn publish-offer-btn">
-          <span className="action-icon">➕</span>
-          <div className="action-text-layout">
-            <span className="action-title">Publicar nueva oferta</span>
+      </div>
+
+      {/* Actividad Reciente Card */}
+      <div className="glass-card recent-activity-card">
+        <h3 className="section-title">ACTIVIDAD RECIENTE</h3>
+
+        <div className="activity-list">
+          <div className="activity-item">
+            <div className="activity-dot dot-purple"></div>
+            <div className="activity-info">
+              <p className="activity-text"><strong>Carlos M.</strong> postuló a <strong>Dev React Senior</strong></p>
+              <span className="activity-time">hace 10 min</span>
+            </div>
           </div>
-        </button>
+
+          <div className="activity-item">
+            <div className="activity-dot dot-teal"></div>
+            <div className="activity-info">
+              <p className="activity-text">La IA encontró <strong>3 nuevos matches</strong> para <strong>Analista Datos</strong></p>
+              <span className="activity-time">hace 1 h</span>
+            </div>
+          </div>
+
+          <div className="activity-item">
+            <div className="activity-dot dot-red"></div>
+            <div className="activity-info">
+              <p className="activity-text"><strong>Valeria R.</strong> completó simulación de entrevista</p>
+              <span className="activity-time">hace 3 h</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Top Candidatos IA Card */}

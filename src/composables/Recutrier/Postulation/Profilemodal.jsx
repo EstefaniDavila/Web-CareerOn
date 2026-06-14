@@ -44,8 +44,16 @@ export default function ProfileModal({
             <div> 
               <h2 className="text-2xl font-bold text-[#1C1C1C]"> {applicant.name} </h2> 
               <p className="text-[#5F6368]"> {applicant.career} </p>
-              <p className="mb-6 text-sm text-gray-500">Estado: {applicant.status}</p>
-              <span className="inline-block mt-2 bg-[#F5A844] text-white px-3 py-1 rounded-full text-sm"> 
+              <p className="mb-4 text-sm text-gray-500">Estado: {applicant.status}</p>
+
+              <div className="bg-[#E8F3F4] p-4 rounded-xl mb-4 border-l-4 border-[#1C6B72]">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-bold text-[#1C6B72]">🤖 Análisis IA (Fit {applicant.ai_fit_score}%)</span>
+                </div>
+                <p className="text-sm text-gray-700 italic">"{applicant.pet_message}"</p>
+              </div>
+
+              <span className="inline-block bg-[#F5A844] text-white px-3 py-1 rounded-full text-sm"> 
                 Ciclo {applicant.cycle} </span> </div> </div> <div className="mb-6"> 
                   <h3 className="font-bold text-lg text-[#1C1C1C] mb-3"> Medio de contacto </h3> 
                   <div className="flex flex-wrap gap-2"> 

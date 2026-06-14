@@ -1,204 +1,85 @@
-import React, { useState } from "react";
-import CreateModal from "../../../composables/Recutrier/Postulation/Challengecreatemodal";
-import ViewChallengeModal from "../../../composables/Recutrier/Postulation/Chellengeview";
+import React, { useState, useEffect } from "react";
+import useCrud from "../../../hooks/useCrud";
+import ChallengeAIModal from "./ChallengeAIModal";
 
-const MAX_CHALLENGES = 3;
+export default function Challenge({ offer, applicants = [] }) {
+  const [showChallengeModal, setShowChallengeModal] = useState(false);
+  const [sponsoredChallenges, setSponsoredChallenges] = useState([]);
 
-const Challenge = () => {
-  const [openCreate, setOpenCreate] = useState(false);
+  const { getModel } = useCrud("");
 
-  const [selectedChallenge, setSelectedChallenge] = useState(null);
-
-  const [challenges, setChallenges] = useState([
-    // Ejemplo:
-    // {
-    //   id: 1,
-    //   name: "Reto Frontend",
-    //   description: "Crear una landing responsive."
-    // }
-  ]);
-
-  const handleCreate = (newChallenge) => {
-    setChallenges((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        ...newChallenge,
-      },
-    ]);
+  const fetchSponsoredChallenges = async () => {
+    if (offer?.id) {
+      try {
+        const result = await getModel(`/api/recruiter/jobs/${offer.id}/sponsored_challenges`);
+        if (result && result.challenges) {
+          setSponsoredChallenges(result.challenges);
+        }
+      } catch (error) {
+        console.error("Error fetching sponsored challenges:", error);
+      }
+    }
   };
-  const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    fetchSponsoredChallenges();
+  }, [offer?.id]);
+
+  const handleChallengeSponsored = () => {
+    fetchSponsoredChallenges();
+  };
 
   return (
-    <>
-      <div className="bg-white rounded-3xl shadow-md p-6 sticky top-6">
-
-        {/* Header */}
-
-        <div className="flex items-center gap-3 mb-4">
-
-          <div className="w-12 h-12 rounded-xl bg-[#1C6B72] flex items-center justify-center text-white text-2xl">
-            🏆
-          </div>
-
+    <div className="sticky top-6">
+      <div className="bg-white rounded-3xl shadow-md p-6">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="bg-[#1C6B72] text-white rounded-xl p-2 text-xl">🏆</div>
           <div>
-
-            <h2 className="font-bold text-xl text-[#1C1C1C]">
-              Challenge
-            </h2>
-
-            <p className="text-sm text-[#5F6368]">
-              Evalúa el talento
-            </p>
-
+            <h3 className="font-bold text-lg">Challenge</h3>
+            <p className="text-xs text-gray-500">Evalúa el talento</p>
           </div>
-
         </div>
 
-        <p className="text-[#5F6368] leading-relaxed mb-6">
-          Asigna un reto a tus postulantes para conocer sus habilidades ocultas
-          y evaluar su desempeño antes de la entrevista.
+        <p className="text-sm text-gray-600 mb-5">
+          Asigna un reto a tus postulantes para conocer sus habilidades ocultas y evaluar su desempeño antes de la entrevista.
         </p>
 
-        {/* Botón */}
-
-        <div className="group relative inline-block w-full mb-6">
-
-          <button
-            onClick={() => setOpenCreate(true)}
-            disabled={challenges.length >= MAX_CHALLENGES}
-            className={`
-              w-full
-              py-3
-              rounded-xl
-              font-semibold
-              transition
-
-              ${
-                challenges.length >= MAX_CHALLENGES
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-[#1C6B72] text-white hover:bg-[#132E41]"
-              }
-            `}
-          >
-            + Nuevo reto
-          </button>
-
-          {challenges.length < MAX_CHALLENGES && (
-            <div
-              className="
-                absolute
-                left-1/2
-                -translate-x-1/2
-                mt-2
-                opacity-0
-                group-hover:opacity-100
-                transition
-                pointer-events-none
-                bg-[#1C1C1C]
-                text-white
-                text-xs
-                rounded-lg
-                px-3
-                py-2
-                whitespace-nowrap
-              "
-            >
-              Crear un reto cuesta 5 créditos
-            </div>
-          )}
-
-        </div>
-
-        {/* Lista */}
+        <button 
+          onClick={() => setShowChallengeModal(true)}
+          className="w-full bg-[#1C6B72] hover:bg-[#155359] text-white py-2 rounded-xl font-bold mb-4 transition"
+        >
+          + Nuevo reto con IA ✨
+        </button>
 
         <div className="space-y-3">
+          {sponsoredChallenges.map((sc) => (
+            <div key={sc.sponsored_id} className="border border-[#1C6B72] text-[#1C6B72] bg-[#f0f9fa] rounded-xl p-3 flex justify-between items-center text-sm font-semibold">
+              <span className="truncate pr-2">Reto: {sc.title}</span>
+              <span className="bg-white px-2 py-0.5 rounded-md shadow-sm shrink-0">{sc.max_winners} cupos</span>
+            </div>
+          ))}
 
-          {Array.from({ length: MAX_CHALLENGES }).map((_, index) => {
-            const challenge = challenges[index];
-
-            if (challenge) {
-              return (
-                <button
-                  key={challenge.id}
-                  onClick={() => {
-                    setSelectedChallenge(challenge);
-                    setOpenModal(true);
-                    }}
-                  className="
-                    w-full
-                    p-4
-                    rounded-xl
-                    bg-[#F4F1FF]
-                    border
-                    border-[#1C6B72]
-                    hover:bg-[#ECE6FF]
-                    transition
-                    text-left
-                  "
-                >
-                  <p className="font-semibold text-[#1C6B72]">
-                    {challenge.name}
-                  </p>
-
-                  <p className="text-sm text-gray-500 truncate mt-1">
-                    {challenge.description}
-                  </p>
-                   <p className="text-sm text-gray-500 truncate mt-1">
-                    {challenge.skill}
-                  </p>
-
-                </button>
-              );
-            }
-
-            return (
-              <div
-                key={index}
-                className="
-                  w-full
-                  p-4
-                  rounded-xl
-                  border-2
-                  border-dashed
-                  border-gray-300
-                  flex
-                  justify-center
-                  items-center
-                  text-gray-400
-                "
-              >
+          {sponsoredChallenges.length === 0 && (
+            <>
+              <div className="border border-dashed border-gray-300 rounded-xl p-3 text-center text-gray-400 text-sm">
                 + Reto disponible
               </div>
-            );
-          })}
-
+              <div className="border border-dashed border-gray-300 rounded-xl p-3 text-center text-gray-400 text-sm">
+                + Reto disponible
+              </div>
+            </>
+          )}
         </div>
-
       </div>
 
-      {/* Crear */}
-
-      <CreateModal
-        open={openCreate}
-        onClose={() => setOpenCreate(false)}
-        onCreate={(challenge) => {
-        handleCreate(challenge);
-        }}
-      />
-
-      {/* Más adelante */}
-
-      
-      <ViewChallengeModal
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        challenge={selectedChallenge}
+      {showChallengeModal && (
+        <ChallengeAIModal 
+          offer={offer}
+          applicants={applicants}
+          onClose={() => setShowChallengeModal(false)} 
+          onChallengeSponsored={handleChallengeSponsored}
         />
-      
-    </>
+      )}
+    </div>
   );
-};
-
-export default Challenge;
-
+}
