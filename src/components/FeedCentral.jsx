@@ -11,7 +11,7 @@ const FeedCentral = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { getModel } = useCrud('/api/student/jobs');
-  const { createEntity } = useEntityMutation({ entityName: 'application' });
+  const { mutateAsync } = useEntityMutation({ entityName: 'application' });
   const { addQuests } = useQuests();
 
   const [jobs, setJobs] = useState([]);
@@ -28,7 +28,7 @@ const FeedCentral = () => {
     e.stopPropagation();
     setApplyingJobId(job.id);
     try {
-      await createEntity(`/api/student/jobs/${job.id}/apply`, {});
+      await mutateAsync({action: "create", entity: {},endpoint: `/api/student/jobs/${job.id}/apply`});
       toast({ title: "Postulación enviada", description: "Has postulado exitosamente a " + job.company, variant: "success" });
     } catch (err) {
       toast({ title: "Error", description: err.message || "Ya has postulado a este empleo.", variant: "destructive" });
