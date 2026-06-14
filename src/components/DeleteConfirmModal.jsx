@@ -42,7 +42,7 @@ const DeleteConfirmModal = ({ offer, onCancel, onConfirm }) => {
           </button>
           <button
             onClick={onConfirm}
-            className="h-9 px-4 rounded-lg bg-[#F25F63] text-sm text-white hover:bg-[#d94f53] transition-colors"
+            className="h-9 px-4 rounded-lg bg-[#ED7B32] text-sm text-white hover:bg-[#d94f53] transition-colors"
           >
             Sí, eliminar
           </button>

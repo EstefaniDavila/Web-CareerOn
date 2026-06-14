@@ -316,7 +316,7 @@ const FeedCentral = () => {
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); navigate(`/interview/${job.id}`); }}
-                      className="px-5 py-2.5 bg-[#5B34F2] text-white font-bold text-sm rounded-xl hover:bg-[#4A2BC4] transition-colors flex items-center gap-2 shadow-sm"
+                      className="px-5 py-2.5 bg-[#1C6B72] text-white font-bold text-sm rounded-xl hover:bg-[#4A2BC4] transition-colors flex items-center gap-2 shadow-sm"
                     >
                       🎤 Simular Entrevista
                     </button>
@@ -451,7 +451,7 @@ const FeedCentral = () => {
                 </button>
                 <button
                   onClick={() => navigate(`/interview/${selectedJob.id}`)}
-                  className="flex-1 md:flex-none px-6 py-2.5 bg-[#5B34F2] text-white font-bold rounded-xl hover:bg-[#4A2BC4] transition-colors flex items-center justify-center gap-2 text-sm shadow-sm"
+                  className="flex-1 md:flex-none px-6 py-2.5 bg-[#1C6B72] text-white font-bold rounded-xl hover:bg-[#4A2BC4] transition-colors flex items-center justify-center gap-2 text-sm shadow-sm"
                 >
                   🎤 Entrevista IA
                 </button>

@@ -20,7 +20,7 @@ const OffersLeftMenu = ({ activeView, onViewChange }) => {
             onClick={() => onViewChange(view)}
             className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm cursor-pointer transition-colors ${
               activeView === view
-                ? "bg-[#5B34F2] text-white font-medium"
+                ? "bg-[#1C6B72] text-white font-medium"
                 : "text-[#5F6368] hover:bg-gray-200"
             }`}
           >

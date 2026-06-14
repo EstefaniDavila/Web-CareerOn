@@ -22,7 +22,7 @@
 
 .profile-banner {
   height: 90px;
-  background: linear-gradient(135deg, #5B34F2, #4320C9);
+  background: linear-gradient(135deg, #1C6B72, #132E41);
 }
 
 .profile-avatar {
@@ -30,7 +30,7 @@
   height: 76px;
   border-radius: 20px;
   /* Squircle design */
-  background: #5B34F2;
+  background: #1C6B72;
   color: #FFFFFF;
   display: flex;
   align-items: center;
@@ -67,7 +67,7 @@
 .badge-utp-partner {
   background: rgba(15, 108, 122, 0.1);
   /* Soft red bg */
-  color: #0F6C7A;
+  color: #132E41;
   /* Rojo institucional */
   font-size: 11px;
   font-weight: 700;
@@ -94,7 +94,7 @@
 }
 
 .stat-value {
-  color: #5B34F2;
+  color: #1C6B72;
 }
 
 .stat-label {
@@ -104,7 +104,7 @@
 }
 
 .stat-item.highlight .stat-value {
-  color: #5B34F2;
+  color: #1C6B72;
   /* Morado principal */
 }
 
@@ -159,10 +159,10 @@
 .side-nav-list li.active {
   background: #F3F3F3;
   /* Gris claro sidebar */
-  color: #5B34F2;
+  color: #1C6B72;
   /* Morado principal */
   font-weight: 700;
-  border-left: 4px solid #5B34F2;
+  border-left: 4px solid #1C6B72;
   padding-left: 20px;
 }
 
@@ -172,7 +172,7 @@
 }
 
 .nav-badge {
-  background-color: #5B34F2;
+  background-color: #1C6B72;
   /* Morado principal */
   color: #FFFFFF;
   font-size: 11px;

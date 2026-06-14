@@ -41,12 +41,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #5B34F2;
+  color: #1C6B72;
   transition: all 0.3s;
 }
 
 .quick-action-btn:hover .action-icon {
-  background-color: #5B34F2;
+  background-color: #1C6B72;
   color: #FFFFFF;
 }
 
@@ -122,15 +122,15 @@
 }
 
 .avatar-purple {
-  background-color: #5B34F2;
+  background-color: #1C6B72;
 }
 
 .avatar-teal {
-  background-color: #0F6C7A;
+  background-color: #132E41;
 }
 
 .avatar-blue {
-  background-color: #4320C9;
+  background-color: #132E41;
   /* Morado oscuro, reemplaza #1D4ED8 */
 }
 
@@ -179,15 +179,15 @@
 }
 
 .fill-purple {
-  background-color: #5B34F2;
+  background-color: #1C6B72;
 }
 
 .fill-teal {
-  background-color: #0F6C7A;
+  background-color: #132E41;
 }
 
 .fill-blue {
-  background-color: #4320C9;
+  background-color: #132E41;
 }
 
 .candidate-actions {
@@ -211,13 +211,13 @@
 .candidate-btn.btn-secondary {
   background: rgba(15, 108, 122, 0.08);
   border: 1px solid rgba(15, 108, 122, 0.3);
-  color: #0F6C7A;
+  color: #132E41;
 }
 
 .candidate-btn.btn-secondary:hover {
   background-color: rgba(15, 108, 122, 0.15);
-  color: #0F6C7A;
-  border-color: #0F6C7A;
+  color: #132E41;
+  border-color: #132E41;
 }
 
 .candidate-btn.btn-primary-recruiter {
@@ -291,7 +291,7 @@
 /* BOTÓN MORADO */
 .insight-cta-btn {
   width: 100%;
-  background: #5B34F2;
+  background: #1C6B72;
   /* ← Morado principal */
   border: none;
   color: white;
@@ -304,7 +304,7 @@
 }
 
 .insight-cta-btn:hover {
-  background: #4320C9;
+  background: #132E41;
   /* ← Morado oscuro al hover */
   transform: translateY(-1px);
 }

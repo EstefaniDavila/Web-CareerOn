@@ -111,7 +111,7 @@ export default function ViewChallengeModal({
             </h2>
 
             <div className="mt-3 flex gap-3">
-              <span className="bg-[#EEE8FF] text-[#5B34F2] px-4 py-1 rounded-full text-sm font-medium">
+              <span className="bg-[#EEE8FF] text-[#1C6B72] px-4 py-1 rounded-full text-sm font-medium">
                 {challenge?.skill || "Sin skill"}
               </span>
             </div>
@@ -132,7 +132,7 @@ export default function ViewChallengeModal({
 
             <div className="overflow-x-auto">
               <table className="w-full border border-gray-200 rounded-xl overflow-hidden">
-                <thead className="bg-[#5B34F2] text-white">
+                <thead className="bg-[#1C6B72] text-white">
                   <tr>
                     <th className="p-3 text-left">Estudiante</th>
                     <th className="p-3 text-center">Archivo</th>
@@ -167,7 +167,7 @@ export default function ViewChallengeModal({
                       <td className="p-3 text-center">
                         <button
                           onClick={() => toggleReviewed(student.id)}
-                          className="bg-[#5B34F2] hover:bg-[#4320C9] text-white px-4 py-2 rounded-lg"
+                          className="bg-[#1C6B72] hover:bg-[#132E41] text-white px-4 py-2 rounded-lg"
                         >
                           Marcar
                         </button>
@@ -183,7 +183,7 @@ export default function ViewChallengeModal({
           <div className="flex justify-end mt-8">
             <button
               onClick={() => setShowConfirm(true)}
-              className="bg-[#5B34F2] hover:bg-[#4320C9] text-white px-6 py-3 rounded-xl font-semibold"
+              className="bg-[#1C6B72] hover:bg-[#132E41] text-white px-6 py-3 rounded-xl font-semibold"
             >
               Guardar cambios
             </button>
@@ -213,7 +213,7 @@ export default function ViewChallengeModal({
 
               <button
                 onClick={handleSave}
-                className="bg-[#5B34F2] text-white px-5 py-2 rounded-xl"
+                className="bg-[#1C6B72] text-white px-5 py-2 rounded-xl"
               >
                 Guardar
               </button>
@@ -241,7 +241,7 @@ export default function ViewChallengeModal({
                 setShowSuccess(false);
                 onClose();
               }}
-              className="bg-[#5B34F2] text-white px-6 py-3 rounded-xl"
+              className="bg-[#1C6B72] text-white px-6 py-3 rounded-xl"
             >
               Aceptar
             </button>

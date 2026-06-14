@@ -19,15 +19,15 @@
 }
 
 .recruiter-theme {
-  --color-brand-primary: #5B34F2;
+  --color-brand-primary: #1C6B72;
   /* Morado principal */
-  --color-brand-hover: #4320C9;
+  --color-brand-hover: #132E41;
   /* Morado oscuro */
-  --color-brand-accent: #F25F63;
+  --color-brand-accent: #ED7B32;
   /* Rojo institucional */
-  --color-brand-cards: #0F6C7A;
+  --color-brand-cards: #F5A844;
   /* Azul petróleo */
-  --color-brand-bg: #DCE5EC;
+  --color-brand-bg: #F0F4F8;
   /* Fondo reclutador */
   --color-brand-surface: #FFFFFF;
   --color-brand-text: #1C1C1C;

@@ -20,9 +20,10 @@ const RecruiterLeftSidebar = () => {
   const { getModel: getDashboard } = useCrud('/api/recruiter/dashboard');
   const { getModel: getJobs } = useCrud('/api/recruiter/jobs');
 
-  // Datos de la empresa (hardcodeados o desde userData)
-  const companyName = userData?.company_name || "Mi Empresa";
+  // Datos de la empresa desde el backend o userData
+  const companyName = dashboardData?.recruiter_info?.company_name || userData?.company_name || "Mi Empresa";
   const initials = companyName ? companyName.substring(0, 2).toUpperCase() : "ME";
+  const tokens = dashboardData?.recruiter_info?.tokens_available || 0;
 
   // Cargar datos al montar el componente
   useEffect(() => {
@@ -91,8 +92,15 @@ const RecruiterLeftSidebar = () => {
         <div className="profile-avatar">{initials}</div>
         <div className="profile-info">
           <h2>{companyName}</h2>
-          <p>Fintech · Lima, Perú</p>
-          <span className="badge-utp-partner">✦ Partner UTP</span>
+          <p>
+             Fintech · Lima, Perú
+          </p>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <span className="badge-utp-partner">✦ Partner UTP</span>
+            <span className="badge-utp-partner" style={{ backgroundColor: '#FFD700', color: '#B8860B', border: '1px solid #FFE4B5' }}>
+              🪙 {tokens} Monedas
+            </span>
+          </div>
         </div>
 
         {/* Estadísticas desde el backend */}
