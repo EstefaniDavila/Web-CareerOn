@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useCrud from "../hooks/useCrud";
+import AIOfferModal from "./recruiter/AIOfferModal";
 
 const LEVELS = ["básico", "intermedio", "avanzado"];
 
@@ -13,15 +14,16 @@ const EMPTY_FORM = {
   status:          "published",
   skills_required: [],
   required_levels: [],
+  is_active:       true,
 };
 
 const JOB_TYPES = ["Tiempo completo", "Medio tiempo", "Contrato", "Prácticas", "Remoto"];
 
 const STATUSES = [
-  { value: "published", label: "Publicada" },
+  { value: "published", label: "Publicada"   },
   { value: "review",    label: "En revisión" },
-  { value: "interview", label: "Entrevista" },
-  { value: "finished",  label: "Terminado" },
+  { value: "interview", label: "Entrevista"  },
+  { value: "finished",  label: "Terminado"   },
 ];
 
 const inputClass = (hasError) =>
@@ -35,31 +37,38 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
   const [loading, setLoading]   = useState(false);
   const [apiError, setApiError] = useState(null);
 
-  const [skills, setSkills]           = useState([]);
-  const [skillSearch, setSkillSearch] = useState("");
+  const [skills, setSkills]               = useState([]);
+  const [skillSearch, setSkillSearch]     = useState("");
   const [skillsLoading, setSkillsLoading] = useState(true);
+  
+  const [isAiModalOpen, setIsAiModalOpen] = useState(false);
 
   const { insertModel, updateModel } = useCrud("/api/recruiter/jobs");
   const { getModel: getSkills }      = useCrud("/api/skill");
 
   useEffect(() => {
-  const fetchSkills = async () => {
-    try {
-      const data = await getSkills();
-      console.log("SKILLS:", data); // 👈
-      setSkills(data.skills ?? []);
-    } catch (err) {
-      console.error("SKILLS ERROR:", err); // 👈
-      setSkills([]);
-    } finally {
-      setSkillsLoading(false);
-    }
-  };
-  fetchSkills();
-}, []);
+    const fetchSkills = async () => {
+      try {
+        const data = await getSkills();
+        setSkills(data.skills ?? []);
+      } catch {
+        setSkills([]);
+      } finally {
+        setSkillsLoading(false);
+      }
+    };
+    fetchSkills();
+  }, []);
 
   useEffect(() => {
     if (mode === "edit" && offer) {
+      // skills puede venir como [{id, name}] o como [1, 2, 3] — normalizamos a IDs
+      const skillIds = Array.isArray(offer.skills_required)
+        ? offer.skills_required.map(s => typeof s === "object" ? s.id : s)
+        : Array.isArray(offer.skills)
+        ? offer.skills.map(s => typeof s === "object" ? s.id : s)
+        : [];
+
       setForm({
         title:           offer.title           ?? "",
         job_type:        offer.job_type        ?? "Tiempo completo",
@@ -68,8 +77,9 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
         description:     offer.description     ?? "",
         deadline:        offer.deadline        ? offer.deadline.slice(0, 10) : "",
         status:          offer.status          ?? "published",
-        skills_required: offer.skills_required ?? [],
+        skills_required: skillIds,
         required_levels: offer.required_levels ?? [],
+        is_active:       offer.is_active       ?? true,
       });
     } else {
       setForm(EMPTY_FORM);
@@ -107,10 +117,10 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
 
   const validate = () => {
     const next = {};
-    if (!form.title.trim())               next.title           = "El título es obligatorio.";
-    if (!form.location.trim())            next.location        = "La ubicación es obligatoria.";
-    if (!form.description.trim())         next.description     = "La descripción es obligatoria.";
-    if (!form.deadline)                   next.deadline        = "La fecha límite es obligatoria.";
+    if (!form.title.trim())                next.title           = "El título es obligatorio.";
+    if (!form.location.trim())             next.location        = "La ubicación es obligatoria.";
+    if (!form.description.trim())          next.description     = "La descripción es obligatoria.";
+    if (!form.deadline)                    next.deadline        = "La fecha límite es obligatoria.";
     if (form.skills_required.length === 0) next.skills_required = "Selecciona al menos una habilidad.";
     if (form.required_levels.length === 0) next.required_levels = "Selecciona al menos un nivel.";
     setErrors(next);
@@ -131,6 +141,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
       deadline:        form.deadline,
       skills_required: form.skills_required,
       required_levels: form.required_levels,
+      is_active:       form.is_active,
     };
 
     try {
@@ -141,7 +152,11 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
       }
       onBack();
     } catch (err) {
-      setApiError(err?.response?.data?.message || "Ocurrió un error al guardar la oferta.");
+      const detail = err?.response?.data?.detail;
+      const msg = Array.isArray(detail)
+        ? detail.map(d => d.msg).join(", ")
+        : err?.response?.data?.message || "Ocurrió un error al guardar la oferta.";
+      setApiError(msg);
     } finally {
       setLoading(false);
     }
@@ -161,12 +176,46 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
         ← Volver a mis ofertas
       </button>
 
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-[15px] font-medium text-[#1C1C1C]">
+      {/* AI Modal */}
+      <AIOfferModal 
+        isOpen={isAiModalOpen} 
+        onClose={() => setIsAiModalOpen(false)} 
+        availableSkills={skills}
+        onGenerated={async (data) => {
+          // If the backend created new skills, we need to refresh the local list
+          if (data.skills_required && data.skills_required.length > 0) {
+            try {
+              const freshSkills = await getSkills();
+              setSkills(freshSkills.skills ?? []);
+            } catch (e) {
+              console.error("Failed to refresh skills", e);
+            }
+          }
+          setForm(prev => ({
+            ...prev,
+            title: data.title || prev.title,
+            job_type: data.job_type || prev.job_type,
+            location: data.location || prev.location,
+            salary_range: data.salary_range || prev.salary_range,
+            description: data.description || prev.description,
+            deadline: data.deadline || prev.deadline,
+            skills_required: data.skills_required || prev.skills_required,
+            required_levels: data.skills_required ? data.skills_required.map(() => "intermedio") : prev.required_levels
+          }));
+          setIsAiModalOpen(false);
+        }} 
+      />
+
+      {/* Header */}
+      <div className="flex items-center justify-between pb-5 border-b border-gray-100 mb-6">
+        <p className="text-sm font-bold text-[#1C1C1C]">
           {isEdit ? "Editar oferta" : "Nueva oferta laboral"}
         </p>
-        <button className="flex items-center gap-2 h-9 px-4 rounded-lg border border-[#1C6B72] text-sm text-[#1C6B72] bg-white hover:bg-[#F0F4F8] transition-colors">
-          ✨ Generar oferta con IA
+        <button 
+          type="button"
+          onClick={() => setIsAiModalOpen(true)}
+          className="flex items-center gap-2 h-9 px-4 rounded-lg border border-[#1C6B72] text-sm text-[#1C6B72] bg-white hover:bg-[#F0F4F8] transition-colors">
+          ✨ Generar con IA (2 monedas)
         </button>
       </div>
 
@@ -178,7 +227,6 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
 
       <div className="grid grid-cols-2 gap-3 mb-4">
 
-        {/* Título */}
         <div className="col-span-2 flex flex-col gap-1">
           <label className="text-xs font-medium text-[#5F6368]">Título del puesto</label>
           <input
@@ -191,7 +239,6 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
           {errors.title && <span className="text-[11px] text-[#ED7B32]">{errors.title}</span>}
         </div>
 
-        {/* Modalidad */}
         <div className="flex flex-col gap-1">
           <label className="text-xs font-medium text-[#5F6368]">Modalidad</label>
           <select value={form.job_type} onChange={set("job_type")} className={inputClass(false)}>
@@ -199,7 +246,6 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
           </select>
         </div>
 
-        {/* Estado */}
         <div className="flex flex-col gap-1">
           <label className="text-xs font-medium text-[#5F6368]">Estado</label>
           <select value={form.status} onChange={set("status")} className={inputClass(false)}>
@@ -207,7 +253,6 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
           </select>
         </div>
 
-        {/* Ubicación */}
         <div className="flex flex-col gap-1">
           <label className="text-xs font-medium text-[#5F6368]">Ubicación</label>
           <input
@@ -220,7 +265,6 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
           {errors.location && <span className="text-[11px] text-[#ED7B32]">{errors.location}</span>}
         </div>
 
-        {/* Salario */}
         <div className="flex flex-col gap-1">
           <label className="text-xs font-medium text-[#5F6368]">Rango salarial</label>
           <input
@@ -232,7 +276,6 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
           />
         </div>
 
-        {/* Fecha límite */}
         <div className="col-span-2 flex flex-col gap-1">
           <label className="text-xs font-medium text-[#5F6368]">Fecha límite</label>
           <input
@@ -244,7 +287,6 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
           {errors.deadline && <span className="text-[11px] text-[#ED7B32]">{errors.deadline}</span>}
         </div>
 
-        {/* Niveles requeridos */}
         <div className="col-span-2 flex flex-col gap-1">
           <label className="text-xs font-medium text-[#5F6368]">Niveles requeridos</label>
           <div className="flex gap-2">
@@ -269,7 +311,6 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
           {errors.required_levels && <span className="text-[11px] text-[#ED7B32]">{errors.required_levels}</span>}
         </div>
 
-        {/* Skills requeridas */}
         <div className="col-span-2 flex flex-col gap-1">
           <label className="text-xs font-medium text-[#5F6368]">
             Habilidades requeridas
@@ -287,7 +328,6 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
             className={inputClass(errors.skills_required)}
           />
           {errors.skills_required && <span className="text-[11px] text-[#ED7B32]">{errors.skills_required}</span>}
-
           <div className="mt-1 max-h-36 overflow-y-auto border border-gray-200 rounded-lg bg-white p-2 flex flex-wrap gap-1.5">
             {skillsLoading ? (
               <span className="text-xs text-[#5F6368] p-1">Cargando habilidades...</span>
@@ -316,7 +356,6 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
           </div>
         </div>
 
-        {/* Descripción */}
         <div className="col-span-2 flex flex-col gap-1">
           <label className="text-xs font-medium text-[#5F6368]">Descripción del puesto</label>
           <textarea
@@ -329,13 +368,12 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
           {errors.description && <span className="text-[11px] text-[#ED7B32]">{errors.description}</span>}
         </div>
 
-        {/* is_active solo en edición */}
         {isEdit && (
           <div className="col-span-2 flex items-center gap-2">
             <input
               type="checkbox"
               id="is_active"
-              checked={form.is_active ?? true}
+              checked={form.is_active}
               onChange={e => setForm(prev => ({ ...prev, is_active: e.target.checked }))}
               className="accent-[#1C6B72] w-4 h-4 cursor-pointer"
             />
@@ -344,7 +382,6 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
             </label>
           </div>
         )}
-
       </div>
 
       <div className="flex justify-end gap-2">

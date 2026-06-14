@@ -1,58 +1,34 @@
 import React, { useState } from "react";
 import ProfileModal from "../../../composables/Recutrier/Postulation/Profilemodal";
+import useCrud from "../../../hooks/useCrud";
 
-const initialApplicants = [
-  {
-    id: 1,
-    name: "Carlos Mendoza",
-    career: "Ingeniería de Software - UTP",
-    cycle: "8vo",
-    email: "pepitogmail.com",
-    cellphone: "054 - 34587",
-    match: 98,
-    status: "revision",
-    softSkills: ["Trabajo en equipo", "Comunicación"],
-    knowledge: ["React", "Node.js"],
-  },
-  {
-    id: 2,
-    name: "Valeria Ríos",
-    career: "Ingeniería de Sistemas - UTP",
-    cycle: "9no",
-    email: "pepito@gmail.com",
-    cellphone: "989 123 226",
-    match: 94,
-    status: "entrevista",
-    softSkills: ["Resolución de problemas"],
-    knowledge: ["Next.js", "Firebase"],
-  },
-  {
-    id: 3,
-    name: "Daniel Babo",
-    career: "Ingeniería de Sistemas - UTP",
-    cycle: "9no",
-    email: "pepita@gmail.com",
-    cellphone: "987 123 226",
-    match: 48,
-    status: "rechazado",
-    softSkills: ["Adaptabilidad"],
-    knowledge: ["HTML", "CSS"],
-  },
-];
-
-const RecruiterPostulations = ({ match = 0, selectedTags = [] }) => {
-  const [applicants, setApplicants] = useState(initialApplicants);
+const RecruiterPostulations = ({ offer, applicants = [], setApplicants, match = 0, selectedTags = [] }) => {
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("todos");
+  
+  const { patchModel } = useCrud("");
 
-  // 🔥 CAMBIAR ESTADO DESDE MODAL
-  const updateStatus = (id, newStatus) => {
-    setApplicants((prev) =>
-      prev.map((a) =>
-        a.id === id ? { ...a, status: newStatus } : a
-      )
-    );
+  // 🔥 CAMBIAR ESTADO DESDE MODAL CONECTADO AL BACKEND
+  const updateStatus = async (id, newStatus) => {
+    try {
+      const url = `/api/recruiter/jobs/${offer?.id}/candidates/${id}/status`;
+      console.log("🔥 PATCH URL:", url, "| body:", { status: newStatus });
+      if (offer?.id) {
+        const result = await patchModel({ status: newStatus }, url);
+        console.log("✅ PATCH result:", result);
+      } else {
+        console.warn("⚠️ offer.id no está definido, no se puede guardar en BD");
+      }
+      setApplicants((prev) =>
+        prev.map((a) =>
+          a.id === id ? { ...a, status: newStatus } : a
+        )
+      );
+    } catch (error) {
+      console.error("❌ Error updating status:", error?.response?.data || error);
+      alert("Hubo un error al actualizar el estado del candidato.");
+    }
   };
 
   const filteredApplicants = applicants.filter((a) => {
@@ -62,7 +38,7 @@ const RecruiterPostulations = ({ match = 0, selectedTags = [] }) => {
       a.name.toLowerCase().includes(text) ||
       a.career.toLowerCase().includes(text);
 
-    const passMatch = a.match >= match;
+    const passMatch = a.hiring_probability >= match;
 
     const passTags =
       selectedTags.length === 0 ||
@@ -71,7 +47,9 @@ const RecruiterPostulations = ({ match = 0, selectedTags = [] }) => {
       );
 
     const passStatus =
-      statusFilter === "todos" || a.status === statusFilter;
+      statusFilter === "todos"
+        ? a.status !== "rechazado"   // "Todos" = activos (excluye rechazados)
+        : a.status === statusFilter;
 
     return passSearch && passMatch && passTags && passStatus;
   });
@@ -115,8 +93,11 @@ const RecruiterPostulations = ({ match = 0, selectedTags = [] }) => {
               <p className="text-sm">{a.status}</p>
             </div>
 
-            <div className="text-2xl font-bold text-[#F5A844]">
-              {a.match}%
+            <div className="flex flex-col items-end gap-1">
+              <span className="text-sm font-semibold text-gray-500">Probabilidad IA</span>
+              <div className="text-2xl font-bold text-[#F5A844]">
+                {a.hiring_probability}%
+              </div>
             </div>
 
             <button
