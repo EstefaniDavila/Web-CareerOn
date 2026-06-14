@@ -1,45 +1,36 @@
 import React, { useState, useEffect } from "react";
-import api from "../services/api";
+import useCrud from "../hooks/useCrud";
 
 const STATUS_CONFIG = {
-  publicada: { label: "Publicada", className: "bg-emerald-50 text-emerald-800" },
-  "en revision": { label: "En revisión", className: "bg-blue-50 text-blue-800" },
-  entrevista: { label: "Entrevista", className: "bg-amber-50 text-amber-800" },
-  terminada: { label: "Terminada", className: "bg-red-50 text-red-800" },
-  // compatibility mapping
-  active: { label: "Activa",  className: "bg-emerald-50 text-emerald-800" },
-  paused: { label: "Pausada", className: "bg-amber-50 text-amber-800" },
-  closed: { label: "Cerrada", className: "bg-red-50 text-red-800" },
+  true:  { label: "Activa",  className: "bg-emerald-50 text-emerald-800" },
+  false: { label: "Cerrada", className: "bg-red-50 text-red-800" },
 };
 
-const getPublishedText = (createdAt) => {
-  if (!createdAt) return "Reciente";
-  try {
-    const date = new Date(createdAt);
-    const diffTime = Math.abs(new Date() - date);
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    if (diffDays < 1) return "Hoy";
-    if (diffDays === 1) return "Ayer";
-    return `Hace ${diffDays} días`;
-  } catch (e) {
-    return "Reciente";
-  }
+const JOB_TYPE_LABELS = {
+  full_time:  "Tiempo completo",
+  part_time:  "Medio tiempo",
+  contract:   "Contrato",
+  internship: "Prácticas",
+  remote:     "Remoto",
 };
 
 const OffersList = ({ onEdit, onDeletePick }) => {
   const [search, setSearch] = useState("");
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const { getModel } = useCrud("/api/recruiter/jobs");
 
   useEffect(() => {
     const fetchOffers = async () => {
       try {
-        const response = await api.get("/recruiter/jobs");
-        if (response.data && response.data.status === "success") {
-          setOffers(response.data.jobs);
-        }
-      } catch (error) {
-        console.error("Error al obtener las ofertas del reclutador:", error);
+        setLoading(true);
+        const data = await getModel();
+        setOffers(data.jobs ?? []);
+        console.log("OFFERS STATE:", data.jobs?.length); // 👈
+      } catch (err) {
+        setError("No se pudieron cargar las ofertas.");
       } finally {
         setLoading(false);
       }
@@ -51,17 +42,35 @@ const OffersList = ({ onEdit, onDeletePick }) => {
     o.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  const activeCount = offers.filter(o => o.status === "publicada" || o.status === "active").length;
+  const activeCount = offers.filter(o => o.is_active).length;
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "—";
+    const diff = Math.floor((Date.now() - new Date(dateStr)) / 86400000);
+    if (diff === 0) return "Hoy";
+    if (diff === 1) return "Hace 1 día";
+    return `Hace ${diff} días`;
+  };
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-sm text-[#5F6368]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#5B34F2] mb-4"></div>
-        Cargando tus ofertas...
+      <div className="flex flex-col gap-2">
+        {[1, 2, 3].map(i => (
+          <div key={i} className="bg-white rounded-xl border border-gray-200 px-4 py-3 animate-pulse">
+            <div className="h-4 bg-gray-100 rounded w-2/3 mb-3" />
+            <div className="h-3 bg-gray-100 rounded w-1/3" />
+          </div>
+        ))}
       </div>
     );
   }
 
+  if (error) {
+    return (
+      <p className="text-center py-10 text-sm text-red-500">{error}</p>
+    );
+  }
+  console.log("FILTERED:", filtered.length, "SEARCH:", search); // 👈
   return (
     <>
       {/* Header */}
@@ -69,7 +78,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
         <span className="text-[15px] font-medium text-[#1C1C1C]">
           Mis ofertas publicadas
         </span>
-        <span className="bg-[#5B34F2] text-white text-[11px] font-medium px-3 py-0.5 rounded-full">
+        <span className="bg-[#1D9E75] text-white text-[11px] font-medium px-3 py-0.5 rounded-full">
           {activeCount} activas
         </span>
       </div>
@@ -81,7 +90,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
           placeholder="Buscar por título o área..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="flex-1 h-9 border border-gray-200 rounded-lg px-3 text-sm text-[#1C1C1C] bg-white outline-none focus:border-[#5B34F2] transition-colors"
+          className="flex-1 h-9 border border-gray-200 rounded-lg px-3 text-sm text-[#1C1C1C] bg-white outline-none focus:border-[#1D9E75] transition-colors"
         />
         <button className="h-9 px-4 rounded-lg border border-gray-200 bg-white text-sm text-[#5F6368] hover:bg-gray-100 transition-colors">
           ⚙ Filtrar
@@ -97,11 +106,13 @@ const OffersList = ({ onEdit, onDeletePick }) => {
         )}
 
         {filtered.map(offer => {
-          const st = STATUS_CONFIG[offer.status] ?? STATUS_CONFIG.publicada;
+          const st = STATUS_CONFIG[String(offer.is_active)] ?? STATUS_CONFIG["false"];
+          const jobTypeLabel = JOB_TYPE_LABELS[offer.job_type] ?? offer.job_type ?? "—";
+
           return (
             <div
               key={offer.id}
-              className="bg-white rounded-xl border border-gray-200 px-4 py-3 flex flex-col gap-2 hover:shadow-sm transition-shadow"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 flex flex-col gap-2"
             >
               {/* Top */}
               <div className="flex items-start justify-between gap-2">
@@ -115,30 +126,25 @@ const OffersList = ({ onEdit, onDeletePick }) => {
 
               {/* Meta */}
               <div className="flex gap-3 flex-wrap">
-                <span className="text-[11px] text-[#5F6368]">📍 {offer.location || "Remoto"}</span>
-                <span className="text-[11px] text-[#5F6368]">💼 {offer.job_type || "Tiempo completo"}</span>
-                <span className="text-[11px] text-[#5F6368]">💵 {offer.salary_range || "No especificado"}</span>
-                <span className="text-[11px] text-[#5F6368]">📅 {getPublishedText(offer.created_at)}</span>
+                {offer.location && (
+                  <span className="text-[11px] text-[#5F6368]">📍 {offer.location}</span>
+                )}
+                {offer.job_type && (
+                  <span className="text-[11px] text-[#5F6368]">💼 {jobTypeLabel}</span>
+                )}
+                {offer.salary_range && (
+                  <span className="text-[11px] text-[#5F6368]">💰 {offer.salary_range}</span>
+                )}
+                <span className="text-[11px] text-[#5F6368]">📅 {formatDate(offer.created_at)}</span>
               </div>
 
-              {/* Skills */}
-              {offer.skills && offer.skills.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mt-1 border-t border-gray-50 pt-2">
-                  {offer.skills.map(skill => (
-                    <span key={skill.id} className="px-2 py-0.5 bg-gray-100 text-gray-700 text-[10px] font-bold rounded">
-                      {skill.name} • <span className="text-gray-500 font-normal">{skill.level}</span>
-                    </span>
-                  ))}
-                </div>
-              )}
-
               {/* Footer */}
-              <div className="flex items-center justify-between pt-2 border-t border-gray-100 mt-1">
+              <div className="flex items-center justify-between pt-2 border-t border-gray-100">
                 <span className="text-xs text-[#5F6368]">
-                  <strong className="text-[#5B34F2]">{offer.applicants_count || 0}</strong> postulantes
+                  <strong className="text-[#1D9E75]">{offer.applicants_count}</strong> postulantes
                 </span>
                 <div className="flex gap-2">
-                  {offer.status !== "terminada" && offer.status !== "closed" ? (
+                  {offer.is_active ? (
                     <button
                       onClick={() => onEdit(offer)}
                       className="h-7 px-3 rounded-md border border-gray-200 bg-white text-xs text-[#5F6368] hover:bg-gray-100 transition-colors"
@@ -155,6 +161,9 @@ const OffersList = ({ onEdit, onDeletePick }) => {
                     className="h-7 px-3 rounded-md bg-[#F25F63] text-xs text-white hover:bg-[#d94f53] transition-colors"
                   >
                     🗑 Eliminar
+                  </button>
+                  <button className="h-7 px-3 rounded-md bg-[#1D9E75] text-xs text-white hover:bg-[#0F6E56] transition-colors">
+                    👁 Ver
                   </button>
                 </div>
               </div>
