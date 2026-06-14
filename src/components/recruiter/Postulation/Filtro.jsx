@@ -65,7 +65,7 @@ export default function Filtro({
         <div className="flex justify-between items-start">
 
           <div>
-            <span className="bg-[#0F6C7A] text-white px-3 py-1 rounded-full text-xs">
+            <span className="bg-[#F5A844] text-white px-3 py-1 rounded-full text-xs">
               Oferta laboral
             </span>
 
@@ -82,7 +82,7 @@ export default function Filtro({
             </p>
           </div>
 
-          <div className="bg-[#5B34F2] text-white px-4 py-2 rounded-xl text-center min-w-[90px]">
+          <div className="bg-[#1C6B72] text-white px-4 py-2 rounded-xl text-center min-w-[90px]">
             <h3 className="text-xl font-bold">
               {offer?.applicants ?? 0}
             </h3>
@@ -101,7 +101,7 @@ export default function Filtro({
 
         <div className="flex justify-between mb-2 text-sm">
           <span>0%</span>
-          <span className="font-bold text-[#0F6C7A]">
+          <span className="font-bold text-[#F5A844]">
             {match}%
           </span>
           <span>100%</span>
@@ -113,7 +113,7 @@ export default function Filtro({
           max={100}
           value={match}
           onChange={(e) => setMatch(Number(e.target.value))}
-          className="w-full accent-[#5B34F2]"
+          className="w-full accent-[#1C6B72]"
         />
 
         {/* BOTÓN DESCARTAR */}
@@ -137,7 +137,7 @@ export default function Filtro({
 
             <p className="text-gray-600 mb-6">
               ¿Estás seguro de descartar postulantes con match menor a{" "}
-              <span className="font-bold text-[#5B34F2]">
+              <span className="font-bold text-[#1C6B72]">
                 {match}%
               </span>
               ?
@@ -183,7 +183,7 @@ export default function Filtro({
 
             <button
               onClick={() => setShowSuccess(false)}
-              className="bg-[#5B34F2] text-white px-5 py-2 rounded-xl"
+              className="bg-[#1C6B72] text-white px-5 py-2 rounded-xl"
             >
               Aceptar
             </button>
@@ -209,7 +209,7 @@ export default function Filtro({
                 type="checkbox"
                 checked={selectedTags.includes(tag)}
                 onChange={() => toggleTag(tag)}
-                className="accent-[#5B34F2]"
+                className="accent-[#1C6B72]"
               />
               <span>{tag}</span>
             </label>

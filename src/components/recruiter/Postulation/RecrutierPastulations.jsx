@@ -115,7 +115,7 @@ const RecruiterPostulations = ({ match = 0, selectedTags = [] }) => {
               <p className="text-sm">{a.status}</p>
             </div>
 
-            <div className="text-2xl font-bold text-[#0F6C7A]">
+            <div className="text-2xl font-bold text-[#F5A844]">
               {a.match}%
             </div>
 

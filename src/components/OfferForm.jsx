@@ -26,7 +26,7 @@ const STATUSES = [
 
 const inputClass = (hasError) =>
   `w-full border rounded-lg px-3 py-2 text-sm text-[#1C1C1C] bg-white outline-none transition-colors ${
-    hasError ? "border-[#F25F63] focus:border-[#F25F63]" : "border-gray-200 focus:border-[#5B34F2]"
+    hasError ? "border-[#ED7B32] focus:border-[#ED7B32]" : "border-gray-200 focus:border-[#1C6B72]"
   }`;
 
 const OfferForm = ({ mode = "create", offer = null, onBack }) => {
@@ -156,7 +156,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
     <>
       <button
         onClick={onBack}
-        className="flex items-center gap-1.5 text-sm text-[#5F6368] hover:text-[#5B34F2] transition-colors mb-3"
+        className="flex items-center gap-1.5 text-sm text-[#5F6368] hover:text-[#1C6B72] transition-colors mb-3"
       >
         ← Volver a mis ofertas
       </button>
@@ -165,13 +165,13 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
         <p className="text-[15px] font-medium text-[#1C1C1C]">
           {isEdit ? "Editar oferta" : "Nueva oferta laboral"}
         </p>
-        <button className="flex items-center gap-2 h-9 px-4 rounded-lg border border-[#5B34F2] text-sm text-[#5B34F2] bg-white hover:bg-[#F0EDFC] transition-colors">
+        <button className="flex items-center gap-2 h-9 px-4 rounded-lg border border-[#1C6B72] text-sm text-[#1C6B72] bg-white hover:bg-[#F0F4F8] transition-colors">
           ✨ Generar oferta con IA
         </button>
       </div>
 
       {apiError && (
-        <div className="mb-4 px-3 py-2 bg-red-50 border border-red-200 rounded-lg text-sm text-[#F25F63]">
+        <div className="mb-4 px-3 py-2 bg-red-50 border border-red-200 rounded-lg text-sm text-[#ED7B32]">
           {apiError}
         </div>
       )}
@@ -188,7 +188,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
             onChange={set("title")}
             className={inputClass(errors.title)}
           />
-          {errors.title && <span className="text-[11px] text-[#F25F63]">{errors.title}</span>}
+          {errors.title && <span className="text-[11px] text-[#ED7B32]">{errors.title}</span>}
         </div>
 
         {/* Modalidad */}
@@ -217,7 +217,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
             onChange={set("location")}
             className={inputClass(errors.location)}
           />
-          {errors.location && <span className="text-[11px] text-[#F25F63]">{errors.location}</span>}
+          {errors.location && <span className="text-[11px] text-[#ED7B32]">{errors.location}</span>}
         </div>
 
         {/* Salario */}
@@ -241,7 +241,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
             onChange={set("deadline")}
             className={inputClass(errors.deadline)}
           />
-          {errors.deadline && <span className="text-[11px] text-[#F25F63]">{errors.deadline}</span>}
+          {errors.deadline && <span className="text-[11px] text-[#ED7B32]">{errors.deadline}</span>}
         </div>
 
         {/* Niveles requeridos */}
@@ -257,8 +257,8 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
                   onClick={() => toggleLevel(level)}
                   className={`h-8 px-4 rounded-full text-xs font-medium border transition-colors capitalize ${
                     active
-                      ? "bg-[#5B34F2] text-white border-[#5B34F2]"
-                      : "bg-white text-[#5F6368] border-gray-200 hover:border-[#5B34F2] hover:text-[#5B34F2]"
+                      ? "bg-[#1C6B72] text-white border-[#1C6B72]"
+                      : "bg-white text-[#5F6368] border-gray-200 hover:border-[#1C6B72] hover:text-[#1C6B72]"
                   }`}
                 >
                   {level}
@@ -266,7 +266,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
               );
             })}
           </div>
-          {errors.required_levels && <span className="text-[11px] text-[#F25F63]">{errors.required_levels}</span>}
+          {errors.required_levels && <span className="text-[11px] text-[#ED7B32]">{errors.required_levels}</span>}
         </div>
 
         {/* Skills requeridas */}
@@ -274,7 +274,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
           <label className="text-xs font-medium text-[#5F6368]">
             Habilidades requeridas
             {form.skills_required.length > 0 && (
-              <span className="ml-2 bg-[#5B34F2] text-white text-[10px] px-2 py-0.5 rounded-full">
+              <span className="ml-2 bg-[#1C6B72] text-white text-[10px] px-2 py-0.5 rounded-full">
                 {form.skills_required.length} seleccionadas
               </span>
             )}
@@ -286,7 +286,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
             onChange={e => setSkillSearch(e.target.value)}
             className={inputClass(errors.skills_required)}
           />
-          {errors.skills_required && <span className="text-[11px] text-[#F25F63]">{errors.skills_required}</span>}
+          {errors.skills_required && <span className="text-[11px] text-[#ED7B32]">{errors.skills_required}</span>}
 
           <div className="mt-1 max-h-36 overflow-y-auto border border-gray-200 rounded-lg bg-white p-2 flex flex-wrap gap-1.5">
             {skillsLoading ? (
@@ -303,8 +303,8 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
                     onClick={() => toggleSkill(skill.id)}
                     className={`h-7 px-3 rounded-full text-[11px] font-medium border transition-colors ${
                       active
-                        ? "bg-[#5B34F2] text-white border-[#5B34F2]"
-                        : "bg-white text-[#5F6368] border-gray-200 hover:border-[#5B34F2] hover:text-[#5B34F2]"
+                        ? "bg-[#1C6B72] text-white border-[#1C6B72]"
+                        : "bg-white text-[#5F6368] border-gray-200 hover:border-[#1C6B72] hover:text-[#1C6B72]"
                     }`}
                   >
                     {skill.name}
@@ -326,7 +326,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
             onChange={set("description")}
             className={inputClass(errors.description)}
           />
-          {errors.description && <span className="text-[11px] text-[#F25F63]">{errors.description}</span>}
+          {errors.description && <span className="text-[11px] text-[#ED7B32]">{errors.description}</span>}
         </div>
 
         {/* is_active solo en edición */}
@@ -337,7 +337,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
               id="is_active"
               checked={form.is_active ?? true}
               onChange={e => setForm(prev => ({ ...prev, is_active: e.target.checked }))}
-              className="accent-[#5B34F2] w-4 h-4 cursor-pointer"
+              className="accent-[#1C6B72] w-4 h-4 cursor-pointer"
             />
             <label htmlFor="is_active" className="text-sm text-[#5F6368] cursor-pointer">
               Oferta activa
@@ -358,7 +358,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="h-9 px-4 rounded-lg bg-[#5B34F2] text-sm text-white hover:bg-[#4320C9] transition-colors disabled:opacity-60 flex items-center gap-2"
+          className="h-9 px-4 rounded-lg bg-[#1C6B72] text-sm text-white hover:bg-[#132E41] transition-colors disabled:opacity-60 flex items-center gap-2"
         >
           {loading ? (
             <>

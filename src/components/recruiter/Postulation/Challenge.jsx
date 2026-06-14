@@ -37,7 +37,7 @@ const Challenge = () => {
 
         <div className="flex items-center gap-3 mb-4">
 
-          <div className="w-12 h-12 rounded-xl bg-[#5B34F2] flex items-center justify-center text-white text-2xl">
+          <div className="w-12 h-12 rounded-xl bg-[#1C6B72] flex items-center justify-center text-white text-2xl">
             🏆
           </div>
 
@@ -77,7 +77,7 @@ const Challenge = () => {
               ${
                 challenges.length >= MAX_CHALLENGES
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-[#5B34F2] text-white hover:bg-[#4320C9]"
+                  : "bg-[#1C6B72] text-white hover:bg-[#132E41]"
               }
             `}
           >
@@ -131,13 +131,13 @@ const Challenge = () => {
                     rounded-xl
                     bg-[#F4F1FF]
                     border
-                    border-[#5B34F2]
+                    border-[#1C6B72]
                     hover:bg-[#ECE6FF]
                     transition
                     text-left
                   "
                 >
-                  <p className="font-semibold text-[#5B34F2]">
+                  <p className="font-semibold text-[#1C6B72]">
                     {challenge.name}
                   </p>
 

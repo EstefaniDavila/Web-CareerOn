@@ -51,7 +51,7 @@ export default function CreateModal({ open, onClose, onCreate }) {
 
           <div className="flex items-center gap-5 mb-8">
 
-            <div className="w-18 h-18 rounded-full bg-[#5B34F2] flex items-center justify-center text-4xl text-white">
+            <div className="w-18 h-18 rounded-full bg-[#1C6B72] flex items-center justify-center text-4xl text-white">
               🏆
             </div>
 
@@ -79,7 +79,7 @@ export default function CreateModal({ open, onClose, onCreate }) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Ingrese el nombre del reto"
-              className="w-full border rounded-xl p-2 outline-none focus:ring-2 focus:ring-[#5B34F2] "
+              className="w-full border rounded-xl p-2 outline-none focus:ring-2 focus:ring-[#1C6B72] "
             />
 
           </div>
@@ -93,7 +93,7 @@ export default function CreateModal({ open, onClose, onCreate }) {
                 <select
                     value={skill}
                     onChange={(e) => setSkill(e.target.value)}
-                    className=" w-full border rounded-xl p-2 outline-none focus:ring-2 focus:ring-[#5B34F2]"
+                    className=" w-full border rounded-xl p-2 outline-none focus:ring-2 focus:ring-[#1C6B72]"
                 >
                     <option value="">Seleccione una habilidad</option>
                     <option value="Comunicación">Comunicación</option>
@@ -117,7 +117,7 @@ export default function CreateModal({ open, onClose, onCreate }) {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe el reto que deberán realizar los postulantes..."
-              className="w-full border rounded-xl p-2 resize-none outline-none focus:ring-2 focus:ring-[#5B34F2]"
+              className="w-full border rounded-xl p-2 resize-none outline-none focus:ring-2 focus:ring-[#1C6B72]"
             />
           </div>
 
@@ -136,7 +136,7 @@ export default function CreateModal({ open, onClose, onCreate }) {
                 ${
                   !name.trim() || !description.trim()
                     ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-[#5B34F2] text-white hover:bg-[#4320C9]"
+                    : "bg-[#1C6B72] text-white hover:bg-[#132E41]"
                 }
               `}
             >
@@ -175,7 +175,7 @@ export default function CreateModal({ open, onClose, onCreate }) {
 
               <button
                 onClick={handlePublish}
-                className="px-5 py-2 rounded-xl bg-[#5B34F2] text-white hover:bg-[#4320C9]"
+                className="px-5 py-2 rounded-xl bg-[#1C6B72] text-white hover:bg-[#132E41]"
               >
                 Sí, publicar
               </button>
@@ -209,8 +209,8 @@ export default function CreateModal({ open, onClose, onCreate }) {
             <button
               onClick={handleFinish}
               className="
-                bg-[#5B34F2]
-                hover:bg-[#4320C9]
+                bg-[#1C6B72]
+                hover:bg-[#132E41]
                 text-white
                 px-6
                 py-3

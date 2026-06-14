@@ -34,12 +34,12 @@
 .metric-value {
   font-size: 24px;
   font-weight: 800;
-  color: #5B34F2;
+  color: #1C6B72;
   margin-bottom: 4px;
 }
 
 .metric-value.highlight-purple {
-  color: #5B34F2;
+  color: #1C6B72;
 }
 
 .metric-label {
@@ -74,7 +74,7 @@
 .add-offer-btn {
   background: none;
   border: none;
-  color: #5B34F2;
+  color: #1C6B72;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
@@ -106,7 +106,7 @@
 
 /* Accent border using Azul Petroleo */
 .job-card.border-accent-teal {
-  border-left: 4px solid #4320C9;
+  border-left: 4px solid #132E41;
   /* Azul petróleo */
 }
 
@@ -127,18 +127,18 @@
 }
 
 .job-icon-container.tech-bg {
-  background-color: #F0EDFC;
-  color: #5B34F2;
+  background-color: #F0F4F8;
+  color: #1C6B72;
 }
 
 .job-icon-container.data-bg {
-  background-color: #F0EDFC;
-  color: #4320C9;
+  background-color: #F0F4F8;
+  color: #132E41;
 }
 
 .job-icon-container.design-bg {
   background-color: #FFF1F2;
-  color: #F25F63;
+  color: #ED7B32;
 }
 
 .job-icon {
@@ -188,13 +188,13 @@
 
 .active-badge {
   background-color: rgba(15, 108, 122, 0.1);
-  color: #4320C9;
+  color: #132E41;
 }
 
 .paused-badge {
   background-color: rgba(242, 95, 99, 0.1);
   color: var(--color-brand-accent);
-  /* #F25F63 */
+  /* #ED7B32 */
 }
 
 .recent-activity-card {
@@ -232,17 +232,17 @@
 }
 
 .dot-purple {
-  background-color: #5B34F2;
+  background-color: #1C6B72;
   box-shadow: 0 0 8px rgba(28, 107, 114, 0.5);
 }
 
 .dot-teal {
-  background-color: #4320C9;
+  background-color: #132E41;
   box-shadow: 0 0 8px rgba(15, 108, 122, 0.5);
 }
 
 .dot-red {
-  background-color: #F25F63;
+  background-color: #ED7B32;
   box-shadow: 0 0 8px rgba(242, 95, 99, 0.5);
 }
 
