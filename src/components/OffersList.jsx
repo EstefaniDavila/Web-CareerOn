@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useCrud from "../hooks/useCrud";
 
+
 const STATUS_CONFIG = {
   true:  { label: "Activa",  className: "bg-emerald-50 text-emerald-800" },
   false: { label: "Cerrada", className: "bg-red-50 text-red-800" },
@@ -16,6 +17,7 @@ const JOB_TYPE_LABELS = {
 
 const OffersList = ({ onEdit, onDeletePick }) => {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -162,7 +164,16 @@ const OffersList = ({ onEdit, onDeletePick }) => {
                   >
                     🗑 Eliminar
                   </button>
-                  <button className="h-7 px-3 rounded-md bg-[#1D9E75] text-xs text-white hover:bg-[#0F6E56] transition-colors">
+                  <button
+                    className="btn btn-sm btn-primary"
+                    onClick={() =>
+                      navigate(`/offers/${offer.id}`, {
+                        state: {
+                          offer,
+                        },
+                      })
+                    }
+                  >
                     👁 Ver
                   </button>
                 </div>

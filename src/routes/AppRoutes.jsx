@@ -9,6 +9,7 @@ import Unauthorized from "../pages/errors/Unauthorized";
 import Offers from "../pages/offers/Offers";
 import CvOptimizer from "../pages/cv/CvOptimizer";
 import JobSwipe from "../pages/student/JobSwipe";
+import OfferDetail from "../pages/Recluter/Postulation/postulation";
 import Profile from "../pages/student/Profile";
 import Favorites from "../pages/student/Favorites";
 import Events from "../pages/student/Events";
@@ -89,6 +90,15 @@ export default function AppRoutes() {
               <Dashboard />
             </Layout>
           //</ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/offers/:id"
+        element={
+          <Layout>
+            <OfferDetail />
+          </Layout>
         }
       />
 
