@@ -89,9 +89,7 @@ export default function AppRoutes() {
       <Route
         path="/explorar"
         element={
-          <Layout>
-            <JobSwipe />
-          </Layout>
+          <JobSwipe />
         }
       />
       <Route
