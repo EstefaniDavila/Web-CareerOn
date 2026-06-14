@@ -27,14 +27,11 @@ export default function EditRecruiterModal({
         overflow-hidden
       ">
 
-        {/* Header */}
         <div className="bg-[#1C6B72] px-5 py-4 flex justify-between items-center">
-
           <div>
             <h2 className="text-lg font-semibold text-white">
               Editar reclutador
             </h2>
-
             <p className="text-xs text-white/80 mt-1">
               Información del responsable
             </p>
@@ -47,17 +44,13 @@ export default function EditRecruiterModal({
               rounded-full
               flex items-center justify-center
               text-white
-              hover:bg-white/20
-            "
+              hover:bg-white/20 "
           >
             <i className="ti ti-x text-xl"></i>
           </button>
-
         </div>
 
-        {/* Body */}
         <div className="p-5 space-y-4">
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Nombre
@@ -84,7 +77,6 @@ export default function EditRecruiterModal({
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Cargo
             </label>
-
             <input
               className="
                 w-full rounded-xl border border-gray-200
@@ -106,7 +98,6 @@ export default function EditRecruiterModal({
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Correo electrónico
             </label>
-
             <input
               className="
                 w-full rounded-xl border border-gray-200
@@ -126,9 +117,7 @@ export default function EditRecruiterModal({
 
         </div>
 
-        {/* Footer */}
         <div className="px-5 pb-5 pt-2 flex justify-end gap-3">
-
           <button
             onClick={onClose}
             className="
@@ -141,7 +130,6 @@ export default function EditRecruiterModal({
           >
             Cancelar
           </button>
-
           <button
             onClick={() => {
               onSave(formData);
@@ -158,11 +146,8 @@ export default function EditRecruiterModal({
           >
             Guardar cambios
           </button>
-
         </div>
-
       </div>
-
     </div>
   );
 }

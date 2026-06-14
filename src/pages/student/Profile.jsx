@@ -20,7 +20,10 @@ const Profile = () => {
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/student/profile');
+      const token = localStorage.getItem("mock_token");
+      const response = await fetch('http://localhost:8000/api/student/profile', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       const result = await response.json();
       if (result.status === 'success') {
         setProfileData(result.data);
@@ -38,11 +41,15 @@ const Profile = () => {
 
   const handleAddExperience = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("mock_token");
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     await fetch('http://localhost:8000/api/student/experience', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify(data)
     });
     setShowExpModal(false);
@@ -51,11 +58,15 @@ const Profile = () => {
 
   const handleAddProject = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("mock_token");
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     await fetch('http://localhost:8000/api/student/project', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify(data)
     });
     setShowProjModal(false);
@@ -64,11 +75,15 @@ const Profile = () => {
 
   const handleAddSkill = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("mock_token");
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     await fetch('http://localhost:8000/api/student/skill', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify(data)
     });
     setShowSkillModal(false);
@@ -83,9 +98,12 @@ const Profile = () => {
     try {
       const formData = new FormData();
       formData.append('file', file);
-      
+      const token = localStorage.getItem("mock_token");
       await fetch('http://localhost:8000/api/student/resume', {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
         body: formData,
       });
       // Recargar perfil para mostrar el nuevo CV

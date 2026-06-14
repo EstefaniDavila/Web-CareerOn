@@ -7,24 +7,25 @@ import Rightcomponent from "../../components/student/Missions/Rightcomponent"
 export default function Missions() {
   
   return (
-    <div className="flex flex-col lg:flex-row w-full min-h-screen ">
+    <div className="w-full flex flex-col gap-6">
+      <div className="flex gap-6 w-full items-start justify-center">
+        {/* SIDEBAR */}
+        <div className="hidden lg:block shrink-0 self-start sticky top-[76px] h-[calc(100vh-76px)] overflow-y-auto custom-scrollbar">
+          <LeftSidebar />
+        </div>
 
-      {/* SIDEBAR */}
-      <div className="hidden lg:block shrink-0 sticky top-[88px] bg-[#F3F3F3]">
-        <LeftSidebar />
-      </div>
+        {/* CONTENT */}
+        <div className="flex-1 min-w-0 pb-12 pt-6">
+          <div className="max-w-5xl mx-auto">
+            <Challenge />
+          </div>
+        </div>
 
-      {/* CONTENT */}
-      <div className="flex-1 p-6">
-        <div className="max-w-5xl mx-auto">
-          <Challenge />
+        {/* RIGHTSIDE */}
+        <div className="hidden xl:block shrink-0 self-start sticky top-[76px] h-[calc(100vh-76px)] overflow-y-auto custom-scrollbar w-[280px]">
+         <Rightcomponent/>
         </div>
       </div>
-      {/*RIGHTSIDE */}
-      <div className="w-[280px] shrink-0">
-       <Rightcomponent/>
-      </div>
-
     </div>
   );
 }

@@ -12,13 +12,14 @@ const FeedCentral = () => {
   const navigate = useNavigate();
   const { getModel } = useCrud('/api/student/jobs');
   const { mutateAsync } = useEntityMutation({ entityName: 'application' });
-  const { addQuests } = useQuests();
+  const { quests, addQuests } = useQuests();
 
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedJob, setSelectedJob] = useState(null);
   const [applyingJobId, setApplyingJobId] = useState(null);
+  const [isProfileEmpty, setIsProfileEmpty] = useState(false);
 
   const [evaluatingJob, setEvaluatingJob] = useState(null);
   const [evaluationResult, setEvaluationResult] = useState(null);
@@ -42,7 +43,10 @@ const FeedCentral = () => {
       try {
         setLoading(true);
         const data = await getModel();
-        if (data && Array.isArray(data)) {
+        if (data && data.jobs) {
+          setJobs(data.jobs);
+          setIsProfileEmpty(data.empty_profile);
+        } else if (data && Array.isArray(data)) {
           setJobs(data);
         }
         setLoading(false);
@@ -79,16 +83,7 @@ const FeedCentral = () => {
         });
 
         if (missing.length > 0) {
-          const generatedQuests = missing.map((skill, i) => {
-            const templates = [
-              { icon: '🧩', action: `CareerOn Micro-Reto: Fundamentos de ${skill} (10 min)`, xp: 150 },
-              { icon: '⚡', action: `CareerOn Assessment: Demuestra tu nivel en ${skill}`, xp: 300 },
-              { icon: '🎮', action: `Simulador interactivo CareerOn: Casos de uso de ${skill}`, xp: 250 },
-              { icon: '🏆', action: `Desafío Exprés: Resuelve 3 problemas de ${skill}`, xp: 200 },
-            ];
-            return { skill, completed: false, ...templates[i % templates.length] };
-          });
-          addQuests(generatedQuests);
+          // Ya no asignamos automáticamente
         }
       } else {
         throw new Error("Respuesta inválida de la IA");
@@ -108,6 +103,44 @@ const FeedCentral = () => {
 
   return (
     <div className="feed-central-container flex-1 w-full min-w-0">
+
+      {isProfileEmpty && (
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-orange-200 text-orange-900 p-5 rounded-2xl shadow-sm flex items-start gap-4 mb-6 animate-in fade-in slide-in-from-top-4 duration-500">
+          <div className="text-4xl">👋</div>
+          <div>
+            <h3 className="font-bold text-lg mb-1">¡Creemos que te pueden interesar estas ofertas!</h3>
+            <p className="text-sm opacity-90 leading-relaxed">
+              Actualmente tu perfil está vacío. Para darte recomendaciones <strong className="font-black text-orange-600">100% personalizadas</strong> y evaluar tu compatibilidad real con cada empleo, 
+              por favor completa tu perfil o sube tu CV en la pestaña "Mi Perfil".
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* RUTA DE EMPLEABILIDAD BANNER */}
+      {!isProfileEmpty && (
+        <div className="bg-[var(--color-brand-primary)] rounded-2xl shadow-lg border border-[#EEF2F6] p-6 mb-6 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden animate-in slide-in-from-top-4">
+          <div className="absolute right-0 top-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+          <div className="flex-1 relative z-10 text-white">
+            <div className="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 backdrop-blur-sm border border-white/20">
+              NUEVO: Radar de Mercado
+            </div>
+            <h2 className="text-2xl font-bold mb-2">Desarrolla habilidades demandadas antes de egresar</h2>
+            <p className="text-white/80 text-sm leading-relaxed max-w-2xl">
+              Basado en las vacantes actuales para tu carrera, hemos detectado oportunidades clave para ti. Cierra tus brechas de habilidades ahora y aumenta tus posibilidades de conseguir prácticas pre-profesionales.
+            </p>
+          </div>
+          <div className="shrink-0 relative z-10 w-full md:w-auto">
+            <button 
+              onClick={() => navigate('/challenge')}
+              className="w-full md:w-auto bg-white text-[var(--color-brand-primary)] font-bold py-3 px-6 rounded-xl hover:bg-gray-50 transition-colors shadow-md flex items-center justify-center gap-2"
+            >
+              Ver mi Ruta de Evolución
+              <FiBriefcase className="text-lg" />
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="glass-card search-header-card p-6 mb-6">
         <h1 className="text-2xl font-bold text-[var(--color-brand-primary)] mb-2">Encuentra tu próximo empleo</h1>
@@ -197,27 +230,52 @@ const FeedCentral = () => {
                               <p className="font-bold text-gray-700 flex items-center gap-2 text-sm">
                                 🎯 Tus misiones para conseguir este empleo:
                               </p>
-                              {evaluationResult.missingSkills.map((skill, i) => {
-                                const quests = [
-                                  { icon: '📺', action: `Mira un tutorial de ${skill} en YouTube (45 min)`, xp: 150 },
-                                  { icon: '📖', action: `Lee la documentación oficial de ${skill} (30 min)`, xp: 100 },
-                                  { icon: '💻', action: `Crea un mini proyecto usando ${skill}`, xp: 300 },
-                                  { icon: '🤝', action: `Únete a una comunidad de ${skill} en Discord`, xp: 75 },
-                                ];
-                                const q = quests[i % quests.length];
-                                return (
-                                  <div key={skill} className="flex items-center gap-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-orange-200 rounded-2xl p-3">
-                                    <span className="text-2xl shrink-0">{q.icon}</span>
-                                    <div className="flex-1 min-w-0">
-                                      <p className="font-bold text-orange-800 text-sm">{skill}</p>
-                                      <p className="text-orange-700 text-xs mt-0.5">{q.action}</p>
+                                {evaluationResult.missingSkills.map((skill, i) => {
+                                  const questTemplates = [
+                                    { icon: '🧩', action: `CareerOn Micro-Reto: Fundamentos de ${skill} (10 min)`, xp: 150 },
+                                    { icon: '⚡', action: `CareerOn Assessment: Demuestra tu nivel en ${skill}`, xp: 300 },
+                                    { icon: '🎮', action: `Simulador interactivo CareerOn: Casos de uso de ${skill}`, xp: 250 },
+                                    { icon: '🏆', action: `Desafío Exprés: Resuelve 3 problemas de ${skill}`, xp: 200 },
+                                  ];
+                                  const q = questTemplates[i % questTemplates.length];
+                                  const isAccepted = quests.some(activeQ => activeQ.skill === skill);
+
+                                  return (
+                                    <div key={skill} className="flex flex-col sm:flex-row sm:items-center gap-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-orange-200 rounded-2xl p-3">
+                                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                                        <span className="text-2xl shrink-0">{q.icon}</span>
+                                        <div className="flex-1 min-w-0">
+                                          <p className="font-bold text-orange-800 text-sm">{skill}</p>
+                                          <p className="text-orange-700 text-xs mt-0.5">{q.action}</p>
+                                        </div>
+                                      </div>
+                                      <div className="flex items-center gap-2 justify-between sm:justify-end shrink-0 w-full sm:w-auto">
+                                        <div className="shrink-0 bg-orange-400 text-white text-xs font-black px-2 py-1 rounded-lg">
+                                          +{q.xp} XP
+                                        </div>
+                                        <button
+                                          disabled={isAccepted}
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (quests.length >= 3) {
+                                              toast({ title: "Límite alcanzado", description: "Ya tienes 3 misiones activas. Complétalas o cancélalas primero.", variant: "destructive" });
+                                              return;
+                                            }
+                                            addQuests([{ skill, completed: false, icon: q.icon, action: q.action, xp: q.xp }]);
+                                            toast({ title: "Misión aceptada", description: `Ve a 'Mis Misiones' para completarla.`, variant: "success" });
+                                          }}
+                                          className={`shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg border transition-colors ${
+                                            isAccepted 
+                                              ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed' 
+                                              : 'bg-white text-orange-600 border-orange-300 hover:bg-orange-600 hover:text-white'
+                                          }`}
+                                        >
+                                          {isAccepted ? 'Aceptada' : 'Aceptar Misión'}
+                                        </button>
+                                      </div>
                                     </div>
-                                    <div className="shrink-0 bg-orange-400 text-white text-xs font-black px-2 py-1 rounded-lg">
-                                      +{q.xp} XP
-                                    </div>
-                                  </div>
-                                );
-                              })}
+                                  );
+                                })}
                               <div className="flex items-center gap-2 bg-gray-50 border border-gray-100 rounded-2xl p-3 mt-1">
                                 <span className="text-xl">🏆</span>
                                 <p className="text-xs text-gray-600 font-medium">Completa las misiones → Acumula XP → ¡Consigue el empleo!</p>

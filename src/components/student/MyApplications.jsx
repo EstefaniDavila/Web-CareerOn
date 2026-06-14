@@ -211,22 +211,18 @@ export default function MyApplications() {
               <p className="text-sm text-gray-500 leading-relaxed">
                 ¿Seguro que deseas desvincularte del siguiente proceso de selección?
               </p>
-
               <div className="bg-[#1D9E75]/5 border border-[#1D9E75]/20 rounded-xl p-4">
                 <p className="text-sm font-semibold text-gray-800">
                   {selectedApplication?.title}
                 </p>
               </div>
-
               <div className="bg-amber-50 border border-amber-100 rounded-xl px-4 py-3">
                 <p className="text-xs text-amber-700">
                   Esta acción eliminará tu postulación y no se podrá recuperar posteriormente.
                 </p>
               </div>
-
             </div>
 
-            {/* Footer */}
             <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
 
               <button

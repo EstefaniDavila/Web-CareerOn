@@ -4,19 +4,28 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import useCrud from '../hooks/useCrud';
 import './LeftSidebar.css';
 
+let cachedStudentData = null;
+let lastFetchTime = 0;
+
 const LeftSidebar = () => {
   const { accounts } = useMsal();
   const navigate = useNavigate();
   const location = useLocation();
-  const [studentData, setStudentData] = useState(null);
+  const [studentData, setStudentData] = useState(cachedStudentData);
 
   const { getModel } = useCrud('/api/student/profile');
 
   useEffect(() => {
     const fetchProfile = async () => {
+      if (cachedStudentData && Date.now() - lastFetchTime < 60000) {
+        setStudentData(cachedStudentData);
+        return;
+      }
       try {
         const result = await getModel();
         if (result?.data?.user) {
+          cachedStudentData = result.data.user;
+          lastFetchTime = Date.now();
           setStudentData(result.data.user);
         }
       } catch (err) {
@@ -75,17 +84,11 @@ const LeftSidebar = () => {
           <li className={location.pathname === '/challenge' ? 'active' : ''} onClick={() => navigate('/challenge')}>
             <span className="icon">🏆</span> Mis Misiones
           </li>
-          <li>
-            <span className="icon">💬</span> Mensajes <span className="notification-badge">2</span>
-          </li>
           <li className={location.pathname === '/profile' ? 'active' : ''} onClick={() => navigate('/profile')}>
             <span className="icon">👤</span> Mi perfil
           </li>
           <li className={location.pathname === '/favorites' ? 'active' : ''} onClick={() => navigate('/favorites')}>
             <span className="icon">☆</span> Favoritos
-          </li>
-          <li className={location.pathname === '/stats' ? 'active' : ''} onClick={() => navigate('/stats')}>
-            <span className="icon">📊</span> Estadísticas
           </li>
         </ul>
       </div>

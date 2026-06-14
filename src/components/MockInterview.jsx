@@ -11,7 +11,7 @@ const MockInterview = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const transcriptRef = useRef("");
-  
+
   const [stream, setStream] = useState(null);
   const [messages, setMessages] = useState([]);
   const [isRecording, setIsRecording] = useState(false);
@@ -23,16 +23,14 @@ const MockInterview = () => {
 
   const speakText = (text) => {
     if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel(); // Detiene audios previos
+    window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "es-ES";
     utterance.rate = 1.0;
     window.speechSynthesis.speak(utterance);
   };
 
-  // Inicializar cámara y reconocimiento de voz
   useEffect(() => {
-    // 1. Iniciar Cámara
     const startCamera = async () => {
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false }); // Audio vía speech recognition
@@ -47,7 +45,6 @@ const MockInterview = () => {
 
     startCamera();
 
-    // 2. Iniciar Reconocimiento de Voz
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
       const rec = new SpeechRecognition();
@@ -68,9 +65,8 @@ const MockInterview = () => {
       console.warn("Speech Recognition no está soportado en este navegador.");
     }
 
-    // 3. Iniciar sesión en backend
     const startInterview = async () => {
-      setIsProcessing(true); // Mostrar que está pensando
+      setIsProcessing(true);
       try {
         const res = await insertModel({
           mode: mode,
@@ -96,7 +92,6 @@ const MockInterview = () => {
         stream.getTracks().forEach(track => track.stop());
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const captureFrame = () => {
@@ -107,8 +102,7 @@ const MockInterview = () => {
     canvas.height = video.videoHeight;
     const ctx = canvas.getContext("2d");
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    // Bajar calidad para no saturar el backend
-    return canvas.toDataURL("image/jpeg", 0.5); 
+    return canvas.toDataURL("image/jpeg", 0.5);
   };
 
   const handleToggleRecording = () => {
@@ -132,7 +126,6 @@ const MockInterview = () => {
       return;
     }
 
-    // Capturar foto al terminar de hablar para analizar el lenguaje corporal
     const frame = captureFrame();
     const images = frame ? [frame] : [];
 
@@ -149,7 +142,7 @@ const MockInterview = () => {
         history: newHistory,
         job_context: mode === "job_specific" ? `Job ID: ${jobId}` : null
       }, "/api/interview/message");
-      
+
       if (res.status === "success") {
         setMessages([
           ...newHistory,
@@ -189,8 +182,7 @@ const MockInterview = () => {
   return (
     <div className="flex flex-col h-[calc(100vh-64px)] bg-[#F8F9FA] p-6 relative">
       <div className="max-w-5xl mx-auto w-full h-full flex flex-col gap-4">
-        
-        {/* Header */}
+
         <div className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm">
           <div>
             <h1 className="text-xl font-semibold text-[#1C1C1C]">
@@ -198,7 +190,7 @@ const MockInterview = () => {
             </h1>
             <p className="text-sm text-[#5F6368]">El Coach analizará tus respuestas y lenguaje corporal.</p>
           </div>
-          <button 
+          <button
             onClick={handleFinish}
             disabled={isProcessing || isFinished}
             className="px-4 py-2 bg-[#ED7B32] text-white rounded-lg font-medium hover:bg-red-600 disabled:opacity-50"
@@ -207,7 +199,6 @@ const MockInterview = () => {
           </button>
         </div>
 
-        {/* Instrucciones */}
         {!isFinished && (
           <div className="bg-[#E8E4FD] border border-[#1C6B72] text-[#4A2BC4] px-4 py-3 rounded-xl shadow-sm flex items-start gap-3">
             <span className="text-xl">💡</span>
@@ -224,18 +215,15 @@ const MockInterview = () => {
 
         {!isFinished ? (
           <div className="flex flex-1 gap-4 overflow-hidden">
-            {/* Cámara */}
             <div className="w-1/2 bg-black rounded-2xl overflow-hidden relative shadow-lg flex items-center justify-center">
-              <video 
-                ref={videoRef} 
-                autoPlay 
-                playsInline 
-                muted 
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                muted
                 className="w-full h-full object-cover transform -scale-x-100" // Espejo
               />
               <canvas ref={canvasRef} className="hidden" />
-              
-              {/* Controles sobre el video */}
               <div className="absolute bottom-6 left-0 right-0 flex justify-center">
                 <button
                   onMouseDown={handleToggleRecording}
@@ -243,14 +231,13 @@ const MockInterview = () => {
                   onTouchStart={handleToggleRecording}
                   onTouchEnd={handleToggleRecording}
                   disabled={isProcessing}
-                  className={`px-8 py-3 rounded-full font-semibold text-white shadow-lg transition-all transform active:scale-95 flex items-center gap-2 ${
-                    isRecording ? "bg-red-500 animate-pulse" : "bg-[#1C6B72] hover:bg-[#4A2BC4]"
-                  }`}
+                  className={`px-8 py-3 rounded-full font-semibold text-white shadow-lg transition-all transform active:scale-95 flex items-center gap-2 ${isRecording ? "bg-red-500 animate-pulse" : "bg-[#1C6B72] hover:bg-[#4A2BC4]"
+                    }`}
                 >
                   {isRecording ? "🔴 Grabando (Suelta para enviar)" : "🎤 Mantén presionado para hablar"}
                 </button>
               </div>
-              
+
               {isRecording && (
                 <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 bg-black/60 text-white px-4 py-2 rounded-lg text-sm max-w-[80%] text-center backdrop-blur-sm">
                   {transcript || "Escuchando..."}
@@ -258,7 +245,6 @@ const MockInterview = () => {
               )}
             </div>
 
-            {/* Chat del Reclutador */}
             <div className="w-1/2 bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden">
               <div className="bg-gray-50 border-b border-gray-100 px-4 py-3 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-[#E8E4FD] flex items-center justify-center text-xl">🤖</div>
@@ -271,11 +257,10 @@ const MockInterview = () => {
               <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
                 {messages.map((msg, idx) => (
                   <div key={idx} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                    <div className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                      msg.role === "user" 
-                        ? "bg-[#1C6B72] text-white rounded-br-none" 
-                        : "bg-gray-100 text-[#1C1C1C] rounded-bl-none"
-                    }`}>
+                    <div className={`max-w-[80%] rounded-2xl px-4 py-3 ${msg.role === "user"
+                      ? "bg-[#1C6B72] text-white rounded-br-none"
+                      : "bg-gray-100 text-[#1C1C1C] rounded-bl-none"
+                      }`}>
                       {msg.content}
                     </div>
                   </div>
@@ -289,10 +274,9 @@ const MockInterview = () => {
                 )}
               </div>
 
-              {/* Chat de texto de respaldo */}
               <div className="p-4 border-t border-gray-100 bg-white flex gap-2">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   placeholder="O escribe tu respuesta aquí si el micrófono falla..."
                   className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 focus:outline-none focus:border-[#1C6B72] text-sm"
                   onKeyDown={(e) => {
@@ -302,7 +286,7 @@ const MockInterview = () => {
                     }
                   }}
                 />
-                <button 
+                <button
                   onClick={(e) => {
                     const input = e.currentTarget.previousElementSibling;
                     if (input.value.trim() && !isProcessing) {
@@ -319,7 +303,6 @@ const MockInterview = () => {
             </div>
           </div>
         ) : (
-          /* Resultados */
           <div className="flex-1 bg-white rounded-2xl shadow-sm p-8 flex flex-col items-center justify-center text-center">
             <div className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center text-5xl mb-6">
               🎉
@@ -328,7 +311,7 @@ const MockInterview = () => {
             <p className="text-[#5F6368] max-w-2xl mb-8">
               {evaluation?.evaluation?.feedback}
             </p>
-            
+
             <div className="flex gap-6 mb-8">
               <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 w-48">
                 <p className="text-sm text-[#5F6368] font-medium mb-1">Puntuación</p>
@@ -344,7 +327,7 @@ const MockInterview = () => {
               </div>
             </div>
 
-            <button 
+            <button
               onClick={() => navigate("/")}
               className="px-8 py-3 bg-[#1C6B72] text-white rounded-xl font-medium hover:bg-[#4A2BC4] transition-colors"
             >
