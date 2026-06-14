@@ -18,6 +18,22 @@
   --glass-shadow: 0 8px 32px 0 rgba(28, 107, 114, 0.05);
 }
 
+.recruiter-theme {
+  --color-brand-primary: #5B34F2;
+  /* Morado principal */
+  --color-brand-hover: #4320C9;
+  /* Morado oscuro */
+  --color-brand-accent: #F25F63;
+  /* Rojo institucional */
+  --color-brand-cards: #0F6C7A;
+  /* Azul petróleo */
+  --color-brand-bg: #DCE5EC;
+  /* Fondo reclutador */
+  --color-brand-surface: #FFFFFF;
+  --color-brand-text: #1C1C1C;
+  --color-brand-subtext: #5F6368;
+}
+
 body {
   margin: 0;
   min-width: 320px;
