@@ -24,12 +24,12 @@ const OffersList = ({ onEdit, onDeletePick }) => {
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [activeCount, setActiveCount] = useState(0);
   const limit = 10;
-  
+
   const observer = useRef();
 
   const { getModel } = useCrud("/api/recruiter/jobs");
@@ -45,15 +45,11 @@ const OffersList = ({ onEdit, onDeletePick }) => {
       if (!isLoadMore) setLoading(true);
       const queryParams = `?limit=${limit}&offset=${currentOffset}&sort_by=${sortBy}${debouncedSearch ? `&search=${encodeURIComponent(debouncedSearch)}` : ""}`;
       const data = await getModel(queryParams);
-      
+
       setHasMore(data.has_more ?? false);
       if (data.total_count !== undefined && !isLoadMore) {
-        // Just an approximation since activeCount wasn't returned by backend explicitly,
-        // but we'll use total_count for the header or recalculate it.
-        // For accurate activeCount, the backend would need to return it.
-        // We'll update activeCount based on current loaded for now or just hide it.
       }
-      
+
       if (isLoadMore) {
         setOffers(prev => [...prev, ...(data.jobs ?? [])]);
       } else {
