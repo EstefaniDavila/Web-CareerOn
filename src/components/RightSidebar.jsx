@@ -25,11 +25,6 @@ const RightSidebar = () => {
 
   return (
     <div className="right-sidebar relative">
-      {/* Estadísticas Card */}
-      <div className="glass-card stats-card">
-        <h3 className="stats-title">Ver<br/><span className="highlight">estadísticas</span></h3>
-        <p className="stats-subtitle">Rendimiento de ofertas</p>
-      </div>
 
       {/* Misiones del Coach Evolutivo */}
       <div className="glass-card matches-card">

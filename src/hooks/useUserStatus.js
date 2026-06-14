@@ -4,7 +4,7 @@ import api from "../services/api";
 
 export function useUserStatus() {
   const { accounts } = useMsal();
-  const [userType, setUserType] = useState(null); // null = cargando, "Pendiente", "Estudiante", "Empresa"
+  const [userType, setUserType] = useState(null);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 

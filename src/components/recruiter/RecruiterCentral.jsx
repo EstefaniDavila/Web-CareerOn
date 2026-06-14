@@ -5,6 +5,15 @@ import OffersList from '../OffersList';
 
 const RecruiterCentral = () => {
   const navigate = useNavigate();
+
+  const handleEdit = (offer) => {
+    navigate('/offers', { state: { view: 'edit', selectedOffer: offer } });
+  };
+
+  const handleDeletePick = (offer) => {
+    navigate('/offers', { state: { view: 'delete-confirm', selectedOffer: offer } });
+  };
+
   return (
     <div className="recruiter-central">
 
@@ -18,7 +27,7 @@ const RecruiterCentral = () => {
             + Nueva oferta
           </button>
         </div>
-        <OffersList />
+        <OffersList onEdit={handleEdit} onDeletePick={handleDeletePick} />
       </div>
     </div>
   );

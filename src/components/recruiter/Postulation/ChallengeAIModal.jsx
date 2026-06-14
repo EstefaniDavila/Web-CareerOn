@@ -17,7 +17,7 @@ export default function ChallengeAIModal({ offer, applicants = [], onClose, onCh
   const totalCost = maxWinners * TOKENS_PER_CHALLENGE;
   const canAfford = tokenBalance !== null && tokenBalance >= totalCost;
 
-  const { postModel, getModel } = useCrud("");
+  const { insertModel, getModel } = useCrud("");
 
   // Cargar saldo real al abrir el modal
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function ChallengeAIModal({ offer, applicants = [], onClose, onCh
     setLoading(true);
     try {
       const url = `/api/recruiter/jobs/${offer.id}/generate_challenge`;
-      const result = await postModel({}, url);
+      const result = await insertModel({}, url);
       if (result.status === "success" && result.data) {
         setChallengeData(result.data);
         setStep(2);
@@ -76,7 +76,7 @@ export default function ChallengeAIModal({ offer, applicants = [], onClose, onCh
         max_winners: maxWinners,
         tokens_cost: totalCost
       };
-      const result = await postModel(body, url);
+      const result = await insertModel(body, url);
       if (result.status === "success") {
         onChallengeSponsored();
         onClose();
