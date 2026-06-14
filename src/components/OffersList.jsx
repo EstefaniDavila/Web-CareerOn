@@ -27,7 +27,8 @@ const OffersList = ({ onEdit, onDeletePick }) => {
       try {
         setLoading(true);
         const data = await getModel();
-        setOffers(Array.isArray(data) ? data : data.results ?? []);
+        setOffers(data.jobs ?? []);
+        console.log("OFFERS STATE:", data.jobs?.length); // 👈
       } catch (err) {
         setError("No se pudieron cargar las ofertas.");
       } finally {
@@ -69,7 +70,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
       <p className="text-center py-10 text-sm text-red-500">{error}</p>
     );
   }
-
+  console.log("FILTERED:", filtered.length, "SEARCH:", search); // 👈
   return (
     <>
       {/* Header */}
@@ -140,7 +141,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
               {/* Footer */}
               <div className="flex items-center justify-between pt-2 border-t border-gray-100">
                 <span className="text-xs text-[#5F6368]">
-                  ID <strong className="text-[#1D9E75]">#{offer.id}</strong>
+                  <strong className="text-[#1D9E75]">{offer.applicants_count}</strong> postulantes
                 </span>
                 <div className="flex gap-2">
                   {offer.is_active ? (

@@ -1,26 +1,21 @@
 import React, { useState, useEffect } from "react";
 import useCrud from "../hooks/useCrud";
 
+const LEVELS = ["básico", "intermedio", "avanzado"];
+
 const EMPTY_FORM = {
-  title:          "",
-  job_type:       "full_time",
-  location:       "",
-  salary_range:   "",
-  description:    "",
-  deadline:       "",
-  is_active:      true,
-  skills_required: "",
-  required_levels: "",
-  status:         "published",
+  title:           "",
+  job_type:        "Tiempo completo",
+  location:        "Remoto",
+  salary_range:    "No especificado",
+  description:     "",
+  deadline:        "",
+  status:          "published",
+  skills_required: [],
+  required_levels: [],
 };
 
-const JOB_TYPES = [
-  { value: "full_time",  label: "Tiempo completo" },
-  { value: "part_time",  label: "Medio tiempo" },
-  { value: "contract",   label: "Contrato" },
-  { value: "internship", label: "Prácticas" },
-  { value: "remote",     label: "Remoto" },
-];
+const JOB_TYPES = ["Tiempo completo", "Medio tiempo", "Contrato", "Prácticas", "Remoto"];
 
 const STATUSES = [
   { value: "published", label: "Publicada" },
@@ -31,30 +26,50 @@ const STATUSES = [
 
 const inputClass = (hasError) =>
   `w-full border rounded-lg px-3 py-2 text-sm text-[#1C1C1C] bg-white outline-none transition-colors ${
-    hasError
-      ? "border-[#F25F63] focus:border-[#F25F63]"
-      : "border-gray-200 focus:border-[#1D9E75]"
+    hasError ? "border-[#F25F63] focus:border-[#F25F63]" : "border-gray-200 focus:border-[#1D9E75]"
   }`;
 
 const OfferForm = ({ mode = "create", offer = null, onBack }) => {
-  const [form, setForm]       = useState(EMPTY_FORM);
-  const [errors, setErrors]   = useState({});
-  const [loading, setLoading] = useState(false);
+  const [form, setForm]         = useState(EMPTY_FORM);
+  const [errors, setErrors]     = useState({});
+  const [loading, setLoading]   = useState(false);
   const [apiError, setApiError] = useState(null);
 
+  const [skills, setSkills]           = useState([]);
+  const [skillSearch, setSkillSearch] = useState("");
+  const [skillsLoading, setSkillsLoading] = useState(true);
+
   const { insertModel, updateModel } = useCrud("/api/recruiter/jobs");
+  const { getModel: getSkills }      = useCrud("/api/skill");
+
+  useEffect(() => {
+  const fetchSkills = async () => {
+    try {
+      const data = await getSkills();
+      console.log("SKILLS:", data); // 👈
+      setSkills(data.skills ?? []);
+    } catch (err) {
+      console.error("SKILLS ERROR:", err); // 👈
+      setSkills([]);
+    } finally {
+      setSkillsLoading(false);
+    }
+  };
+  fetchSkills();
+}, []);
 
   useEffect(() => {
     if (mode === "edit" && offer) {
       setForm({
         title:           offer.title           ?? "",
-        job_type:        offer.job_type        ?? "full_time",
-        location:        offer.location        ?? "",
-        salary_range:    offer.salary_range    ?? "",
+        job_type:        offer.job_type        ?? "Tiempo completo",
+        location:        offer.location        ?? "Remoto",
+        salary_range:    offer.salary_range    ?? "No especificado",
         description:     offer.description     ?? "",
         deadline:        offer.deadline        ? offer.deadline.slice(0, 10) : "",
-        is_active:       offer.is_active       ?? true,
         status:          offer.status          ?? "published",
+        skills_required: offer.skills_required ?? [],
+        required_levels: offer.required_levels ?? [],
       });
     } else {
       setForm(EMPTY_FORM);
@@ -63,17 +78,41 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
     setApiError(null);
   }, [mode, offer]);
 
-  const set = (field) => (e) => {
-    const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
-    setForm(prev => ({ ...prev, [field]: value }));
+  const set = (field) => (e) =>
+    setForm(prev => ({ ...prev, [field]: e.target.value }));
+
+  const toggleSkill = (skillId) => {
+    setForm(prev => {
+      const already = prev.skills_required.includes(skillId);
+      return {
+        ...prev,
+        skills_required: already
+          ? prev.skills_required.filter(id => id !== skillId)
+          : [...prev.skills_required, skillId],
+      };
+    });
+  };
+
+  const toggleLevel = (level) => {
+    setForm(prev => {
+      const already = prev.required_levels.includes(level);
+      return {
+        ...prev,
+        required_levels: already
+          ? prev.required_levels.filter(l => l !== level)
+          : [...prev.required_levels, level],
+      };
+    });
   };
 
   const validate = () => {
     const next = {};
-    if (!form.title.trim())           next.title           = "El título es obligatorio.";
-    if (!form.location.trim())        next.location        = "La ubicación es obligatoria.";
-    if (!form.description.trim())     next.description     = "La descripción es obligatoria.";
-    if (!form.deadline)               next.deadline        = "La fecha límite es obligatoria.";
+    if (!form.title.trim())               next.title           = "El título es obligatorio.";
+    if (!form.location.trim())            next.location        = "La ubicación es obligatoria.";
+    if (!form.description.trim())         next.description     = "La descripción es obligatoria.";
+    if (!form.deadline)                   next.deadline        = "La fecha límite es obligatoria.";
+    if (form.skills_required.length === 0) next.skills_required = "Selecciona al menos una habilidad.";
+    if (form.required_levels.length === 0) next.required_levels = "Selecciona al menos un nivel.";
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -87,13 +126,11 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
       title:           form.title.trim(),
       job_type:        form.job_type,
       location:        form.location.trim(),
-      salary_range:    form.salary_range.trim(),
+      salary_range:    form.salary_range.trim() || "No especificado",
       description:     form.description.trim(),
       deadline:        form.deadline,
-      is_active:       true,
-      skills_required: form.skills_required.trim(),
-      required_levels: form.required_levels.trim(),
-      status:          form.status,
+      skills_required: form.skills_required,
+      required_levels: form.required_levels,
     };
 
     try {
@@ -111,6 +148,9 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
   };
 
   const isEdit = mode === "edit";
+  const filteredSkills = skills.filter(s =>
+    s.name.toLowerCase().includes(skillSearch.toLowerCase())
+  );
 
   return (
     <>
@@ -121,7 +161,6 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
         ← Volver a mis ofertas
       </button>
 
-      {/* Header con botón IA */}
       <div className="flex items-center justify-between mb-4">
         <p className="text-[15px] font-medium text-[#1C1C1C]">
           {isEdit ? "Editar oferta" : "Nueva oferta laboral"}
@@ -156,9 +195,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
         <div className="flex flex-col gap-1">
           <label className="text-xs font-medium text-[#5F6368]">Modalidad</label>
           <select value={form.job_type} onChange={set("job_type")} className={inputClass(false)}>
-            {JOB_TYPES.map(j => (
-              <option key={j.value} value={j.value}>{j.label}</option>
-            ))}
+            {JOB_TYPES.map(j => <option key={j}>{j}</option>)}
           </select>
         </div>
 
@@ -166,9 +203,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
         <div className="flex flex-col gap-1">
           <label className="text-xs font-medium text-[#5F6368]">Estado</label>
           <select value={form.status} onChange={set("status")} className={inputClass(false)}>
-            {STATUSES.map(s => (
-              <option key={s.value} value={s.value}>{s.label}</option>
-            ))}
+            {STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
           </select>
         </div>
 
@@ -198,7 +233,7 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
         </div>
 
         {/* Fecha límite */}
-        <div className="flex flex-col gap-1">
+        <div className="col-span-2 flex flex-col gap-1">
           <label className="text-xs font-medium text-[#5F6368]">Fecha límite</label>
           <input
             type="date"
@@ -207,6 +242,78 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
             className={inputClass(errors.deadline)}
           />
           {errors.deadline && <span className="text-[11px] text-[#F25F63]">{errors.deadline}</span>}
+        </div>
+
+        {/* Niveles requeridos */}
+        <div className="col-span-2 flex flex-col gap-1">
+          <label className="text-xs font-medium text-[#5F6368]">Niveles requeridos</label>
+          <div className="flex gap-2">
+            {LEVELS.map(level => {
+              const active = form.required_levels.includes(level);
+              return (
+                <button
+                  key={level}
+                  type="button"
+                  onClick={() => toggleLevel(level)}
+                  className={`h-8 px-4 rounded-full text-xs font-medium border transition-colors capitalize ${
+                    active
+                      ? "bg-[#1D9E75] text-white border-[#1D9E75]"
+                      : "bg-white text-[#5F6368] border-gray-200 hover:border-[#1D9E75] hover:text-[#1D9E75]"
+                  }`}
+                >
+                  {level}
+                </button>
+              );
+            })}
+          </div>
+          {errors.required_levels && <span className="text-[11px] text-[#F25F63]">{errors.required_levels}</span>}
+        </div>
+
+        {/* Skills requeridas */}
+        <div className="col-span-2 flex flex-col gap-1">
+          <label className="text-xs font-medium text-[#5F6368]">
+            Habilidades requeridas
+            {form.skills_required.length > 0 && (
+              <span className="ml-2 bg-[#1D9E75] text-white text-[10px] px-2 py-0.5 rounded-full">
+                {form.skills_required.length} seleccionadas
+              </span>
+            )}
+          </label>
+          <input
+            type="text"
+            placeholder="Buscar habilidad..."
+            value={skillSearch}
+            onChange={e => setSkillSearch(e.target.value)}
+            className={inputClass(errors.skills_required)}
+          />
+          {errors.skills_required && <span className="text-[11px] text-[#F25F63]">{errors.skills_required}</span>}
+
+          <div className="mt-1 max-h-36 overflow-y-auto border border-gray-200 rounded-lg bg-white p-2 flex flex-wrap gap-1.5">
+            {skillsLoading ? (
+              <span className="text-xs text-[#5F6368] p-1">Cargando habilidades...</span>
+            ) : filteredSkills.length === 0 ? (
+              <span className="text-xs text-[#5F6368] p-1">No se encontraron habilidades.</span>
+            ) : (
+              filteredSkills.map(skill => {
+                const active = form.skills_required.includes(skill.id);
+                return (
+                  <button
+                    key={skill.id}
+                    type="button"
+                    onClick={() => toggleSkill(skill.id)}
+                    className={`h-7 px-3 rounded-full text-[11px] font-medium border transition-colors ${
+                      active
+                        ? "bg-[#1D9E75] text-white border-[#1D9E75]"
+                        : "bg-white text-[#5F6368] border-gray-200 hover:border-[#1D9E75] hover:text-[#1D9E75]"
+                    }`}
+                  >
+                    {skill.name}
+                    {skill.category ? <span className="ml-1 opacity-60">· {skill.category}</span> : null}
+                  </button>
+                );
+              })
+            )}
+          </div>
         </div>
 
         {/* Descripción */}
@@ -228,8 +335,8 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
             <input
               type="checkbox"
               id="is_active"
-              checked={form.is_active}
-              onChange={set("is_active")}
+              checked={form.is_active ?? true}
+              onChange={e => setForm(prev => ({ ...prev, is_active: e.target.checked }))}
               className="accent-[#1D9E75] w-4 h-4 cursor-pointer"
             />
             <label htmlFor="is_active" className="text-sm text-[#5F6368] cursor-pointer">
@@ -240,7 +347,6 @@ const OfferForm = ({ mode = "create", offer = null, onBack }) => {
 
       </div>
 
-      {/* Actions */}
       <div className="flex justify-end gap-2">
         <button
           onClick={onBack}
