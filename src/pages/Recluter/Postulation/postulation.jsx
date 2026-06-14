@@ -1,52 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import useCrud from "../../../hooks/useCrud";
 
 import RecruiterLeftSidebar from "../../../components/recruiter/Postulation/Challenge";
 import RecruiterRightSidebar from "../../../components/recruiter/Postulation/Filtro";
 import RecruiterPostulations from "../../../components/recruiter/Postulation/RecrutierPastulations";
 
-const initialApplicants = [
-  {
-    id: 1,
-    name: "Carlos Mendoza",
-    career: "Ingeniería de Software - UTP",
-    cycle: "8vo",
-    email: "pepitogmail.com",
-    cellphone: "054 - 34587",
-    match: 98,
-    status: "revision",
-    softSkills: ["Trabajo en equipo"],
-    knowledge: ["React", "Node.js"],
-  },
-  {
-    id: 2,
-    name: "Valeria Ríos",
-    career: "Ingeniería de Sistemas - UTP",
-    cycle: "9no",
-    email: "pepito@gmail.com",
-    cellphone: "989 123 226",
-    match: 94,
-    status: "entrevista",
-    softSkills: ["Resolución de problemas"],
-    knowledge: ["Next.js"],
-  },
-];
-
 export default function Postulations() {
   const { state } = useLocation();
   const offer = state?.offer;
 
-  // 🔥 ESTADOS GLOBALES (AHORA CORRECTO)
   const [match, setMatch] = useState(0);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [applicants, setApplicants] = useState(initialApplicants);
+  const [applicants, setApplicants] = useState([]);
+  const [jobSkills, setJobSkills] = useState([]);
+
+  // Usamos el custom hook pasándole la ruta completa
+  const { getModel } = useCrud(offer?.id ? `/api/recruiter/jobs/${offer.id}/candidates` : "");
+
+  useEffect(() => {
+    if (offer?.id) {
+      getModel()
+        .then((res) => {
+          if (res?.candidates) {
+            setApplicants(res.candidates);
+          }
+          if (res?.job_skills) {
+            setJobSkills(res.job_skills);
+          }
+        })
+        .catch((err) => console.error("Error fetching candidates:", err));
+    }
+  }, [offer?.id]);
 
   return (
     <div className="w-full flex gap-6 recruiter-theme">
 
       {/* LEFT */}
       <div className="w-[280px] shrink-0">
-        <RecruiterLeftSidebar />
+        <RecruiterLeftSidebar offer={offer} applicants={applicants} />
       </div>
 
       {/* CENTER */}
@@ -70,6 +62,7 @@ export default function Postulations() {
           setSelectedTags={setSelectedTags}
           applicants={applicants}
           setApplicants={setApplicants}
+          jobSkills={jobSkills}
         />
       </div>
 

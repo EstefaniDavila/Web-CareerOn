@@ -72,7 +72,7 @@ export default function AppRoutes() {
         element={
           <Layout>
             <div className="flex gap-6 w-full items-start">
-              <div className="hidden lg:block shrink-0 self-start sticky top-[88px] h-[calc(100vh-88px)] overflow-y-auto custom-scrollbar">
+              <div className="hidden lg:block shrink-0 self-start sticky top-[76px] h-[calc(100vh-76px)] overflow-y-auto custom-scrollbar">
                 <LeftSidebar />
               </div>
               <div className="flex-1 min-w-0 pb-12">

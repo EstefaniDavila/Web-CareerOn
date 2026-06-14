@@ -30,8 +30,8 @@ export default function Layout({ children }) {
         }`}
     >
       {isRecruiter ? <RecruiterNavbar /> : <Navbar />}
-      <main className="flex-1 flex justify-center w-full py-6 px-4 md:px-8">
-        <div className="w-full">
+      <main className="flex-1 flex justify-center w-full py-6">
+        <div className="w-full max-w-[1600px] px-4 md:px-10">
           {children}
         </div>
       </main>

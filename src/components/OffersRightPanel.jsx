@@ -1,9 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import OffersList from "./OffersList";
 import OfferForm from "./OfferForm";
 import DeleteConfirmModal from "./DeleteConfirmModal";
 
 const OffersRightPanel = ({ view, selectedOffer, onViewChange, onEdit, onDeletePick }) => {
+  const navigate = useNavigate();
   return (
     <div className="flex-1 bg-[#F3F3F3] rounded-xl p-5 min-w-0">
       {view === "list" && (
@@ -16,7 +18,7 @@ const OffersRightPanel = ({ view, selectedOffer, onViewChange, onEdit, onDeleteP
       {view === "create" && (
         <OfferForm
           mode="create"
-          onBack={() => onViewChange("list")}
+          onBack={() => navigate("/recruiter/dashboard")}
         />
       )}
 
@@ -24,7 +26,7 @@ const OffersRightPanel = ({ view, selectedOffer, onViewChange, onEdit, onDeleteP
         <OfferForm
           mode="edit"
           offer={selectedOffer}
-          onBack={() => onViewChange("list")}
+          onBack={() => navigate("/recruiter/dashboard")}
         />
       )}
 

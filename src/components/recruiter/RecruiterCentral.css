@@ -251,6 +251,7 @@
   justify-content: space-between;
   flex: 1;
   font-size: 13px;
+  gap: 8px;
 }
 
 .activity-text {
@@ -265,4 +266,5 @@
 .activity-time {
   font-size: 11px;
   color: #5F6368;
+  white-space: nowrap;
 }

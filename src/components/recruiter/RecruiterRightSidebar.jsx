@@ -1,10 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './RecruiterRightSidebar.css';
+import useCrud from "../../hooks/useCrud";
 
 const RecruiterRightSidebar = () => {
+  const [dashboardData, setDashboardData] = useState(null);
+  const { getModel: getDashboard } = useCrud('/api/recruiter/dashboard');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const dashboard = await getDashboard();
+        if (dashboard) {
+          setDashboardData(dashboard);
+        }
+      } catch (error) {
+        console.error('Error fetching dashboard data for right sidebar:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const formatTimeAgo = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    
+    if (diffInSeconds < 60) return 'hace un momento';
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes < 60) return `hace ${diffInMinutes} min`;
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) return `hace ${diffInHours} h`;
+    const diffInDays = Math.floor(diffInHours / 24);
+    return `hace ${diffInDays} d`;
+  };
+
+  const recentActivities = dashboardData?.recent_activities || [];
+  const iaInsight = dashboardData?.ia_insight;
+  const dotColors = ['dot-purple', 'dot-teal', 'dot-red'];
+
   return (
     <div className="recruiter-right-sidebar">
-      {/* Quick Action Buttons */}
       <div className="quick-actions-container">
         <button className="quick-action-btn talent-search-btn">
           <span className="action-icon">✨</span>
@@ -13,108 +49,42 @@ const RecruiterRightSidebar = () => {
             <span className="action-subtitle">Matchmaking automático UTP</span>
           </div>
         </button>
-        
-        <button className="quick-action-btn publish-offer-btn">
-          <span className="action-icon">➕</span>
-          <div className="action-text-layout">
-            <span className="action-title">Publicar nueva oferta</span>
-          </div>
-        </button>
       </div>
 
-      {/* Top Candidatos IA Card */}
-      <div className="glass-card candidates-card">
-        <h3 className="section-title">TOP CANDIDATOS IA</h3>
-        
-        <div className="candidates-list">
-          {/* Candidate 1 */}
-          <div className="candidate-item">
-            <div className="candidate-header">
-              <div className="candidate-avatar avatar-purple">CM</div>
-              <div className="candidate-info">
-                <h4>Carlos Mendoza</h4>
-                <p>Ing. Software · UTP · 8vo ciclo</p>
-              </div>
-            </div>
-            
-            <div className="match-score-section">
-              <div className="match-text-row">
-                <span className="match-percentage">98% match</span>
-              </div>
-              <div className="match-progress-bar">
-                <div className="match-progress-fill fill-purple" style={{ width: '98%' }}></div>
-              </div>
-            </div>
+      <div className="glass-card recent-activity-card">
+        <h3 className="section-title">ACTIVIDAD RECIENTE</h3>
 
-            <div className="candidate-actions">
-              <button className="candidate-btn btn-secondary">Contactar</button>
-              <button className="candidate-btn btn-primary-recruiter">Ver perfil</button>
-            </div>
-          </div>
-
-          {/* Candidate 2 */}
-          <div className="candidate-item">
-            <div className="candidate-header">
-              <div className="candidate-avatar avatar-teal">VR</div>
-              <div className="candidate-info">
-                <h4>Valeria Rios</h4>
-                <p>Ing. Sistemas · UTP · Egresada</p>
+        <div className="activity-list">
+          {recentActivities.length > 0 ? (
+            recentActivities.map((activity, index) => (
+              <div className="activity-item" key={activity.id}>
+                <div className={`activity-dot ${dotColors[index % dotColors.length]}`}></div>
+                <div className="activity-info">
+                  <p className="activity-text"><strong>{activity.student_name}</strong> postuló a <strong>{activity.job_title}</strong></p>
+                  <span className="activity-time">{formatTimeAgo(activity.created_at)}</span>
+                </div>
               </div>
-            </div>
-            
-            <div className="match-score-section">
-              <div className="match-text-row">
-                <span className="match-percentage">94% match</span>
-              </div>
-              <div className="match-progress-bar">
-                <div className="match-progress-fill fill-teal" style={{ width: '94%' }}></div>
-              </div>
-            </div>
-
-            <div className="candidate-actions">
-              <button className="candidate-btn btn-secondary">Contactar</button>
-              <button className="candidate-btn btn-primary-recruiter">Ver perfil</button>
-            </div>
-          </div>
-
-          {/* Candidate 3 */}
-          <div className="candidate-item">
-            <div className="candidate-header">
-              <div className="candidate-avatar avatar-blue">JP</div>
-              <div className="candidate-info">
-                <h4>José Paredes</h4>
-                <p>Ing. Software · UTP · 9no ciclo</p>
-              </div>
-            </div>
-            
-            <div className="match-score-section">
-              <div className="match-text-row">
-                <span className="match-percentage">88% match</span>
-              </div>
-              <div className="match-progress-bar">
-                <div className="match-progress-fill fill-blue" style={{ width: '88%' }}></div>
-              </div>
-            </div>
-
-            <div className="candidate-actions">
-              <button className="candidate-btn btn-secondary">Contactar</button>
-              <button className="candidate-btn btn-primary-recruiter">Ver perfil</button>
-            </div>
-          </div>
+            ))
+          ) : (
+            <p className="text-sm text-gray-500 italic">No hay actividad reciente.</p>
+          )}
         </div>
       </div>
-
-      {/* Insight IA Card */}
-      <div className="insight-ia-card">
-        <div className="insight-header">
-          <span className="insight-icon">✨</span>
-          <h4>Insight IA</h4>
+      
+      {iaInsight && (
+        <div className="insight-ia-card">
+          <div className="insight-header">
+            <span className="insight-icon">✨</span>
+            <h4>{iaInsight.title}</h4>
+          </div>
+          <p className="insight-body">
+            {iaInsight.message.split('**').map((text, i) => (
+              i % 2 === 1 ? <strong key={i}>{text}</strong> : text
+            ))}
+          </p>
+          <button className="insight-cta-btn">Ver análisis completo →</button>
         </div>
-        <p className="insight-body">
-          <strong>Carlos Mendoza</strong> completó una simulación de entrevista técnica con puntaje <strong>9.2/10</strong> para el puesto de React. Es tu candidato más fuerte esta semana.
-        </p>
-        <button className="insight-cta-btn">Ver análisis completo →</button>
-      </div>
+      )}
     </div>
   );
 };

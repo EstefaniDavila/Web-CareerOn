@@ -4,9 +4,9 @@
   gap: 24px;
   width: 300px;
   position: sticky;
-  top: 88px;
+  top: 76px;
   align-self: flex-start;
-  max-height: calc(100vh - 100px);
+  max-height: calc(100vh - 88px);
   overflow-y: auto;
 }
 
