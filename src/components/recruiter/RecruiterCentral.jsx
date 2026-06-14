@@ -27,14 +27,12 @@ const RecruiterCentral = () => {
             + Nueva oferta
           </button>
         </div>
-<<<<<<< HEAD
+
         <OffersList
   onEdit={(offer) => navigate('/offers', { state: { view: 'edit', offer } })}
   onDeletePick={(offer) => navigate('/offers', { state: { view: 'delete-confirm', offer } })}
 />
-=======
-        <OffersList onEdit={handleEdit} onDeletePick={handleDeletePick} />
->>>>>>> master
+
       </div>
     </div>
   );
