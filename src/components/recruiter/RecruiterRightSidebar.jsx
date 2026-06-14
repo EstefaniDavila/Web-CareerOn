@@ -1,7 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './RecruiterRightSidebar.css';
+import useCrud from "../../hooks/useCrud";
 
 const RecruiterRightSidebar = () => {
+  const [dashboardData, setDashboardData] = useState(null);
+  const { getModel: getDashboard } = useCrud('/api/recruiter/dashboard');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const dashboard = await getDashboard();
+        if (dashboard) {
+          setDashboardData(dashboard);
+        }
+      } catch (error) {
+        console.error('Error fetching dashboard data for right sidebar:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const formatTimeAgo = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    
+    if (diffInSeconds < 60) return 'hace un momento';
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes < 60) return `hace ${diffInMinutes} min`;
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) return `hace ${diffInHours} h`;
+    const diffInDays = Math.floor(diffInHours / 24);
+    return `hace ${diffInDays} d`;
+  };
+
+  const recentActivities = dashboardData?.recent_activities || [];
+  const iaInsight = dashboardData?.ia_insight;
+  const dotColors = ['dot-purple', 'dot-teal', 'dot-red'];
+
   return (
     <div className="recruiter-right-sidebar">
       <div className="quick-actions-container">
@@ -18,41 +55,36 @@ const RecruiterRightSidebar = () => {
         <h3 className="section-title">ACTIVIDAD RECIENTE</h3>
 
         <div className="activity-list">
-          <div className="activity-item">
-            <div className="activity-dot dot-purple"></div>
-            <div className="activity-info">
-              <p className="activity-text"><strong>Carlos M.</strong> postuló a <strong>Dev React Senior</strong></p>
-              <span className="activity-time">hace 10 min</span>
-            </div>
-          </div>
-
-          <div className="activity-item">
-            <div className="activity-dot dot-teal"></div>
-            <div className="activity-info">
-              <p className="activity-text">La IA encontró <strong>3 nuevos matches</strong> para <strong>Analista Datos</strong></p>
-              <span className="activity-time">hace 1 h</span>
-            </div>
-          </div>
-
-          <div className="activity-item">
-            <div className="activity-dot dot-red"></div>
-            <div className="activity-info">
-              <p className="activity-text"><strong>Valeria R.</strong> completó simulación de entrevista</p>
-              <span className="activity-time">hace 3 h</span>
-            </div>
-          </div>
+          {recentActivities.length > 0 ? (
+            recentActivities.map((activity, index) => (
+              <div className="activity-item" key={activity.id}>
+                <div className={`activity-dot ${dotColors[index % dotColors.length]}`}></div>
+                <div className="activity-info">
+                  <p className="activity-text"><strong>{activity.student_name}</strong> postuló a <strong>{activity.job_title}</strong></p>
+                  <span className="activity-time">{formatTimeAgo(activity.created_at)}</span>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-sm text-gray-500 italic">No hay actividad reciente.</p>
+          )}
         </div>
       </div>
-      <div className="insight-ia-card">
-        <div className="insight-header">
-          <span className="insight-icon">✨</span>
-          <h4>Insight IA</h4>
+      
+      {iaInsight && (
+        <div className="insight-ia-card">
+          <div className="insight-header">
+            <span className="insight-icon">✨</span>
+            <h4>{iaInsight.title}</h4>
+          </div>
+          <p className="insight-body">
+            {iaInsight.message.split('**').map((text, i) => (
+              i % 2 === 1 ? <strong key={i}>{text}</strong> : text
+            ))}
+          </p>
+          <button className="insight-cta-btn">Ver análisis completo →</button>
         </div>
-        <p className="insight-body">
-          <strong>Carlos Mendoza</strong> completó una simulación de entrevista técnica con puntaje <strong>9.2/10</strong> para el puesto de React. Es tu candidato más fuerte esta semana.
-        </p>
-        <button className="insight-cta-btn">Ver análisis completo →</button>
-      </div>
+      )}
     </div>
   );
 };
