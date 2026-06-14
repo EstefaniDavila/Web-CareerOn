@@ -23,9 +23,9 @@ export default function JobSwipe() {
     // Si no tienes un endpoint de jobs publico, usa mocks. Asumimos que `/api/jobs` funciona.
     const fetchJobs = async () => {
       try {
-        const data = await getModel('/api/jobs');
-        if (data && data.data) {
-          setJobs(data.data);
+        const data = await getModel('/api/student/jobs');
+        if (data) {
+          setJobs(data);
         }
       } catch (error) {
         console.error("Error fetching jobs:", error);
