@@ -18,6 +18,7 @@ import Rprofile from "../pages/recruiter/Rprofile";
 import MyApplications from "../components/student/MyApplications";
 import LeftSidebar from "../components/LeftSidebar";
 import MockInterview from "../components/MockInterview";
+import Missions from "../pages/student/mission"
 
 export default function AppRoutes() {
   const isAuthenticated = !!localStorage.getItem("mock_token");
@@ -171,6 +172,14 @@ export default function AppRoutes() {
         element={
           <Layout>
             <MockInterview />
+          </Layout>
+        }
+      />
+        <Route
+        path="/challenge"
+        element={
+          <Layout>
+            <Missions />
           </Layout>
         }
       />

@@ -72,6 +72,12 @@ const LeftSidebar = () => {
           <li className={location.pathname === '/applications' ? 'active' : ''} onClick={() => navigate('/applications')}>
             <span className="icon">📝</span> Mis Postulaciones
           </li>
+          <li className={location.pathname === '/challenge' ? 'active' : ''} onClick={() => navigate('/challenge')}>
+            <span className="icon">🏆</span> Mis Misiones
+          </li>
+          <li>
+            <span className="icon">💬</span> Mensajes <span className="notification-badge">2</span>
+          </li>
           <li className={location.pathname === '/profile' ? 'active' : ''} onClick={() => navigate('/profile')}>
             <span className="icon">👤</span> Mi perfil
           </li>
