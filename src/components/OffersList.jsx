@@ -4,16 +4,16 @@ import { useNavigate } from "react-router-dom";
 
 
 const STATUS_CONFIG = {
-  true:  { label: "Activa",  className: "bg-emerald-50 text-emerald-800" },
+  true: { label: "Activa", className: "bg-emerald-50 text-emerald-800" },
   false: { label: "Cerrada", className: "bg-red-50 text-red-800" },
 };
 
 const JOB_TYPE_LABELS = {
-  full_time:  "Tiempo completo",
-  part_time:  "Medio tiempo",
-  contract:   "Contrato",
+  full_time: "Tiempo completo",
+  part_time: "Medio tiempo",
+  contract: "Contrato",
   internship: "Prácticas",
-  remote:     "Remoto",
+  remote: "Remoto",
 };
 
 const OffersList = ({ onEdit, onDeletePick }) => {
@@ -31,7 +31,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
         setLoading(true);
         const data = await getModel();
         setOffers(data.jobs ?? []);
-        console.log("OFFERS STATE:", data.jobs?.length); // 👈
+        console.log("OFFERS STATE:", data.jobs?.length);
       } catch (err) {
         setError("No se pudieron cargar las ofertas.");
       } finally {
@@ -73,7 +73,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
       <p className="text-center py-10 text-sm text-red-500">{error}</p>
     );
   }
-  console.log("FILTERED:", filtered.length, "SEARCH:", search); // 👈
+  console.log("FILTERED:", filtered.length, "SEARCH:", search);
   return (
     <>
       {/* Header */}
@@ -139,6 +139,11 @@ const OffersList = ({ onEdit, onDeletePick }) => {
                   <span className="text-[11px] text-[#5F6368]">💰 {offer.salary_range}</span>
                 )}
                 <span className="text-[11px] text-[#5F6368]">📅 {formatDate(offer.created_at)}</span>
+                {offer.deadline && (
+                  <span className="text-[11px] text-[#5F6368]">
+                    ⏳ Cierra: {new Date(offer.deadline).toLocaleDateString("es-PE")}
+                  </span>
+                )}
               </div>
 
               {/* Footer */}
