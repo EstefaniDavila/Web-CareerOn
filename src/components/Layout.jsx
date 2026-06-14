@@ -1,7 +1,7 @@
-import { useLocation } from "react-router-dom";
 import { useUserStatus } from "../hooks/useUserStatus";
 import Navbar from "./Navbar";
 import RecruiterNavbar from "./recruiter/RecruiterNavbar";
+import { useLocation, matchPath } from "react-router-dom";
 
 export default function Layout({ children }) {
   const { userType, loading } = useUserStatus();
@@ -19,19 +19,18 @@ export default function Layout({ children }) {
     userType === "Empresa" ||
     location.pathname === "/recruiter/dashboard" ||
     location.pathname === "/recruiter/profile" ||
-    location.pathname === "/offers";
+    location.pathname === "/offers" ||
+     matchPath("/offers/:id", location.pathname);
 
   return (
     <div
-      className={`flex flex-col min-h-screen ${
-        isRecruiter
-          ? "recruiter-theme bg-[var(--color-brand-bg)]"
-          : "bg-[var(--color-brand-bg)]"
-      }`}
+      className={`flex flex-col min-h-screen ${isRecruiter
+        ? "recruiter-theme bg-[var(--color-brand-bg)]"
+        : "bg-[var(--color-brand-bg)]"
+        }`}
     >
       {isRecruiter ? <RecruiterNavbar /> : <Navbar />}
-
-      <main className="flex-1 flex justify-center py-6 px-4 md:px-8 w-full">
+      <main className="flex-1 flex justify-center w-full py-6 px-4 md:px-8">
         <div className="w-full">
           {children}
         </div>

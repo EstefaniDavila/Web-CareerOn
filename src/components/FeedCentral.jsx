@@ -249,6 +249,12 @@ const FeedCentral = () => {
                               <FiCheckCircle /> ¡Optimicemos tu CV ahora!
                             </button>
                             <button
+                              onClick={() => navigate(`/interview/${evaluatingJob.id}`)}
+                              className="w-full py-3.5 bg-[var(--color-brand-primary)] text-white font-bold rounded-xl hover:opacity-90 shadow-md transition-colors flex items-center justify-center gap-2"
+                            >
+                              🎤 Simular Entrevista (Cam + IA)
+                            </button>
+                            <button
                               onClick={(e) => handleApply(evaluatingJob, e)}
                               disabled={applyingJobId === evaluatingJob.id}
                               className="w-full py-3 bg-gray-100 text-gray-600 font-semibold rounded-xl hover:bg-gray-200 transition-colors disabled:opacity-50 text-sm"
@@ -300,9 +306,24 @@ const FeedCentral = () => {
                   <p className="text-gray-600 text-sm md:text-base leading-relaxed pr-0 md:pr-4">
                     {job.description}
                   </p>
+
+                  <div className="flex flex-wrap gap-3 mt-5">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); handleEvaluateCV(job); }}
+                      className="px-5 py-2.5 border-2 border-[var(--color-brand-primary)] text-[var(--color-brand-primary)] font-bold text-sm rounded-xl hover:bg-blue-50 transition-colors flex items-center gap-2 shadow-sm"
+                    >
+                      <FiCpu size={18} /> Evaluar CV IA
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); navigate(`/interview/${job.id}`); }}
+                      className="px-5 py-2.5 bg-[#5B34F2] text-white font-bold text-sm rounded-xl hover:bg-[#4A2BC4] transition-colors flex items-center gap-2 shadow-sm"
+                    >
+                      🎤 Simular Entrevista
+                    </button>
+                  </div>
                 </div>
 
-                <div className="w-full md:w-56 flex flex-col gap-3 shrink-0 mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
+                <div className="w-full md:w-48 flex flex-col gap-3 shrink-0 mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
                   <button
                     onClick={(e) => { e.stopPropagation(); handleSaveJob(job); }}
                     className="hidden md:flex items-center justify-center gap-2 p-2.5 text-gray-500 hover:text-[var(--color-brand-accent)] hover:bg-orange-50 rounded-xl transition-colors font-medium border border-transparent hover:border-orange-100"
@@ -316,13 +337,6 @@ const FeedCentral = () => {
                     className="w-full bg-gray-900 text-white font-bold text-sm py-3.5 rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50"
                   >
                     {applyingJobId === job.id ? 'Enviando...' : 'Postular Ahora'}
-                  </button>
-
-                  <button
-                    onClick={(e) => { e.stopPropagation(); handleEvaluateCV(job); }}
-                    className="w-full border-2 border-[var(--color-brand-primary)] text-[var(--color-brand-primary)] font-bold text-sm py-3.5 rounded-xl hover:bg-blue-50 transition-colors flex items-center justify-center gap-2 shadow-sm"
-                  >
-                    <FiCpu size={18} /> Evaluar CV IA
                   </button>
                 </div>
               </div>
@@ -421,19 +435,27 @@ const FeedCentral = () => {
             </div>
 
             {/* Footer flotante con IA */}
-            <div className="p-4 md:p-6 border-t border-gray-100 bg-gray-50 flex items-center justify-between mt-auto">
-              <div>
-                <p className="text-sm font-bold text-gray-900 flex items-center gap-2">
-                  <FiCpu className="text-[var(--color-brand-accent)]" /> ¿No estás seguro si encajas?
+            <div className="p-4 md:p-6 border-t border-gray-100 bg-gray-50 flex flex-col md:flex-row items-center justify-between mt-auto gap-4">
+              <div className="w-full md:w-auto text-center md:text-left">
+                <p className="text-sm font-bold text-gray-900 flex items-center justify-center md:justify-start gap-2">
+                  <FiCpu className="text-[var(--color-brand-accent)]" /> ¿Preparado para postular?
                 </p>
-                <p className="text-xs text-gray-500 hidden md:block">Nuestra IA puede evaluar tu CV contra esta vacante en segundos.</p>
+                <p className="text-xs text-gray-500 hidden md:block">Nuestra IA puede evaluar tu CV o simular una entrevista.</p>
               </div>
-              <button
-                onClick={() => { handleEvaluateCV(selectedJob); setSelectedJob(null); }}
-                className="px-6 py-2.5 border-2 border-[var(--color-brand-accent)] text-[var(--color-brand-accent)] font-bold rounded-xl hover:bg-orange-50 transition-colors flex items-center justify-center gap-2 text-sm shadow-sm bg-white"
-              >
-                Analizar con IA
-              </button>
+              <div className="flex gap-3 w-full md:w-auto">
+                <button
+                  onClick={() => { handleEvaluateCV(selectedJob); setSelectedJob(null); }}
+                  className="flex-1 md:flex-none px-6 py-2.5 border-2 border-[var(--color-brand-accent)] text-[var(--color-brand-accent)] font-bold rounded-xl hover:bg-orange-50 transition-colors flex items-center justify-center gap-2 text-sm shadow-sm bg-white"
+                >
+                  Analizar CV
+                </button>
+                <button
+                  onClick={() => navigate(`/interview/${selectedJob.id}`)}
+                  className="flex-1 md:flex-none px-6 py-2.5 bg-[#5B34F2] text-white font-bold rounded-xl hover:bg-[#4A2BC4] transition-colors flex items-center justify-center gap-2 text-sm shadow-sm"
+                >
+                  🎤 Entrevista IA
+                </button>
+              </div>
             </div>
           </div>
         </div>

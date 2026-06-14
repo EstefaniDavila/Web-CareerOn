@@ -3,7 +3,7 @@ import { msalInstance } from '../main'; // Asegúrate de exportar msalInstance d
 import { loginRequest } from '../authConfig';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api', // Ajusta esto al puerto real de tu backend
+  baseURL: 'http://localhost:8000/api',
 });
 
 api.interceptors.request.use(
@@ -18,9 +18,18 @@ api.interceptors.request.use(
         });
 
         config.headers.Authorization = `Bearer ${response.idToken}`;
+      } else {
+        const mockToken = localStorage.getItem("mock_token");
+        if (mockToken) {
+          config.headers.Authorization = `Bearer ${mockToken}`;
+        }
       }
     } catch (error) {
-      console.warn('No se pudo obtener el token silenciosamente. El usuario quizá deba volver a loguearse.', error);
+      console.warn('No se pudo obtener el token de MSAL, usando mock_token...', error);
+      const mockToken = localStorage.getItem("mock_token");
+      if (mockToken) {
+        config.headers.Authorization = `Bearer ${mockToken}`;
+      }
     }
 
     return config;

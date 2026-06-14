@@ -1,18 +1,22 @@
+/* RecruiterNavbar.css - Mismo estilo que Navbar.css */
+
 .recruiter-navbar {
-  background-color: #4320C9; /* Morado oscuro */
-  height: 68px;
+  background-color: var(--color-brand-surface);
+  height: 64px;
   display: flex;
   justify-content: center;
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 4px 20px rgba(67, 32, 201, 0.15);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
 .recruiter-navbar-content {
   width: 100%;
-  max-width: 1280px;
-  padding: 0 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -23,179 +27,73 @@
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   cursor: pointer;
 }
 
-.recruiter-navbar-logo .logo-career {
-  color: #FFFFFF;
+.logo-career {
+  color: var(--color-brand-text);
 }
 
-.recruiter-navbar-logo .logo-on {
-  color: #F25F63; /* Rojo institucional / destacado */
+.logo-on {
+  color: #1C6B72;
   font-weight: 800;
 }
 
 .logo-badge-recruiter {
-  background-color: #F25F63; /* Rojo institucional */
-  color: #FFFFFF;
-  font-size: 11px;
+  background-color: var(--color-brand-accent);
+  color: white;
+  font-size: 10px;
   font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(242, 95, 99, 0.3);
-}
-
-.recruiter-navbar-search {
-  background-color: rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
-  padding: 8px 18px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 380px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.3s ease;
-}
-
-.recruiter-navbar-search:focus-within {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
-}
-
-.recruiter-navbar-search .search-icon {
-  width: 18px;
-  height: 18px;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.recruiter-navbar-search input {
-  background: transparent;
-  border: none;
-  outline: none;
-  color: #FFFFFF;
-  width: 100%;
-  font-size: 14px;
-}
-
-.recruiter-navbar-search input::placeholder {
-  color: rgba(255, 255, 255, 0.65);
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-left: 6px;
+  vertical-align: middle;
 }
 
 .recruiter-navbar-links {
   display: flex;
-  gap: 8px;
+  gap: 32px;
   align-items: center;
 }
 
 .recruiter-navbar-links .nav-item {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  color: rgba(255, 255, 255, 0.75);
+  gap: 4px;
+  color: var(--color-brand-subtext);
   cursor: pointer;
-  padding: 8px 16px;
-  border-radius: 20px;
-  transition: all 0.2s ease;
   position: relative;
+  transition: color 0.2s;
 }
 
 .recruiter-navbar-links .nav-item:hover {
-  color: #FFFFFF;
-  background-color: rgba(255, 255, 255, 0.08);
+  color: #1C6B72;
 }
 
 .recruiter-navbar-links .nav-item.active {
-  color: #FFFFFF;
-  background-color: rgba(255, 255, 255, 0.15);
-  font-weight: 600;
+  color: #1C6B72;
+}
+
+.recruiter-navbar-links .nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -14px;
+  width: 100%;
+  height: 3px;
+  background-color: #1C6B72;
+  border-radius: 2px 2px 0 0;
 }
 
 .recruiter-navbar-links .nav-item svg {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
 }
 
 .recruiter-navbar-links .nav-item span {
-  font-size: 13px;
-}
-
-.recruiter-navbar-profile {
-  position: relative;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-.recruiter-navbar-profile .profile-circle {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background-color: #0F6C7A; /* Azul petróleo */
-  color: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.recruiter-navbar-profile .profile-circle:hover {
-  transform: scale(1.05);
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
-.recruiter-navbar-profile .profile-dropdown {
-  position: absolute;
-  top: 52px;
-  right: 0;
-  background: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  width: 240px;
-  z-index: 1000;
-  overflow: hidden;
-  animation: dropdownFade 0.2s ease forwards;
-}
-
-@keyframes dropdownFade {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.recruiter-navbar-profile .dropdown-header {
-  padding: 16px;
-  background-color: #F8FAFC;
-  border-bottom: 1px solid #E2E8F0;
-}
-
-.recruiter-navbar-profile .dropdown-header strong {
-  display: block;
-  color: #1C1C1C;
-  font-size: 15px;
-}
-
-.recruiter-navbar-profile .dropdown-header p {
-  margin: 4px 0 0;
   font-size: 12px;
-  color: #5F6368;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: 500;
 }
 
 .recruiter-navbar-profile .dropdown-divider {
@@ -212,7 +110,8 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: black; /* Rojo institucional para cerrar sesión */
+  color: black;
+  /* Rojo institucional para cerrar sesión */
   font-weight: 600;
   font-size: 14px;
   text-align: left;
@@ -230,8 +129,8 @@
 
 .recruiter-navbar-links .nav-item .badge {
   position: absolute;
-  top: -2px;
-  right: 4px;
+  top: -5px;
+  right: 5px;
   background-color: var(--color-brand-accent);
   color: white;
   font-size: 10px;
@@ -242,5 +141,81 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.recruiter-navbar-profile {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.profile-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #1C6B72;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 220px;
+  z-index: 1000;
+}
+
+.dropdown-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dropdown-header strong {
+  display: block;
+  color: var(--text-dark);
+}
+
+.dropdown-header p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: var(--border-color);
+}
+
+.dropdown-item {
+  width: 100%;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #DC2626;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.dropdown-item:hover {
+  background: #FFF0F0;
+}
+
+.dropdown-item svg {
+  width: 18px;
+  height: 18px;
 }

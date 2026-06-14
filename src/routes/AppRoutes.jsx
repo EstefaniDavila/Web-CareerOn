@@ -9,6 +9,7 @@ import Unauthorized from "../pages/errors/Unauthorized";
 import Offers from "../pages/offers/Offers";
 import CvOptimizer from "../pages/cv/CvOptimizer";
 import JobSwipe from "../pages/student/JobSwipe";
+import OfferDetail from "../pages/Recluter/Postulation/postulation";
 import Profile from "../pages/student/Profile";
 import Favorites from "../pages/student/Favorites";
 import Events from "../pages/student/Events";
@@ -16,15 +17,22 @@ import Stats from "../pages/student/Stats";
 import Rprofile from "../pages/recruiter/Rprofile";
 import MyApplications from "../components/student/MyApplications";
 import LeftSidebar from "../components/LeftSidebar";
+import MockInterview from "../components/MockInterview";
 
 export default function AppRoutes() {
   const isAuthenticated = !!localStorage.getItem("mock_token");
+  let redirectPath = "/dashboard";
+  try {
+    const userData = JSON.parse(localStorage.getItem("user_data"));
+    if (userData && userData.type === "Pending") redirectPath = "/onboarding";
+    else if (userData && userData.type === "Recruiter") redirectPath = "/recruiter/dashboard";
+  } catch (e) {}
 
   return (
     <Routes>
       <Route
         path="/"
-        element={isAuthenticated ? <Navigate to="/onboarding" replace /> : <Login />}
+        element={isAuthenticated ? <Navigate to={redirectPath} replace /> : <Login />}
       />
 
       <Route path="/unauthorized" element={<Unauthorized />} />
@@ -85,6 +93,15 @@ export default function AppRoutes() {
         }
       />
 
+      <Route
+        path="/offers/:id"
+        element={
+          <Layout>
+            <OfferDetail />
+          </Layout>
+        }
+      />
+
       {/* Aquí podemos agregar más rutas protegidas para CV Optimizer, Talent Search, etc */}
       <Route
         path="/explorar"
@@ -138,6 +155,22 @@ export default function AppRoutes() {
         element={
           <Layout>
             <Stats />
+          </Layout>
+        }
+      />
+      <Route
+        path="/interview"
+        element={
+          <Layout>
+            <MockInterview />
+          </Layout>
+        }
+      />
+      <Route
+        path="/interview/:jobId"
+        element={
+          <Layout>
+            <MockInterview />
           </Layout>
         }
       />
