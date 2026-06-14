@@ -4,14 +4,14 @@ import { FiMapPin, FiClock, FiCheckCircle, FiBriefcase } from 'react-icons/fi';
 
 const COLUMNS = [
   { id: 'Pendiente', apiId: 'Pendiente', label: 'Postulado', color: 'bg-gray-100', text: 'text-gray-600' },
-  { id: 'En_revision', apiId: 'En revision', label: 'En Revisión', color: 'bg-blue-50', text: 'text-blue-600' },
+  { id: 'En_revision', apiId: 'En_revision', label: 'En Revisión', color: 'bg-blue-50', text: 'text-blue-600' },
   { id: 'Entrevista', apiId: 'Entrevista', label: 'Entrevista', color: 'bg-purple-50', text: 'text-purple-600' },
   { id: 'Rechazado', apiId: 'Rechazado', label: 'Rechazado', color: 'bg-red-50', text: 'text-red-600' },
 ];
 
 const BADGE = {
   'Pendiente': { label: 'Postulado', cls: 'bg-gray-100 text-gray-600', icon: '🕐' },
-  'En revision': { label: 'En Revisión', cls: 'bg-blue-50 text-blue-800', icon: '👁' },
+  'En_revision': { label: 'En_Revisión', cls: 'bg-blue-50 text-blue-800', icon: '👁' },
   'Entrevista': { label: 'Entrevista', cls: 'bg-purple-50 text-purple-800', icon: '👥' },
   'Rechazado': { label: 'Rechazado', cls: 'bg-red-50 text-red-800', icon: '✕' },
 };
@@ -30,10 +30,12 @@ export default function MyApplications() {
       try {
         setLoading(true);
         const results = await Promise.all(
-          COLUMNS.map(col =>
-            getModel(`/api/student/applications/${encodeURIComponent(col.apiId)}`).catch(() => [])
-          )
-        );
+  COLUMNS.map(col =>
+    getModel(`/api/student/applications/${encodeURIComponent(col.apiId)}`)
+      .then(r => { console.log(`${col.id}:`, r); return r; })
+      .catch(err => { console.error(`${col.id} ERROR:`, err); return []; })
+  )
+);
         const newCols = {};
         COLUMNS.forEach((col, i) => {
           const data = results[i];
