@@ -1,139 +1,153 @@
 import React, { useState, useEffect } from 'react';
 import useCrud from '../../hooks/useCrud';
-import { FiBriefcase, FiMapPin, FiClock, FiCheckCircle, FiXCircle, FiMoreHorizontal } from 'react-icons/fi';
+import { FiMapPin, FiClock, FiCheckCircle, FiBriefcase } from 'react-icons/fi';
+
+const COLUMNS = [
+  { id: 'Pendiente',   apiId: 'Pendiente',   label: 'Postulado',   color: 'bg-gray-100',  text: 'text-gray-600'   },
+  { id: 'En_revision', apiId: 'En revision', label: 'En Revisión', color: 'bg-blue-50',   text: 'text-blue-600'   },
+  { id: 'Entrevista',  apiId: 'Entrevista',  label: 'Entrevista',  color: 'bg-purple-50', text: 'text-purple-600' },
+  { id: 'Rechazado',   apiId: 'Rechazado',   label: 'Rechazado',   color: 'bg-red-50',    text: 'text-red-600'    },
+];
+
+const BADGE = {
+  'Pendiente':   { label: 'Postulado',   cls: 'bg-gray-100 text-gray-600',    icon: '🕐' },
+  'En revision': { label: 'En Revisión', cls: 'bg-blue-50 text-blue-800',     icon: '👁' },
+  'Entrevista':  { label: 'Entrevista',  cls: 'bg-purple-50 text-purple-800', icon: '👥' },
+  'Rechazado':   { label: 'Rechazado',   cls: 'bg-red-50 text-red-800',       icon: '✕'  },
+};
 
 export default function MyApplications() {
   const { getModel } = useCrud('/api/student/applications');
+  const [columns, setColumns] = useState(Object.fromEntries(COLUMNS.map(c => [c.id, []])));
   const [loading, setLoading] = useState(true);
-  
-  // Kanban state
-  const [columns, setColumns] = useState({
-    'Pendiente': { name: 'Postulado', items: [] },
-    'En Revisión': { name: 'En Revisión', items: [] },
-    'Entrevista': { name: 'Entrevista', items: [] },
-    'Oferta': { name: 'Oferta', items: [] },
-    'Rechazado': { name: 'Rechazado', items: [] }
-  });
 
   useEffect(() => {
-    const fetchApplications = async () => {
+    const fetchAll = async () => {
       try {
         setLoading(true);
-        const data = await getModel();
-        
-        // Populate Kanban
-        const newCols = {
-          'Pendiente': { name: 'Postulado', items: [] },
-          'En Revisión': { name: 'En Revisión', items: [] },
-          'Entrevista': { name: 'Entrevista', items: [] },
-          'Oferta': { name: 'Oferta', items: [] },
-          'Rechazado': { name: 'Rechazado', items: [] }
-        };
-        
-        if (data && Array.isArray(data)) {
-          data.forEach(app => {
-            const status = app.status || 'Pendiente';
-            if (newCols[status]) {
-              newCols[status].items.push(app);
-            } else {
-              newCols['Pendiente'].items.push(app);
-            }
-          });
-        }
-        
+        const results = await Promise.all(
+          COLUMNS.map(col =>
+            getModel(`/api/student/applications/${encodeURIComponent(col.apiId)}`).catch(() => [])
+          )
+        );
+        const newCols = {};
+        COLUMNS.forEach((col, i) => {
+          const data = results[i];
+          newCols[col.id] = Array.isArray(data) ? data : [];
+        });
         setColumns(newCols);
-      } catch (error) {
-        console.error("Error fetching applications:", error);
+      } catch (err) {
+        console.error("Error fetching applications:", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchApplications();
+    fetchAll();
   }, []);
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Pendiente': return 'bg-gray-100 text-gray-600 border-gray-200';
-      case 'En Revisión': return 'bg-blue-50 text-blue-600 border-blue-200';
-      case 'Entrevista': return 'bg-purple-50 text-purple-600 border-purple-200';
-      case 'Oferta': return 'bg-green-50 text-green-600 border-green-200';
-      case 'Rechazado': return 'bg-red-50 text-red-600 border-red-200';
-      default: return 'bg-gray-100 text-gray-600';
-    }
-  };
-
-  return (
-    <div className="space-y-6 animate-in fade-in duration-300">
-      <div className="flex items-center justify-between">
+  if (loading) {
+    return (
+      <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-black text-gray-900 mb-2">Mis Postulaciones</h1>
           <p className="text-gray-500">Da seguimiento a todos tus procesos de selección en un solo lugar.</p>
         </div>
-      </div>
-
-      {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 h-[600px]">
-          {[1, 2, 3, 4, 5].map(i => (
-            <div key={i} className="bg-gray-50 rounded-2xl p-4 animate-pulse">
-              <div className="h-6 bg-gray-200 rounded w-1/2 mb-4"></div>
+        <div className="flex gap-6 h-[600px]">
+          {COLUMNS.map(c => (
+            <div key={c.id} className="min-w-[300px] bg-gray-50 rounded-2xl p-4 animate-pulse">
+              <div className="h-6 bg-gray-200 rounded w-1/2 mb-4" />
               <div className="space-y-3">
-                <div className="h-24 bg-gray-200 rounded-xl"></div>
-                <div className="h-24 bg-gray-200 rounded-xl"></div>
+                <div className="h-24 bg-gray-200 rounded-xl" />
+                <div className="h-24 bg-gray-200 rounded-xl" />
               </div>
             </div>
           ))}
         </div>
-      ) : (
-        <div className="flex gap-6 overflow-x-auto pb-4 h-[650px] snap-x">
-          {Object.entries(columns).map(([columnId, column]) => (
-            <div key={columnId} className="min-w-[300px] w-[300px] bg-white border border-gray-100 rounded-2xl flex flex-col snap-center shadow-sm">
-              <div className={`p-4 border-b border-gray-100 flex items-center justify-between rounded-t-2xl ${getStatusColor(columnId).split(' ')[0]}`}>
-                <h2 className={`font-bold ${getStatusColor(columnId).split(' ')[1]}`}>{column.name}</h2>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6 animate-in fade-in duration-300">
+      <div>
+        <h1 className="text-3xl font-black text-gray-900 mb-2">Mis Postulaciones</h1>
+        <p className="text-gray-500">Da seguimiento a todos tus procesos de selección en un solo lugar.</p>
+      </div>
+
+      <div className="flex gap-6 overflow-x-auto pb-4 h-[650px] snap-x">
+        {COLUMNS.map(col => {
+          const items = columns[col.id] ?? [];
+          return (
+            <div key={col.id} className="min-w-[300px] w-[300px] bg-white border border-gray-100 rounded-2xl flex flex-col snap-center shadow-sm">
+              <div className={`p-4 border-b border-gray-100 flex items-center justify-between rounded-t-2xl ${col.color}`}>
+                <h2 className={`font-bold ${col.text}`}>{col.label}</h2>
                 <span className="bg-white text-gray-500 text-xs font-bold px-2 py-1 rounded-full shadow-sm">
-                  {column.items.length}
+                  {items.length}
                 </span>
               </div>
-              
-              <div className="p-4 flex-1 overflow-y-auto space-y-4 custom-scrollbar bg-gray-50/50">
-                {column.items.map((app) => (
-                  <div key={app.id} className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all hover:border-[var(--color-brand-primary)] group cursor-pointer relative">
-                    <div className="absolute top-4 right-4 text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <FiMoreHorizontal size={20} />
-                    </div>
-                    <div className="font-bold text-gray-900 mb-1 pr-6">{app.job_title}</div>
-                    <div className="text-[var(--color-brand-accent)] font-medium text-sm mb-3">{app.company_name}</div>
-                    
-                    <div className="space-y-2">
-                      <div className="flex items-center text-xs text-gray-500 gap-2">
-                        <FiMapPin className="shrink-0" />
-                        <span className="truncate">{app.location || 'Remoto'}</span>
-                      </div>
-                      <div className="flex items-center text-xs text-gray-500 gap-2">
-                        <FiClock className="shrink-0" />
-                        <span>Postulado: {new Date(app.applied_at || Date.now()).toLocaleDateString()}</span>
-                      </div>
-                    </div>
-                    
-                    {app.match_score && (
-                      <div className="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between">
-                        <span className="text-xs text-gray-500 font-medium">Match de IA</span>
-                        <span className="text-xs font-bold text-green-500 bg-green-50 px-2 py-1 rounded-md">{app.match_score}%</span>
-                      </div>
-                    )}
-                  </div>
-                ))}
 
-                {column.items.length === 0 && (
+              <div className="p-4 flex-1 overflow-y-auto space-y-4 bg-gray-50/50">
+                {items.map(app => {
+                  const job = app.JobPost ?? {};
+                  const badge = BADGE[app.status] ?? BADGE['Pendiente'];
+
+                  return (
+                    <div
+                      key={app.id}
+                      className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all hover:border-[#1D9E75] cursor-pointer"
+                    >
+                      <div className="flex items-start justify-between gap-2 mb-3">
+                        <div className="flex-1">
+                          <p className="font-bold text-gray-900 text-sm leading-snug mb-1.5">
+                            {job.title ?? "—"}
+                          </p>
+                          <span className={`inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-0.5 rounded-full ${badge.cls}`}>
+                            {badge.icon} {badge.label}
+                          </span>
+                        </div>
+                        {app.status !== 'Rechazado' && (
+                          <button className="flex items-center gap-1 h-7 px-2.5 rounded-md border border-gray-200 text-xs text-gray-500 hover:bg-red-50 hover:border-red-200 hover:text-red-700 transition-colors whitespace-nowrap flex-shrink-0">
+                            ✕ Desvincular
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="space-y-1.5">
+                        {job.location && (
+                          <div className="flex items-center text-xs text-gray-500 gap-2">
+                            <FiMapPin size={11} className="shrink-0" />
+                            <span className="truncate">{job.location}</span>
+                          </div>
+                        )}
+                        {job.salary_range && (
+                          <div className="flex items-center text-xs text-gray-500 gap-2">
+                            <FiBriefcase size={11} className="shrink-0" />
+                            <span>{job.salary_range}</span>
+                          </div>
+                        )}
+                        <div className="flex items-center text-xs text-gray-500 gap-2">
+                          <FiClock size={11} className="shrink-0" />
+                          <span>
+                            Postulado:{" "}
+                            {new Date(app.created_at ?? Date.now()).toLocaleDateString("es-PE")}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {items.length === 0 && (
                   <div className="h-full flex flex-col items-center justify-center text-gray-400 p-6 text-center space-y-2 opacity-50">
                     <FiCheckCircle size={32} />
-                    <p className="text-sm">No hay empleos en esta etapa</p>
+                    <p className="text-sm">No hay postulaciones en esta etapa</p>
                   </div>
                 )}
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          );
+        })}
+      </div>
     </div>
   );
 }

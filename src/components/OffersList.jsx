@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import useCrud from "../hooks/useCrud";
 import { useNavigate } from "react-router-dom";
 
+
 const STATUS_CONFIG = {
   true: { label: "Activa", className: "bg-emerald-50 text-emerald-800" },
   false: { label: "Cerrada", className: "bg-red-50 text-red-800" },
@@ -30,7 +31,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
         setLoading(true);
         const data = await getModel();
         setOffers(data.jobs ?? []);
-        console.log("OFFERS STATE:", data.jobs?.length); // 👈
+        console.log("OFFERS STATE:", data.jobs?.length);
       } catch (err) {
         setError("No se pudieron cargar las ofertas.");
       } finally {
@@ -72,7 +73,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
       <p className="text-center py-10 text-sm text-red-500">{error}</p>
     );
   }
-  console.log("FILTERED:", filtered.length, "SEARCH:", search); // 👈
+  console.log("FILTERED:", filtered.length, "SEARCH:", search);
   return (
     <>
       {/* Header */}
@@ -80,7 +81,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
         <span className="text-[15px] font-medium text-[#1C1C1C]">
           Mis ofertas publicadas
         </span>
-        <span className="bg-[#1C6B72] text-white text-[11px] font-medium px-3 py-0.5 rounded-full">
+        <span className="bg-[#1D9E75] text-white text-[11px] font-medium px-3 py-0.5 rounded-full">
           {activeCount} activas
         </span>
       </div>
@@ -92,7 +93,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
           placeholder="Buscar por título o área..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="flex-1 h-9 border border-gray-200 rounded-lg px-3 text-sm text-[#1C1C1C] bg-white outline-none focus:border-[#1C6B72] transition-colors"
+          className="flex-1 h-9 border border-gray-200 rounded-lg px-3 text-sm text-[#1C1C1C] bg-white outline-none focus:border-[#1D9E75] transition-colors"
         />
         <button className="h-9 px-4 rounded-lg border border-gray-200 bg-white text-sm text-[#5F6368] hover:bg-gray-100 transition-colors">
           ⚙ Filtrar
@@ -138,12 +139,17 @@ const OffersList = ({ onEdit, onDeletePick }) => {
                   <span className="text-[11px] text-[#5F6368]">💰 {offer.salary_range}</span>
                 )}
                 <span className="text-[11px] text-[#5F6368]">📅 {formatDate(offer.created_at)}</span>
+                {offer.deadline && (
+                  <span className="text-[11px] text-[#5F6368]">
+                    ⏳ Cierra: {new Date(offer.deadline).toLocaleDateString("es-PE")}
+                  </span>
+                )}
               </div>
 
               {/* Footer */}
               <div className="flex items-center justify-between pt-2 border-t border-gray-100">
                 <span className="text-xs text-[#5F6368]">
-                  <strong className="text-[#1C6B72]">{offer.applicants_count}</strong> postulantes
+                  <strong className="text-[#1D9E75]">{offer.applicants_count}</strong> postulantes
                 </span>
                 <div className="flex gap-2">
                   {offer.is_active ? (
@@ -160,7 +166,7 @@ const OffersList = ({ onEdit, onDeletePick }) => {
                   )}
                   <button
                     onClick={() => onDeletePick(offer)}
-                    className="h-7 px-3 rounded-md bg-[#ED7B32] text-xs text-white hover:bg-[#d94f53] transition-colors"
+                    className="h-7 px-3 rounded-md bg-[#F25F63] text-xs text-white hover:bg-[#d94f53] transition-colors"
                   >
                     🗑 Eliminar
                   </button>
