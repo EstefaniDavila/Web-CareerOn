@@ -47,5 +47,4 @@ const DeleteConfirmModal = ({ offer, onCancel, onConfirm }) => {
     </div>
   );
 };
-
 export default DeleteConfirmModal;
