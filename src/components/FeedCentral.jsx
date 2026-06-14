@@ -278,9 +278,16 @@ const FeedCentral = () => {
 
                 <div className="flex-1 min-w-0 w-full">
                   <div className="flex justify-between items-start mb-1">
-                    <h3 className="font-bold text-gray-900 text-xl truncate pr-4">{job.title}</h3>
+                    <div className="flex flex-wrap items-center gap-2 pr-4">
+                      <h3 className="font-bold text-gray-900 text-xl truncate">{job.title}</h3>
+                      {job.is_match && (
+                        <span className="bg-orange-100 text-orange-700 text-xs font-bold px-2 py-0.5 rounded flex items-center gap-1 border border-orange-200">
+                          🔥 Recomendado ({job.match_score}%)
+                        </span>
+                      )}
+                    </div>
                     <button
-                      onClick={() => handleSaveJob(job)}
+                      onClick={(e) => { e.stopPropagation(); handleSaveJob(job); }}
                       className="p-2 -mr-2 text-gray-400 hover:text-[var(--color-brand-accent)] hover:bg-orange-50 rounded-full transition-colors md:hidden shrink-0"
                     >
                       <FiBookmark size={20} />

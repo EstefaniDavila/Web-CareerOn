@@ -26,20 +26,14 @@ const RecruiterNavbar = () => {
       <div className="recruiter-navbar-content">
 
         {/* Logo */}
-        <div className="recruiter-navbar-logo">
+        <div className="recruiter-navbar-logo" onClick={() => navigate('/recruiter/dashboard')} style={{ cursor: 'pointer' }}>
           <span className="logo-career">Career</span>
           <span className="logo-on">On</span>
           <span className="logo-badge-recruiter">Recruiter</span>
         </div>
 
-        <div className="recruiter-navbar-links">
-          <div className="nav-item active" onClick={() => navigate('/recruiter/dashboard')} style={{ cursor: 'pointer' }}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-            <span>Inicio</span>
-          </div>
-        </div>
-
         <div className="recruiter-navbar-profile" onClick={() => setMenuOpen(!menuOpen)}>
+          <span style={{ marginRight: '10px', fontSize: '14px', fontWeight: '600', color: '#1C1C1C' }}>{companyName}</span>
           <div className="profile-circle">{initials}</div>
 
           {menuOpen && (

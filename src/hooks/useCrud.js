@@ -35,22 +35,21 @@ const useCrud = (endpoint) => {
   };
 
   const insertModel = async (_data, _endpoint = endpoint) => {
-  try {
-    const response = await axios.post(`${backend_host}${_endpoint}`, _data, getHeaders());
-    return response.data;
-  } catch (error) {
-    if (error.response) {
-      console.log("STATUS:", error.response.status);
-      console.log("DETAIL:", JSON.stringify(error.response.data)); // 👈 agrega esto
-      const backendMessage = error.response.data?.message || "Error desconocido";
-      console.error('Error al registrar el registro:', backendMessage);
-      throw error;
-    } else {
-      console.error('Network error:', error);
-      return Promise.reject({ message: error.message });
+    try {
+      const response = await axios.post(`${backend_host}${_endpoint}`, _data, getHeaders());
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        console.log("DETAIL:", JSON.stringify(error.response.data));
+        const backendMessage = error.response.data?.message || "Error desconocido";
+        console.error('Error al registrar el registro:', backendMessage);
+        throw error;
+      } else {
+        console.error('Network error:', error);
+        return Promise.reject({ message: error.message });
+      }
     }
-  }
-};
+  };
 
   const updateModel = async (_data, _endpoint = endpoint) => {
     try {

@@ -38,19 +38,8 @@ const RecruiterRightSidebar = () => {
   const recentActivities = dashboardData?.recent_activities || [];
   const iaInsight = dashboardData?.ia_insight;
   const dotColors = ['dot-purple', 'dot-teal', 'dot-red'];
-
   return (
     <div className="recruiter-right-sidebar">
-      <div className="quick-actions-container">
-        <button className="quick-action-btn talent-search-btn">
-          <span className="action-icon">✨</span>
-          <div className="action-text-layout">
-            <span className="action-title">Buscar talento con IA</span>
-            <span className="action-subtitle">Matchmaking automático UTP</span>
-          </div>
-        </button>
-      </div>
-
       <div className="glass-card recent-activity-card">
         <h3 className="section-title">ACTIVIDAD RECIENTE</h3>
 
