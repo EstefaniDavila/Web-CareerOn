@@ -16,15 +16,22 @@ import Stats from "../pages/student/Stats";
 import Rprofile from "../pages/recruiter/Rprofile";
 import MyApplications from "../components/student/MyApplications";
 import LeftSidebar from "../components/LeftSidebar";
+import MockInterview from "../components/MockInterview";
 
 export default function AppRoutes() {
   const isAuthenticated = !!localStorage.getItem("mock_token");
+  let redirectPath = "/dashboard";
+  try {
+    const userData = JSON.parse(localStorage.getItem("user_data"));
+    if (userData && userData.type === "Pending") redirectPath = "/onboarding";
+    else if (userData && userData.type === "Recruiter") redirectPath = "/recruiter/dashboard";
+  } catch (e) {}
 
   return (
     <Routes>
       <Route
         path="/"
-        element={isAuthenticated ? <Navigate to="/onboarding" replace /> : <Login />}
+        element={isAuthenticated ? <Navigate to={redirectPath} replace /> : <Login />}
       />
 
       <Route path="/unauthorized" element={<Unauthorized />} />
@@ -138,6 +145,22 @@ export default function AppRoutes() {
         element={
           <Layout>
             <Stats />
+          </Layout>
+        }
+      />
+      <Route
+        path="/interview"
+        element={
+          <Layout>
+            <MockInterview />
+          </Layout>
+        }
+      />
+      <Route
+        path="/interview/:jobId"
+        element={
+          <Layout>
+            <MockInterview />
           </Layout>
         }
       />
