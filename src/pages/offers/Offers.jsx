@@ -6,12 +6,14 @@ import OffersRightPanel from "../../components/OffersRightPanel";
 export default function Offers() {
   const location = useLocation();
   const [view, setView] = useState(location.state?.view || "list");
-  //const [selectedOffer, setSelectedOffer] = useState(null);
-  const [selectedOffer, setSelectedOffer] = useState(location.state?.offer || null);
+  const [selectedOffer, setSelectedOffer] = useState(location.state?.selectedOffer || null);
 
   useEffect(() => {
     if (location.state?.view) {
       setView(location.state.view);
+    }
+    if (location.state?.selectedOffer) {
+      setSelectedOffer(location.state.selectedOffer);
     }
   }, [location.state]);
 

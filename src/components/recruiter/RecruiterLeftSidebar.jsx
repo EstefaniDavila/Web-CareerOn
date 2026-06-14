@@ -128,7 +128,6 @@ const RecruiterLeftSidebar = () => {
         )}
       </div>
 
-      {/* Navigation Menu */}
       <div className="glass-card nav-menu-card">
         <p className="menu-header">MENÚ</p>
         <ul className="side-nav-list">
@@ -140,9 +139,6 @@ const RecruiterLeftSidebar = () => {
               <span className="icon">👥</span> Candidatos
             </div>
             <span className="nav-badge">{totalApplicants}</span>
-          </li>
-          <li onClick={() => navigate('/offers')} style={{ cursor: 'pointer' }}>
-            <span className="icon">➕</span> Nueva oferta
           </li>
         </ul>
       </div>

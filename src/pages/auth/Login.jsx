@@ -9,8 +9,8 @@ export default function Login() {
       let mockUser;
       if (role === 'student') {
         mockUser = {
-          email: "estudiante0@utp.edu.pe",
-          name: "Estudiante Demo",
+          email: "estefanidaviladev@gmail.com",
+          name: "Estefani Davila Guerra",
           microsoft_id: "mock_student_123"
         };
       } else {
