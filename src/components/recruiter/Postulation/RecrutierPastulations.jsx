@@ -45,6 +45,7 @@ const RecruiterPostulations = ({ match = 0, selectedTags = [] }) => {
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("todos");
+  const filtered = applicants.filter(a => a.status !== "rechazado")
 
   // 🔥 CAMBIAR ESTADO DESDE MODAL
   const updateStatus = (id, newStatus) => {
