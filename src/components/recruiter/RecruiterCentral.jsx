@@ -18,7 +18,10 @@ const RecruiterCentral = () => {
             + Nueva oferta
           </button>
         </div>
-        <OffersList />
+        <OffersList
+  onEdit={(offer) => navigate('/offers', { state: { view: 'edit', offer } })}
+  onDeletePick={(offer) => navigate('/offers', { state: { view: 'delete-confirm', offer } })}
+/>
       </div>
     </div>
   );
