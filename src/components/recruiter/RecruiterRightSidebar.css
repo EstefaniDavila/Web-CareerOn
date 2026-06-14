@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 20px;
   width: 320px;
+
 }
 
 .quick-actions-container {
@@ -129,7 +130,8 @@
 }
 
 .avatar-blue {
-  background-color: #1D4ED8;
+  background-color: #4320C9;
+  /* Morado oscuro, reemplaza #1D4ED8 */
 }
 
 .candidate-info h4 {
@@ -185,7 +187,7 @@
 }
 
 .fill-blue {
-  background-color: #1D4ED8;
+  background-color: #4320C9;
 }
 
 .candidate-actions {
@@ -207,46 +209,46 @@
 }
 
 .candidate-btn.btn-secondary {
-  background: transparent;
-  border: 1px solid #E2E8F0;
-  color: #5F6368;
+  background: rgba(15, 108, 122, 0.08);
+  border: 1px solid rgba(15, 108, 122, 0.3);
+  color: #0F6C7A;
 }
 
 .candidate-btn.btn-secondary:hover {
-  background-color: #F8FAFC;
-  color: #1C1C1C;
-  border-color: #CBD5E1;
+  background-color: rgba(15, 108, 122, 0.15);
+  color: #0F6C7A;
+  border-color: #0F6C7A;
 }
 
 .candidate-btn.btn-primary-recruiter {
-  background-color: #5B34F2;
-  border: 1px solid #5B34F2;
+  background-color: #1C6B72;
+  border: 1px solid #1C6B72;
   color: #FFFFFF;
-  box-shadow: 0 4px 10px rgba(91, 52, 242, 0.15);
+  box-shadow: 0 4px 10px rgba(28, 107, 114, 0.15);
 }
 
 .candidate-btn.btn-primary-recruiter:hover {
-  background-color: #4320C9;
-  border-color: #4320C9;
-  box-shadow: 0 6px 14px rgba(67, 32, 201, 0.25);
+  background-color: #132E41;
+  border-color: #132E41;
+  box-shadow: 0 6px 14px rgba(19, 46, 65, 0.25);
 }
 
 /* Insight IA Card */
 .insight-ia-card {
-  background: linear-gradient(135deg, #5B34F2, #4320C9);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #132E41, #1C6B72);
+  color: white;
   border-radius: 16px;
   padding: 24px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(91, 52, 242, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(28, 107, 114, 0.15);
+  border: none;
   transition: all 0.3s ease;
 }
 
 .insight-ia-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(91, 52, 242, 0.35);
+  box-shadow: 0 12px 40px 0 rgba(28, 107, 114, 0.25);
 }
 
 .insight-header {
@@ -257,42 +259,52 @@
 }
 
 .insight-icon {
-  font-size: 18px;
+  font-size: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .insight-header h4 {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
-  color: #FFFFFF;
+  color: white;
   margin: 0;
 }
 
 .insight-body {
   font-size: 13px;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.85);
   margin: 0 0 20px 0;
 }
 
 .insight-body strong {
   font-weight: 700;
-  color: #FFFFFF;
+  color: white;
 }
 
+/* BOTÓN MORADO */
 .insight-cta-btn {
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #FFFFFF;
+  background: #5B34F2;
+  /* ← Morado principal */
+  border: none;
+  color: white;
   padding: 10px;
   border-radius: 10px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .insight-cta-btn:hover {
-  background-color: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: #4320C9;
+  /* ← Morado oscuro al hover */
+  transform: translateY(-1px);
 }
