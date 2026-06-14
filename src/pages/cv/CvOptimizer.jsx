@@ -84,8 +84,7 @@ export default function CvOptimizer() {
   const cvMutation = useEntityMutation({ entityName: 'cv' });
 
   const handleGenerateFromProfile = async () => {
-    setIsAnalyzing(true);
-    setError(null);
+    setIsPending(true);
     try {
       const result = await cvMutation.mutateAsync({
         action: "create",
@@ -95,11 +94,15 @@ export default function CvOptimizer() {
       // The result should contain the data object
       setAnalysis(result.data);
       setShowTemplates(true);
+      // Scroll suave a los resultados
+      setTimeout(() => {
+        document.getElementById("cv-results-section")?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
     } catch (err) {
       console.error(err);
-      setError(err.message || "Error al generar CV desde el perfil");
+      alert(err.message || "Error al generar CV desde el perfil");
     } finally {
-      setIsAnalyzing(false);
+      setIsPending(false);
     }
   };
 
@@ -191,7 +194,7 @@ export default function CvOptimizer() {
             disabled={isPending}
             className="mt-4 w-full py-4 border-2 border-[var(--color-brand-primary)] text-[var(--color-brand-primary)] hover:bg-blue-50 font-bold rounded-xl transition-all flex justify-center items-center gap-3 disabled:opacity-50 text-lg"
           >
-            ✨ No tengo CV: Generar mágicamente usando mi Perfil
+            ✨ Auto-generar CV usando la información de mi Perfil
           </button>
           <p className="text-center text-sm text-gray-500 mt-3">
             ⚠️ Recuerda completar tu experiencia y habilidades en "Mi Perfil" antes de usar esta opción.
