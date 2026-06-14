@@ -153,6 +153,4 @@ const RecruiterLeftSidebar = () => {
   );
 };
 
-//prueba
-
 export default RecruiterLeftSidebar;
