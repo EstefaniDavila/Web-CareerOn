@@ -8,6 +8,7 @@ export default function ChallengeAIModal({ offer, applicants = [], onClose, onCh
   const [loadingBalance, setLoadingBalance] = useState(true);
   const [challengeData, setChallengeData] = useState(null);
   const [step, setStep] = useState(1);
+  const [companyName, setCompanyName] = useState('La Empresa');
 
   const [tokenBalance, setTokenBalance] = useState(null);
   const [maxWinners, setMaxWinners] = useState(1);
@@ -23,8 +24,15 @@ export default function ChallengeAIModal({ offer, applicants = [], onClose, onCh
       setLoadingBalance(true);
       try {
         const result = await getModel("/api/recruiter/dashboard");
-        if (result?.recruiter_info?.tokens_available !== undefined) {
-          setTokenBalance(result.recruiter_info.tokens_available);
+        if (result?.recruiter_info) {
+          if (result.recruiter_info.tokens_available !== undefined) {
+            setTokenBalance(result.recruiter_info.tokens_available);
+          } else {
+            setTokenBalance(0);
+          }
+          if (result.recruiter_info.company_name) {
+            setCompanyName(result.recruiter_info.company_name);
+          }
         } else {
           setTokenBalance(0);
         }
@@ -74,6 +82,12 @@ export default function ChallengeAIModal({ offer, applicants = [], onClose, onCh
       };
       const result = await insertModel(body, url);
       if (result.status === "success") {
+        localStorage.setItem('careeron_demo_challenge', 'true');
+        localStorage.setItem('careeron_demo_job_title', offer.title || 'Diseñador UX/UI #1');
+        localStorage.setItem('careeron_demo_company', companyName);
+        localStorage.setItem('careeron_demo_desc', challengeData.description || '');
+        localStorage.setItem('careeron_demo_deliverables', challengeData.deliverables || '');
+        
         onChallengeSponsored();
         onClose();
       }
@@ -86,7 +100,7 @@ export default function ChallengeAIModal({ offer, applicants = [], onClose, onCh
   };
 
   return (
-    <div className="fixed inset-0 z-[200] bg-black/50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[9999] bg-black/50 flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl w-full max-w-xl overflow-hidden flex flex-col max-h-[90vh]">
 
         {/* Header */}
@@ -131,7 +145,7 @@ export default function ChallengeAIModal({ offer, applicants = [], onClose, onCh
               </div>
 
               <p className="text-gray-600 mb-2">
-                Claude analizará la oferta <strong>{offer?.title}</strong> y generará un
+                Tu Coach IA analizará la oferta <strong>{offer?.title}</strong> y generará un
                 caso práctico realista para evaluar a los candidatos.
               </p>
               <p className="text-xs text-gray-400 mb-6">

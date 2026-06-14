@@ -21,6 +21,9 @@ const MockInterview = () => {
   const [isFinished, setIsFinished] = useState(false);
   const [evaluation, setEvaluation] = useState(null);
 
+  const [theme, setTheme] = useState("");
+  const [hasStarted, setHasStarted] = useState(mode === "job_specific");
+
   const speakText = (text) => {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
@@ -30,21 +33,35 @@ const MockInterview = () => {
     window.speechSynthesis.speak(utterance);
   };
 
+  // 1. Efecto para la cámara (se activa solo si hasStarted es true y se limpia al salir)
   useEffect(() => {
-    const startCamera = async () => {
-      try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false }); // Audio vía speech recognition
-        setStream(mediaStream);
-        if (videoRef.current) {
-          videoRef.current.srcObject = mediaStream;
+    let currentStream = null;
+    
+    if (hasStarted) {
+      const startCamera = async () => {
+        try {
+          const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+          setStream(mediaStream);
+          currentStream = mediaStream;
+          if (videoRef.current) {
+            videoRef.current.srcObject = mediaStream;
+          }
+        } catch (err) {
+          console.error("Error al acceder a la cámara:", err);
         }
-      } catch (err) {
-        console.error("Error al acceder a la cámara:", err);
+      };
+      startCamera();
+    }
+
+    return () => {
+      if (currentStream) {
+        currentStream.getTracks().forEach(track => track.stop());
       }
     };
+  }, [hasStarted]);
 
-    startCamera();
-
+  // 2. Efecto para el reconocimiento de voz y auto-inicio (solo para job_specific)
+  useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
       const rec = new SpeechRecognition();
@@ -65,34 +82,29 @@ const MockInterview = () => {
       console.warn("Speech Recognition no está soportado en este navegador.");
     }
 
-    const startInterview = async () => {
-      setIsProcessing(true);
-      try {
-        const res = await insertModel({
-          mode: mode,
-          job_id: jobId ? parseInt(jobId) : null
-        }, "/api/interview/start");
-        if (res.status === "success") {
-          setMessages([
-            { role: "model", content: res.first_question }
-          ]);
-          speakText(res.first_question);
+    if (mode === "job_specific") {
+      const startInterview = async () => {
+        setIsProcessing(true);
+        try {
+          const res = await insertModel({
+            mode: mode,
+            job_id: jobId ? parseInt(jobId) : null
+          }, "/api/interview/start");
+          if (res.status === "success") {
+            setMessages([
+              { role: "model", content: res.first_question }
+            ]);
+            speakText(res.first_question);
+          }
+        } catch (err) {
+          console.error("Error iniciando entrevista:", err);
+        } finally {
+          setIsProcessing(false);
         }
-      } catch (err) {
-        console.error("Error iniciando entrevista:", err);
-      } finally {
-        setIsProcessing(false);
-      }
-    };
-
-    startInterview();
-
-    return () => {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-      }
-    };
-  }, []);
+      };
+      startInterview();
+    }
+  }, [mode, jobId]);
 
   const captureFrame = () => {
     if (!videoRef.current || !canvasRef.current) return null;
@@ -178,6 +190,64 @@ const MockInterview = () => {
       setIsProcessing(false);
     }
   };
+
+  const handleStartPractice = async () => {
+    if (!theme.trim()) {
+      alert("Por favor ingresa un tema para la simulación.");
+      return;
+    }
+    setHasStarted(true);
+    setIsProcessing(true);
+    try {
+      const res = await insertModel({
+        mode: mode,
+        theme: theme
+      }, "/api/interview/start");
+      if (res.status === "success") {
+        setMessages([
+          { role: "model", content: res.first_question }
+        ]);
+        speakText(res.first_question);
+      }
+    } catch (err) {
+      console.error("Error iniciando entrevista:", err);
+      if (err.message) alert(err.message);
+      setHasStarted(false);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  if (!hasStarted) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[calc(100vh-64px)] bg-[#F8F9FA] p-6">
+        <div className="bg-white p-8 rounded-3xl shadow-md w-full max-w-md text-center animate-in fade-in zoom-in duration-300">
+          <div className="text-5xl mb-4">🎤</div>
+          <h1 className="text-2xl font-black text-[#1C1C1C] mb-2">Simulación de Entrevista</h1>
+          <p className="text-gray-500 mb-6 text-sm">Elige un tema para tu entrevista. El Coach Evolutivo te hará 2 preguntas y evaluará tus respuestas.</p>
+          
+          <div className="text-left mb-6">
+            <label className="block text-sm font-bold text-gray-700 mb-2">Tema de la Entrevista</label>
+            <input 
+              type="text" 
+              placeholder="Ej. React, Liderazgo, Arquitectura Cloud..." 
+              value={theme}
+              onChange={(e) => setTheme(e.target.value)}
+              className="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#1C6B72] outline-none transition"
+            />
+          </div>
+          
+          <button
+            onClick={handleStartPractice}
+            disabled={isProcessing}
+            className="w-full bg-[#1C6B72] text-white font-bold py-3 rounded-xl hover:bg-[#155359] transition flex justify-center items-center gap-2"
+          >
+            {isProcessing ? "Iniciando..." : "Comenzar Simulación (-100 🪙)"}
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-[calc(100vh-64px)] bg-[#F8F9FA] p-6 relative">

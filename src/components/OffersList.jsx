@@ -223,16 +223,14 @@ const OffersList = ({ onEdit, onDeletePick }) => {
                     🗑 Eliminar
                   </button>
                   <button
-                    className="btn btn-sm btn-primary"
                     onClick={() =>
                       navigate(`/offers/${offer.id}`, {
-                        state: {
-                          offer,
-                        },
+                        state: { offer },
                       })
                     }
+                    className="h-7 px-3 rounded-md bg-[#1C6B72] text-xs text-white hover:bg-[#155359] transition-colors font-medium flex items-center gap-1"
                   >
-                    👁 Ver
+                    👁 Evaluar candidatos
                   </button>
                 </div>
               </div>

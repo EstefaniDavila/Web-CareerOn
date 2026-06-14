@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useCrud from "../../../hooks/useCrud";
 
 export default function Rightcomponent() {
+  const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
   const [completedQuests, setCompletedQuests] = useState([]);
 
@@ -78,8 +80,8 @@ export default function Rightcomponent() {
           Usa tus monedas para desbloquear simulaciones de entrevistas técnicas personalizadas.
         </p>
         <button 
-          onClick={() => alert("¡Pronto podrás configurar tu entrevista técnica personalizada usando tus monedas!")}
-          className="w-full bg-white text-[var(--color-brand-primary)] font-bold py-2.5 rounded-xl text-sm hover:bg-gray-50 transition-colors shadow-sm relative z-10 flex justify-center items-center gap-2"
+          onClick={() => navigate("/interview")}
+          className="w-full bg-white text-[#1C6B72] font-bold py-2.5 rounded-xl hover:bg-gray-50 transition flex justify-between items-center px-4"
         >
           <span>Practicar Entrevista</span>
           <span className="bg-[var(--color-brand-primary)] text-white text-[10px] px-2 py-0.5 rounded-full">100 M</span>

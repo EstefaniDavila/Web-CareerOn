@@ -16,10 +16,10 @@ const RecruiterNavbar = () => {
     window.location.href = "/";
   };
 
-  const companyName = userData?.company_name || "Yape Perú";
+  const companyName = userData?.company_name || "Microsoft";
   const userEmail = accounts[0]?.username || "";
 
-  const initials = companyName ? companyName.substring(0, 2).toUpperCase() : "YP";
+  const initials = companyName ? companyName.substring(0, 2).toUpperCase() : "MI";
 
   return (
     <nav className="recruiter-navbar">

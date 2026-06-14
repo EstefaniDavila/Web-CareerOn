@@ -33,7 +33,7 @@ export default function Filtro({
     if (offer?.id) {
       for (const a of toDiscard) {
         try {
-          await patchModel({ status: "rechazado" }, `/${offer.id}/candidates/${a.id}/status`);
+          await patchModel({ status: "rechazado" }, `/api/recruiter/jobs/${offer.id}/candidates/${a.id}/status`);
         } catch (e) {
           console.error("Error descartando a " + a.name);
         }
@@ -79,12 +79,7 @@ export default function Filtro({
             </p>
           </div>
 
-          <div className="bg-[#1C6B72] text-white px-4 py-2 rounded-xl text-center min-w-[90px]">
-            <h3 className="text-xl font-bold">
-              {offer?.applicants ?? 0}
-            </h3>
-            <span className="text-xs">postulantes</span>
-          </div>
+          {/* Postulantes box removed per user request */}
 
         </div>
       </div>

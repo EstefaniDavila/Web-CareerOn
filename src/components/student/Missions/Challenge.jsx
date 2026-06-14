@@ -6,10 +6,11 @@ import { useQuests } from "../../../hooks/useQuests";
 const mockPostuladas = [
   {
     id: 1,
-    title: "Reto Técnico: Desarrollador Frontend",
+    title: "¡Felicidades! Pasaste la 1era Etapa",
     type: "postulado",
-    company: "Google",
-    description: "Para continuar con tu postulación, por favor sube el código fuente (ZIP) o un enlace a tu repositorio con la solución del reto enviado a tu correo.",
+    company: "Microsoft",
+    description: "Has superado la revisión de CV. Para continuar con tu postulación y pasar a la fase final, resuelve este reto técnico creado especialmente para esta posición y sube tu solución en un ZIP.",
+    demo_only: true
   },
   {
     id: 2,
@@ -17,6 +18,7 @@ const mockPostuladas = [
     type: "postulado",
     company: "Amazon",
     description: "Sube un PDF con las respuestas de la prueba de algoritmos.",
+    demo_only: false
   },
 ];
 
@@ -69,8 +71,10 @@ export default function Challenge() {
   const [loadingQuestion, setLoadingQuestion] = useState(false);
   const [questAnswer, setQuestAnswer] = useState("");
   const [questResult, setQuestResult] = useState(null);
+  const [viewingInstructions, setViewingInstructions] = useState(null);
 
   const [files, setFiles] = useState({});
+  const [links, setLinks] = useState({});
 
   const backend_host = import.meta.env.VITE_BACKEND_HOST || "http://localhost:8000";
 
@@ -167,7 +171,10 @@ export default function Challenge() {
     description: q.action,
   }));
 
-  const allData = [...postuladas, ...iaMissions, ...mappedQuests];
+  const isDemoActive = localStorage.getItem('careeron_demo_challenge') === 'true';
+  const postuladasFiltered = mockPostuladas.filter(p => !p.demo_only || isDemoActive);
+
+  const allData = [...postuladasFiltered, ...iaMissions, ...mappedQuests];
 
   const filtered = allData.filter((item) => {
     const matchTab = tab === "all" ? true : item.type === tab;
@@ -188,8 +195,15 @@ export default function Challenge() {
     }));
   };
 
+  const handleLinkChange = (e, id) => {
+    setLinks((prev) => ({
+      ...prev,
+      [id]: e.target.value,
+    }));
+  };
+
   const handleSend = (item) => {
-    if (!files[item.id]) return;
+    if (!files[item.id] && !links[item.id]) return;
 
     setPostuladas((prev) => prev.filter((m) => m.id !== item.id));
     alert("✅ Reto enviado correctamente a la empresa");
@@ -283,32 +297,54 @@ export default function Challenge() {
 
               {/* POSTULADAS */}
               {item.type === "postulado" && (
-                <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
+                <div className="mt-3 flex flex-col gap-4 border-t pt-3 border-gray-100">
+                  <div className="flex justify-between items-start">
+                    <p className="text-sm text-[#5F6368] line-clamp-2" title={item.description}>
+                      {item.description}
+                    </p>
+                    <button 
+                      onClick={() => setViewingInstructions(item)}
+                      className="text-sm text-[#5B34F2] font-semibold underline hover:text-[#4320C9] shrink-0 ml-4"
+                    >
+                      Ver Instrucciones detalladas
+                    </button>
+                  </div>
 
-                  <p className="text-sm text-[#5F6368]">
-                    {item.description}
-                  </p>
-
-                  <label className="flex items-center gap-2 text-sm cursor-pointer text-[#5F6368] hover:text-[#5B34F2] transition">
-                    <FiUploadCloud />
-                    Subir archivo
-                    <input
-                      type="file"
-                      className="hidden"
-                      onChange={(e) => handleFileChange(e, item.id)}
+                  <div className="flex flex-col sm:flex-row gap-3 items-center">
+                    <input 
+                      type="url"
+                      placeholder="Pega un enlace (Figma, GitHub, Drive...)"
+                      className="flex-1 w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#5B34F2]"
+                      value={links[item.id] || ""}
+                      onChange={(e) => handleLinkChange(e, item.id)}
                     />
-                  </label>
+                    
+                    <span className="text-gray-400 text-sm font-semibold">O</span>
 
-                  <button
-                    onClick={() => handleSend(item)}
-                    disabled={!files[item.id]}
-                    className={`px-4 py-2 rounded-lg text-white transition ${files[item.id]
-                      ? "bg-[#5B34F2] hover:bg-[#4320C9]"
-                      : "bg-gray-300 cursor-not-allowed"
+                    <label className="flex items-center justify-center gap-2 text-sm cursor-pointer border border-gray-300 px-4 py-2.5 rounded-lg hover:bg-gray-50 transition min-w-[160px]">
+                      <FiUploadCloud className={files[item.id] ? "text-[#5B34F2]" : "text-gray-500"}/>
+                      <span className="truncate max-w-[120px]">
+                        {files[item.id] ? files[item.id].name : "Subir archivo"}
+                      </span>
+                      <input
+                        type="file"
+                        className="hidden"
+                        onChange={(e) => handleFileChange(e, item.id)}
+                      />
+                    </label>
+
+                    <button
+                      onClick={() => handleSend(item)}
+                      disabled={!files[item.id] && !links[item.id]}
+                      className={`px-6 py-2.5 rounded-lg text-white font-semibold transition ${
+                        (files[item.id] || links[item.id])
+                        ? "bg-[#5B34F2] hover:bg-[#4320C9] shadow-md"
+                        : "bg-gray-300 cursor-not-allowed"
                       }`}
-                  >
-                    Enviar reto
-                  </button>
+                    >
+                      Enviar reto
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -361,6 +397,51 @@ export default function Challenge() {
           ))}
         </div>
       </div>
+
+      {/* Modal de Instrucciones (Postuladas) */}
+      {viewingInstructions && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white rounded-3xl max-w-2xl w-full shadow-2xl overflow-hidden p-8 relative flex flex-col max-h-[90vh]">
+            <button onClick={() => setViewingInstructions(null)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors">
+              <FiX size={24} />
+            </button>
+            <h2 className="text-2xl font-bold text-[#1C1C1C] mb-6">Instrucciones del Reto Técnico</h2>
+            
+            <div className="overflow-y-auto pr-2">
+              <div className="mb-6">
+                <h3 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                  <span className="text-[var(--color-brand-primary)]">📝</span> Descripción:
+                </h3>
+                <p className="text-gray-600 whitespace-pre-line leading-relaxed text-sm">
+                  {viewingInstructions.demo_only 
+                    ? localStorage.getItem('careeron_demo_desc') || viewingInstructions.description 
+                    : viewingInstructions.description}
+                </p>
+              </div>
+              
+              <div className="mb-6">
+                <h3 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                  <span className="text-[var(--color-brand-primary)]">📦</span> Entregables requeridos:
+                </h3>
+                <p className="text-gray-600 whitespace-pre-line leading-relaxed text-sm bg-gray-50 p-4 rounded-xl border border-gray-100">
+                  {viewingInstructions.demo_only 
+                    ? localStorage.getItem('careeron_demo_deliverables') || "Sube el archivo comprimido." 
+                    : "Sube un archivo en formato ZIP o PDF con la solución."}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex justify-end mt-4 pt-4 border-t border-gray-100">
+              <button 
+                onClick={() => setViewingInstructions(null)} 
+                className="bg-[var(--color-brand-primary)] hover:bg-[var(--color-brand-hover)] text-white px-8 py-3 rounded-xl font-bold shadow-md transition-all"
+              >
+                Entendido, ¡A trabajar!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal de Reto (Sistema) */}
       {activeQuestModal && (

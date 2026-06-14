@@ -5,15 +5,21 @@ import { FiMapPin, FiClock, FiCheckCircle, FiBriefcase } from 'react-icons/fi';
 const COLUMNS = [
   { id: 'Pendiente', apiId: 'Pendiente', label: 'Postulado', color: 'bg-gray-100', text: 'text-gray-600' },
   { id: 'En_revision', apiId: 'En_revision', label: 'En Revisión', color: 'bg-blue-50', text: 'text-blue-600' },
-  { id: 'Entrevista', apiId: 'Entrevista', label: 'Entrevista', color: 'bg-purple-50', text: 'text-purple-600' },
+  { id: 'Entrevista', apiId: 'Entrevista', label: 'Eval. Técnica', color: 'bg-purple-50', text: 'text-purple-600' },
+  { id: 'Entrevista_final', apiId: 'Entrevista_final', label: 'Entrevista Final', color: 'bg-indigo-50', text: 'text-indigo-600' },
+  { id: 'Ganador', apiId: 'Ganador', label: '¡Oferta Recibida!', color: 'bg-emerald-50', text: 'text-emerald-600' },
   { id: 'Rechazado', apiId: 'Rechazado', label: 'Rechazado', color: 'bg-red-50', text: 'text-red-600' },
 ];
 
 const BADGE = {
   'Pendiente': { label: 'Postulado', cls: 'bg-gray-100 text-gray-600', icon: '🕐' },
-  'En_revision': { label: 'En_Revisión', cls: 'bg-blue-50 text-blue-800', icon: '👁' },
-  'Entrevista': { label: 'Entrevista', cls: 'bg-purple-50 text-purple-800', icon: '👥' },
+  'En_revision': { label: 'En Revisión', cls: 'bg-blue-50 text-blue-800', icon: '👁' },
+  'Entrevista': { label: 'Eval. Técnica', cls: 'bg-purple-50 text-purple-800', icon: '💻' },
+  'entrevista': { label: 'Eval. Técnica', cls: 'bg-purple-50 text-purple-800', icon: '💻' },
+  'Entrevista_final': { label: 'Entrevista Final', cls: 'bg-indigo-50 text-indigo-800', icon: '👥' },
+  'Ganador': { label: '¡Ganador!', cls: 'bg-emerald-100 text-emerald-800', icon: '🎉' },
   'Rechazado': { label: 'Rechazado', cls: 'bg-red-50 text-red-800', icon: '✕' },
+  'rechazado': { label: 'Rechazado', cls: 'bg-red-50 text-red-800', icon: '✕' },
 };
 
 export default function MyApplications() {

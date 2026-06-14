@@ -15,8 +15,8 @@ export default function Login() {
         };
       } else {
         mockUser = {
-          email: "hr0@google.com",
-          name: "Google HR",
+          email: "hr2@microsoft.com",
+          name: "Microsoft HR",
           microsoft_id: "mock_hr_123"
         };
       }

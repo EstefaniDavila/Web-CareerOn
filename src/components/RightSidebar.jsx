@@ -54,24 +54,28 @@ const RightSidebar = () => {
         )}
       </div>
 
-      {/* Alerta de Reto de Empresa (Hackathon Demo) */}
-      <div className="bg-red-50 border border-red-200 rounded-2xl p-5 shadow-sm animate-in slide-in-from-right-4 mt-6">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="bg-red-100 text-red-600 w-10 h-10 rounded-full flex items-center justify-center text-xl shrink-0">
-            🚨
+      {/* Alerta de Reto de Empresa (Hackathon Demo) - Condicional */}
+      {localStorage.getItem('careeron_demo_challenge') === 'true' && (
+        <div className="bg-red-50 border border-red-200 rounded-2xl p-5 shadow-sm animate-in slide-in-from-right-4 mt-6">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="bg-red-100 text-red-600 w-10 h-10 rounded-full flex items-center justify-center text-xl shrink-0">
+              🚨
+            </div>
+            <h3 className="text-red-800 font-bold text-base leading-tight">
+              ¡Acción Requerida! {localStorage.getItem('careeron_demo_company') || 'La empresa'} te envió un reto
+            </h3>
           </div>
-          <h3 className="text-red-800 font-bold text-base leading-tight">¡Acción Requerida! Google te envió un reto</h3>
+          <p className="text-red-700 text-xs mb-4">
+            Has pasado el primer filtro. Para continuar en el proceso para <strong>{localStorage.getItem('careeron_demo_job_title') || 'tu postulación'}</strong>, debes resolver esta evaluación técnica.
+          </p>
+          <button 
+            onClick={() => navigate('/challenge')}
+            className="w-full bg-red-600 text-white font-bold py-2.5 rounded-xl text-sm hover:bg-red-700 transition-colors shadow-md flex justify-center items-center gap-2"
+          >
+            Ir al Reto
+          </button>
         </div>
-        <p className="text-red-700 text-xs mb-4">
-          Has pasado el primer filtro. Para continuar en el proceso para <strong>Desarrollador Frontend</strong>, debes resolver esta evaluación técnica.
-        </p>
-        <button 
-          onClick={() => navigate('/challenge')}
-          className="w-full bg-red-600 text-white font-bold py-2.5 rounded-xl text-sm hover:bg-red-700 transition-colors shadow-md flex justify-center items-center gap-2"
-        >
-          Ir al Reto
-        </button>
-      </div>
+      )}
 
     </div>
   );

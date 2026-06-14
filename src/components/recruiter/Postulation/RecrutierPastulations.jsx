@@ -75,7 +75,8 @@ const RecruiterPostulations = ({ offer, applicants = [], setApplicants, match = 
         >
           <option value="todos">Todos</option>
           <option value="revision">En revisión</option>
-          <option value="entrevista">Entrevista</option>
+          <option value="entrevista">Resolvió Reto</option>
+          <option value="entrevista_final">Entrevista Final</option>
           <option value="rechazado">Rechazado</option>
         </select>
       </div>
@@ -90,7 +91,28 @@ const RecruiterPostulations = ({ offer, applicants = [], setApplicants, match = 
             <div>
               <h2 className="font-bold text-xl">{a.name}</h2>
               <p className="text-gray-500">{a.career}</p>
-              <p className="text-sm">{a.status}</p>
+              {a.status === "entrevista" ? (
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                    Resolvió su reto
+                  </span>
+                  <span 
+                    className="text-xs text-[#1C6B72] font-semibold flex items-center gap-1 cursor-pointer hover:underline" 
+                    onClick={() => setSelectedApplicant(a)}
+                  >
+                    ¡Mira el análisis! ➜
+                  </span>
+                </div>
+              ) : a.status === "entrevista_final" ? (
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded-md">
+                    Entrevista Final Programada
+                  </span>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-400 mt-1 uppercase font-semibold text-xs tracking-wider">{a.status}</p>
+              )}
             </div>
 
             <div className="flex flex-col items-end gap-1">
