@@ -77,6 +77,27 @@ const RightSidebar = () => {
         </div>
       )}
 
+      {/* Alerta de Falta de CV */}
+      <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 shadow-sm animate-in slide-in-from-right-4 mt-6">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="bg-amber-100 text-amber-600 w-10 h-10 rounded-full flex items-center justify-center text-xl shrink-0">
+            📄
+          </div>
+          <h3 className="text-amber-800 font-bold text-base leading-tight">
+            ¡Perfil incompleto!
+          </h3>
+        </div>
+        <p className="text-amber-700 text-xs mb-4">
+          No tienes un CV actualmente. Actualiza tu perfil para destacar ante las empresas y postúlate.
+        </p>
+        <button 
+          onClick={() => navigate('/profile')}
+          className="w-full bg-amber-500 text-white font-bold py-2.5 rounded-xl text-sm hover:bg-amber-600 transition-colors shadow-md flex justify-center items-center gap-2"
+        >
+          Actualizar Perfil
+        </button>
+      </div>
+
     </div>
   );
 };

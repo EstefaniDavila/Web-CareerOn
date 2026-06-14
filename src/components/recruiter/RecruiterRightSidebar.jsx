@@ -71,7 +71,6 @@ const RecruiterRightSidebar = () => {
               i % 2 === 1 ? <strong key={i}>{text}</strong> : text
             ))}
           </p>
-          <button className="insight-cta-btn">Ver análisis completo →</button>
         </div>
       )}
     </div>

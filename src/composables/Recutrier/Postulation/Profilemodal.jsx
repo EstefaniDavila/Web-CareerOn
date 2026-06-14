@@ -18,9 +18,9 @@ export default function ProfileModal({
 
   if (!applicant) return null;
 
-  const isRevision = applicant.status === "revision";
-  const isEntrevista = applicant.status === "entrevista";
-  const isEntrevistaFinal = applicant.status === "entrevista_final";
+  const isRevision = applicant.status.toLowerCase() === "revision" || applicant.status.toLowerCase() === "en_revision";
+  const isEntrevista = applicant.status.toLowerCase() === "entrevista";
+  const isEntrevistaFinal = applicant.status.toLowerCase() === "entrevista_final";
 
   const handleConfirm = () => {
     if (action) {
@@ -192,7 +192,13 @@ export default function ProfileModal({
                   <div className="flex items-center justify-between border-t border-gray-100 pt-3">
                     <span className="text-xs text-gray-500 font-medium bg-gray-100 px-2 py-1 rounded">Evaluado hace 2 horas</span>
                     <button 
-                      onClick={() => alert("Simulación: Abriendo repositorio/Figma del estudiante...")}
+                      onClick={() => {
+                        if (applicant.challenge_url) {
+                          window.open(applicant.challenge_url, '_blank');
+                        } else {
+                          alert("El candidato no adjuntó un enlace o archivo.");
+                        }
+                      }}
                       className="text-sm text-[#1C6B72] font-bold hover:text-[#155359] hover:underline flex items-center gap-1 transition-colors"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>

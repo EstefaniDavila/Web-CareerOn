@@ -1,26 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiUploadCloud, FiCheckCircle, FiX, FiPlayCircle } from "react-icons/fi";
 import IAMissionModal from "../../../composables/Student/IAMissionsmodal";
 import { useQuests } from "../../../hooks/useQuests";
 
-const mockPostuladas = [
-  {
-    id: 1,
-    title: "¡Felicidades! Pasaste la 1era Etapa",
-    type: "postulado",
-    company: "Microsoft",
-    description: "Has superado la revisión de CV. Para continuar con tu postulación y pasar a la fase final, resuelve este reto técnico creado especialmente para esta posición y sube tu solución en un ZIP.",
-    demo_only: true
-  },
-  {
-    id: 2,
-    title: "Prueba de Lógica y Algoritmos",
-    type: "postulado",
-    company: "Amazon",
-    description: "Sube un PDF con las respuestas de la prueba de algoritmos.",
-    demo_only: false
-  },
-];
+import useCrud from "../../../hooks/useCrud";
 
 const mockIAMissions = [
   {
@@ -62,7 +45,33 @@ export default function Challenge() {
   const [tab, setTab] = useState("quest");
   const [search, setSearch] = useState("");
 
-  const [postuladas, setPostuladas] = useState(mockPostuladas);
+  const [postuladas, setPostuladas] = useState([]);
+  const { getModel: getCompanyChallenges } = useCrud("/api/student/company-challenges");
+
+  useEffect(() => {
+    const fetchChallenges = async () => {
+      try {
+        const data = await getCompanyChallenges();
+        if (data && Array.isArray(data)) {
+          const mapped = data.map(c => ({
+            id: c.application_id,
+            job_id: c.job_id,
+            challenge_id: c.challenge.id,
+            title: c.challenge.title,
+            type: "postulado",
+            company: c.company_name,
+            description: c.challenge.description,
+            demo_only: false
+          }));
+          setPostuladas(mapped);
+        }
+      } catch (err) {
+        console.error("Error fetching company challenges", err);
+      }
+    };
+    fetchChallenges();
+  }, []);
+
   const [iaMissions] = useState(mockIAMissions);
   const { quests, completeQuest, cancelQuest } = useQuests();
   const [simulatingQuest, setSimulatingQuest] = useState(null);
@@ -171,8 +180,7 @@ export default function Challenge() {
     description: q.action,
   }));
 
-  const isDemoActive = localStorage.getItem('careeron_demo_challenge') === 'true';
-  const postuladasFiltered = mockPostuladas.filter(p => !p.demo_only || isDemoActive);
+  const postuladasFiltered = postuladas;
 
   const allData = [...postuladasFiltered, ...iaMissions, ...mappedQuests];
 
@@ -202,11 +210,23 @@ export default function Challenge() {
     }));
   };
 
-  const handleSend = (item) => {
+  const handleSend = async (item) => {
     if (!files[item.id] && !links[item.id]) return;
 
-    setPostuladas((prev) => prev.filter((m) => m.id !== item.id));
-    alert("✅ Reto enviado correctamente a la empresa");
+    try {
+      await fetch(`${backend_host}/api/student/applications/${item.id}/submit-challenge`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('careeron_token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ url: links[item.id] || "Archivo adjunto" })
+      });
+      setPostuladas((prev) => prev.filter((m) => m.id !== item.id));
+      alert("✅ Reto enviado correctamente a la empresa");
+    } catch (e) {
+      alert("Error al enviar el reto");
+    }
   };
 
   /* ---------------- IA ---------------- */
@@ -425,8 +445,8 @@ export default function Challenge() {
                 </h3>
                 <p className="text-gray-600 whitespace-pre-line leading-relaxed text-sm bg-gray-50 p-4 rounded-xl border border-gray-100">
                   {viewingInstructions.demo_only 
-                    ? localStorage.getItem('careeron_demo_deliverables') || "Sube el archivo comprimido." 
-                    : "Sube un archivo en formato ZIP o PDF con la solución."}
+                    ? localStorage.getItem('careeron_demo_deliverables') || "Sube un PDF o un enlace a tu solución." 
+                    : "Sube un documento PDF con tu solución o pega el enlace de tu proyecto para que nuestra IA pueda analizarlo."}
                 </p>
               </div>
             </div>

@@ -9,14 +9,14 @@ export default function Login() {
       let mockUser;
       if (role === 'student') {
         mockUser = {
-          email: "estefanidaviladev@gmail.com",
-          name: "Estefani Davila Guerra",
+          email: "u24230547@utp.edu.pe",
+          name: "Estudiante UTP",
           microsoft_id: "mock_student_123"
         };
       } else {
         mockUser = {
-          email: "hr2@microsoft.com",
-          name: "Microsoft HR",
+          email: "diana.lopez@bcp.com",
+          name: "Diana Lopez",
           microsoft_id: "mock_hr_123"
         };
       }
@@ -81,7 +81,7 @@ export default function Login() {
                 <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
                 <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
               </svg>
-              Demo: Ingresar como Estudiante
+              Ingresar como Estudiante
             </button>
 
             <button
@@ -89,7 +89,7 @@ export default function Login() {
               className="w-full flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-900 text-white font-semibold py-4 px-4 rounded-xl shadow-sm transition-all duration-200"
             >
               <Briefcase className="w-5 h-5" />
-              Demo: Ingresar como Reclutador B2B
+              Ingresar como Reclutador B2B
             </button>
           </div>
         </div>

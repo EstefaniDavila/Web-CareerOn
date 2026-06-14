@@ -6,19 +6,17 @@ const RecruiterPostulations = ({ offer, applicants = [], setApplicants, match = 
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("todos");
-  
+
   const { patchModel } = useCrud("");
 
-  // 🔥 CAMBIAR ESTADO DESDE MODAL CONECTADO AL BACKEND
   const updateStatus = async (id, newStatus) => {
     try {
       const url = `/api/recruiter/jobs/${offer?.id}/candidates/${id}/status`;
-      console.log("🔥 PATCH URL:", url, "| body:", { status: newStatus });
       if (offer?.id) {
         const result = await patchModel({ status: newStatus }, url);
         console.log("✅ PATCH result:", result);
       } else {
-        console.warn("⚠️ offer.id no está definido, no se puede guardar en BD");
+        console.warn(" offer.id no está definido, no se puede guardar en BD");
       }
       setApplicants((prev) =>
         prev.map((a) =>
@@ -26,7 +24,7 @@ const RecruiterPostulations = ({ offer, applicants = [], setApplicants, match = 
         )
       );
     } catch (error) {
-      console.error("❌ Error updating status:", error?.response?.data || error);
+      console.error(" Error updating status:", error?.response?.data || error);
       alert("Hubo un error al actualizar el estado del candidato.");
     }
   };
@@ -48,7 +46,7 @@ const RecruiterPostulations = ({ offer, applicants = [], setApplicants, match = 
 
     const passStatus =
       statusFilter === "todos"
-        ? a.status !== "rechazado"   // "Todos" = activos (excluye rechazados)
+        ? a.status !== "rechazado"
         : a.status === statusFilter;
 
     return passSearch && passMatch && passTags && passStatus;
@@ -57,7 +55,6 @@ const RecruiterPostulations = ({ offer, applicants = [], setApplicants, match = 
   return (
     <div className="min-h-screen p-8">
 
-      {/* FILTERS */}
       <div className="bg-white rounded-3xl shadow-md p-5 flex gap-4">
 
         <input
@@ -81,7 +78,6 @@ const RecruiterPostulations = ({ offer, applicants = [], setApplicants, match = 
         </select>
       </div>
 
-      {/* LIST */}
       <div className="mt-8 space-y-5">
         {filteredApplicants.map((a) => (
           <div
@@ -91,20 +87,20 @@ const RecruiterPostulations = ({ offer, applicants = [], setApplicants, match = 
             <div>
               <h2 className="font-bold text-xl">{a.name}</h2>
               <p className="text-gray-500">{a.career}</p>
-              {a.status === "entrevista" ? (
+              {a.status.toLowerCase() === "entrevista" ? (
                 <div className="flex items-center gap-2 mt-1">
                   <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
                     Resolvió su reto
                   </span>
-                  <span 
-                    className="text-xs text-[#1C6B72] font-semibold flex items-center gap-1 cursor-pointer hover:underline" 
+                  <span
+                    className="text-xs text-[#1C6B72] font-semibold flex items-center gap-1 cursor-pointer hover:underline"
                     onClick={() => setSelectedApplicant(a)}
                   >
                     ¡Mira el análisis! ➜
                   </span>
                 </div>
-              ) : a.status === "entrevista_final" ? (
+              ) : a.status.toLowerCase() === "entrevista_final" ? (
                 <div className="flex items-center gap-2 mt-1">
                   <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded-md">
                     Entrevista Final Programada
@@ -132,7 +128,6 @@ const RecruiterPostulations = ({ offer, applicants = [], setApplicants, match = 
         ))}
       </div>
 
-      {/* MODAL */}
       <ProfileModal
         applicant={selectedApplicant}
         onClose={() => setSelectedApplicant(null)}

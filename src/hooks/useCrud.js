@@ -24,17 +24,17 @@ const useCrud = (endpoint) => {
   };
 
   const deleteModel = async (_endpoint = endpoint) => {
-  try {
-    const response = await axios.delete(`${backend_host}${_endpoint}`, getHeaders());
-    return response.data;
-  } catch (error) {
-    console.log("DELETE STATUS:", error.response?.status);
-    console.log("DELETE DETAIL:", JSON.stringify(error.response?.data)); // 👈
-    const backendMessage = error.response?.data?.message || "Error desconocido";
-    console.error('Error al eliminar el registro:', backendMessage);
-    throw error;
-  }
-};
+    try {
+      const response = await axios.delete(`${backend_host}${_endpoint}`, getHeaders());
+      return response.data;
+    } catch (error) {
+      console.log("DELETE STATUS:", error.response?.status);
+      console.log("DELETE DETAIL:", JSON.stringify(error.response?.data));
+      const backendMessage = error.response?.data?.message || "Error desconocido";
+      console.error('Error al eliminar el registro:', backendMessage);
+      throw error;
+    }
+  };
 
   const insertModel = async (_data, _endpoint = endpoint) => {
     try {

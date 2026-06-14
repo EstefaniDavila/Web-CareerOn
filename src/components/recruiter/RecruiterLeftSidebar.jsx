@@ -100,7 +100,7 @@ const RecruiterLeftSidebar = () => {
           </div>
           <h2>{companyName}</h2>
           <p>
-            Fintech · Lima, Perú
+            Fintech
           </p>
         </div>
 

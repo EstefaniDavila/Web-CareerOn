@@ -14,7 +14,7 @@ import Profile from "../pages/student/Profile";
 import Favorites from "../pages/student/Favorites";
 import Events from "../pages/student/Events";
 import Stats from "../pages/student/Stats";
-import Rprofile from "../pages/recruiter/Rprofile";
+
 import MyApplications from "../components/student/MyApplications";
 import LeftSidebar from "../components/LeftSidebar";
 import MockInterview from "../components/MockInterview";
@@ -119,14 +119,7 @@ export default function AppRoutes() {
         }
       />
       
-      <Route
-        path="/recruiter/profile"
-        element={
-          <Layout>
-            <Rprofile/>
-          </Layout>
-        }
-      />
+
       <Route
         path="/profile"
         element={

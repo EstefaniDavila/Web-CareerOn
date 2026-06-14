@@ -33,10 +33,10 @@ const OffersRightPanel = ({ view, selectedOffer, onViewChange, onEdit, onDeleteP
       {view === "delete-confirm" && (
         <DeleteConfirmModal
           offer={selectedOffer}
-          onCancel={() => onViewChange("list")}
+          onCancel={() => navigate("/recruiter/dashboard")}
           onConfirm={() => {
             console.log("Eliminar oferta:", selectedOffer?.id);
-            onViewChange("list");
+            navigate("/recruiter/dashboard");
           }}
         />
       )}

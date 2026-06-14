@@ -30,6 +30,8 @@ export default function Filtro({
 
   const discardByMatch = async () => {
     const toDiscard = applicants.filter((a) => a.hiring_probability < match && a.status !== "rechazado");
+    const toReview = applicants.filter((a) => a.hiring_probability >= match && (a.status === "Pendiente" || a.status === "pendiente"));
+    
     if (offer?.id) {
       for (const a of toDiscard) {
         try {
@@ -38,14 +40,21 @@ export default function Filtro({
           console.error("Error descartando a " + a.name);
         }
       }
+      for (const a of toReview) {
+        try {
+          await patchModel({ status: "En_revision" }, `/api/recruiter/jobs/${offer.id}/candidates/${a.id}/status`);
+        } catch (e) {
+          console.error("Error pasando a revisión a " + a.name);
+        }
+      }
     }
 
     setApplicants((prev) =>
-      prev.map((a) =>
-        a.hiring_probability < match
-          ? { ...a, status: "rechazado" }
-          : a
-      )
+      prev.map((a) => {
+        if (a.hiring_probability < match) return { ...a, status: "rechazado" };
+        if (a.status === "Pendiente" || a.status === "pendiente") return { ...a, status: "En_revision" };
+        return a;
+      })
     );
 
     setShowConfirm(false);
