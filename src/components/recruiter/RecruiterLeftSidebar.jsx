@@ -1,4 +1,3 @@
-// src/components/RecruiterLeftSidebar/RecruiterLeftSidebar.jsx
 import React, { useEffect, useState } from 'react';
 import { useMsal } from "@azure/msal-react";
 import { useNavigate } from "react-router-dom";
@@ -82,7 +81,7 @@ const RecruiterLeftSidebar = () => {
         </div>
       </div>
     );
-  }
+  }//----
 
   return (
     <div className="recruiter-left-sidebar">
@@ -153,5 +152,7 @@ const RecruiterLeftSidebar = () => {
     </div>
   );
 };
+
+//prueba
 
 export default RecruiterLeftSidebar;
