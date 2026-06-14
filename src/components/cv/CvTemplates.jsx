@@ -3,18 +3,13 @@ import ReactDOM from 'react-dom';
 import html2pdf from 'html2pdf.js';
 import { FiDownload, FiSave, FiCheck, FiAlertTriangle } from 'react-icons/fi';
 
-/* ─────────────────────────────────────────
-   PLANTILLA 1 – "Harvard Classic"
-   Una columna, serif, líneas negras finas.
-   Estilo clásico de universidades top.
-───────────────────────────────────────── */
+
 function TemplateHarvard({ data }) {
   const { nombre, email, telefono, enlaces, experiencia, educacion, habilidades } = data.datos_extraidos || {};
   const resumen = data.cv_optimizado || '';
 
   return (
     <div className="bg-[#ffffff] text-[#111827] font-serif" style={{ minHeight: '1056px', padding: '56px 72px' }}>
-      {/* Nombre */}
       <div className="text-center border-b-2 border-[#111827] pb-4 mb-4">
         <h1 className="text-4xl font-bold uppercase tracking-widest mb-2" style={{ fontFamily: 'Georgia, serif' }}>
           {nombre || 'Tu Nombre Aquí'}
@@ -31,7 +26,6 @@ function TemplateHarvard({ data }) {
         </div>
       </div>
 
-      {/* Resumen */}
       {resumen && (
         <section className="mb-5">
           <h2 className="text-xs font-bold uppercase tracking-widest text-[#111827] border-b border-[#9ca3af] pb-1 mb-3">
@@ -41,7 +35,6 @@ function TemplateHarvard({ data }) {
         </section>
       )}
 
-      {/* Experiencia */}
       {experiencia && experiencia.length > 0 && (
         <section className="mb-5">
           <h2 className="text-xs font-bold uppercase tracking-widest text-[#111827] border-b border-[#9ca3af] pb-1 mb-3">
@@ -60,7 +53,6 @@ function TemplateHarvard({ data }) {
         </section>
       )}
 
-      {/* Educación */}
       {educacion && educacion.length > 0 && (
         <section className="mb-5">
           <h2 className="text-xs font-bold uppercase tracking-widest text-[#111827] border-b border-[#9ca3af] pb-1 mb-3">
@@ -78,7 +70,6 @@ function TemplateHarvard({ data }) {
         </section>
       )}
 
-      {/* Habilidades */}
       {habilidades && habilidades.length > 0 && (
         <section>
           <h2 className="text-xs font-bold uppercase tracking-widest text-[#111827] border-b border-[#9ca3af] pb-1 mb-3">
@@ -91,19 +82,12 @@ function TemplateHarvard({ data }) {
   );
 }
 
-/* ─────────────────────────────────────────
-   PLANTILLA 2 – "Tech Modern"
-   Dos columnas. Barra lateral oscura con
-   datos de contacto. Cuerpo principal blanco.
-   Estilo FAANG/consultoras tech 2024.
-───────────────────────────────────────── */
 function TemplateTechModern({ data }) {
   const { nombre, email, telefono, enlaces, experiencia, educacion, habilidades } = data.datos_extraidos || {};
   const resumen = data.cv_optimizado || '';
 
   return (
     <div className="bg-[#ffffff] text-[#111827] flex" style={{ minHeight: '1056px', fontFamily: 'Inter, sans-serif' }}>
-      {/* Sidebar */}
       <aside className="bg-[#111827] text-[#ffffff] flex flex-col" style={{ width: '240px', minWidth: '240px', padding: '40px 24px' }}>
         <div className="mb-8">
           <div className="w-20 h-20 rounded-full bg-[#4f46e5] flex items-center justify-center text-3xl font-bold text-[#ffffff] mb-4">
@@ -151,7 +135,6 @@ function TemplateTechModern({ data }) {
         )}
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 p-10">
         {resumen && (
           <section className="mb-7">
@@ -186,19 +169,13 @@ function TemplateTechModern({ data }) {
   );
 }
 
-/* ─────────────────────────────────────────
-   PLANTILLA 3 – "Executive Clean"
-   Una columna, barra superior con color,
-   tipografía sans-serif moderna.
-   Estilo de consultoras / big4.
-───────────────────────────────────────── */
+
 function TemplateExecutive({ data }) {
   const { nombre, email, telefono, enlaces, experiencia, educacion, habilidades } = data.datos_extraidos || {};
   const resumen = data.cv_optimizado || '';
 
   return (
     <div className="bg-[#ffffff] text-[#111827]" style={{ minHeight: '1056px', fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
-      {/* Header con color */}
       <header className="bg-[#1e293b] text-[#ffffff]" style={{ padding: '36px 56px' }}>
         <h1 className="text-4xl font-light tracking-tight mb-2">{nombre || 'Tu Nombre Aquí'}</h1>
         <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-[#cbd5e1] mt-3">
@@ -211,7 +188,6 @@ function TemplateExecutive({ data }) {
       </header>
 
       <div style={{ padding: '36px 56px' }}>
-        {/* Resumen */}
         {resumen && (
           <section className="mb-6 pb-6 border-b border-[#e5e7eb]">
             <h2 className="text-sm font-bold uppercase tracking-widest text-[#334155] mb-3">
@@ -221,7 +197,6 @@ function TemplateExecutive({ data }) {
           </section>
         )}
 
-        {/* Experiencia */}
         {experiencia && experiencia.length > 0 && (
           <section className="mb-6 pb-6 border-b border-[#e5e7eb]">
             <h2 className="text-sm font-bold uppercase tracking-widest text-[#334155] mb-4">
@@ -246,7 +221,6 @@ function TemplateExecutive({ data }) {
           </section>
         )}
 
-        {/* Educación y Habilidades en 2 columnas */}
         <div className="grid grid-cols-2 gap-8">
           {educacion && educacion.length > 0 && (
             <section>
@@ -278,9 +252,6 @@ function TemplateExecutive({ data }) {
   );
 }
 
-/* ─────────────────────────────────────────
-   COMPONENTE PRINCIPAL con selector
-───────────────────────────────────────── */
 const TEMPLATES = [
   {
     id: 'harvard',
@@ -327,10 +298,8 @@ export default function CvTemplates({ data, onSaveToProfile }) {
   const handleSave = async () => {
     setIsSaving(true);
     setSaved(false);
-    
-    // Como html2pdf (html2canvas) crashea con oklch de Tailwind v4,
-    // usamos jsPDF básico para generar el blob que se guarda en la DB.
-    // El usuario siempre puede usar el botón "Descargar" para obtener la versión con estilos.
+
+
     try {
       const element = document.getElementById('cv-print-container');
       const opt = {
@@ -342,17 +311,21 @@ export default function CvTemplates({ data, onSaveToProfile }) {
       };
 
       const pdfBlob = await html2pdf().from(element).set(opt).output('blob');
-      
+
       const formData = new FormData();
       formData.append('file', pdfBlob, opt.filename);
-      
+
+      const token = localStorage.getItem("mock_token");
       const response = await fetch('http://localhost:8000/api/student/resume', {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
         body: formData,
       });
-      
+
       const result = await response.json();
-      if(result.status === 'success') {
+      if (result.status === 'success') {
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
       }
@@ -367,19 +340,16 @@ export default function CvTemplates({ data, onSaveToProfile }) {
   return (
     <div className="w-full print:block">
 
-      {/* ── Selector de plantillas ── */}
       <div className="grid grid-cols-3 gap-4 mb-8 print:hidden">
         {TEMPLATES.map((t) => (
           <button
             key={t.id}
             onClick={() => setSelected(t.id)}
-            className={`rounded-2xl border-2 p-4 text-left transition-all hover:scale-[1.02] ${
-              selected === t.id
-                ? 'border-[var(--color-brand-primary)] shadow-lg shadow-blue-100'
-                : 'border-gray-200 hover:border-gray-300'
-            }`}
+            className={`rounded-2xl border-2 p-4 text-left transition-all hover:scale-[1.02] ${selected === t.id
+              ? 'border-[var(--color-brand-primary)] shadow-lg shadow-blue-100'
+              : 'border-gray-200 hover:border-gray-300'
+              }`}
           >
-            {/* Mini preview color */}
             <div className={`w-full h-20 rounded-lg mb-3 ${t.preview} flex items-end p-2`}>
               <div className="space-y-1 w-full">
                 <div className={`h-1.5 rounded w-3/4 ${t.id === 'harvard' ? 'bg-gray-700' : 'bg-white opacity-70'}`}></div>
@@ -403,7 +373,6 @@ export default function CvTemplates({ data, onSaveToProfile }) {
         ))}
       </div>
 
-      {/* ── Botones de acción ── */}
       <div className="flex flex-wrap gap-4 mb-8 justify-between items-center print:hidden">
         <div>
           <h3 className="font-bold text-gray-800 text-lg">
@@ -412,23 +381,22 @@ export default function CvTemplates({ data, onSaveToProfile }) {
           <p className="text-sm text-gray-500">Tu información real fue extraída del PDF automáticamente.</p>
         </div>
         <div className="flex gap-3">
-          <button 
-              onClick={handleSave}
-              disabled={isSaving}
-              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold transition-all ${
-                saved 
-                  ? 'bg-green-100 text-green-700 border-2 border-green-200' 
-                  : 'bg-black text-white hover:bg-gray-800'
+          <button
+            onClick={handleSave}
+            disabled={isSaving}
+            className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold transition-all ${saved
+              ? 'bg-green-100 text-green-700 border-2 border-green-200'
+              : 'bg-black text-white hover:bg-gray-800'
               }`}
-            >
-              {saved ? (
-                <><FiCheck /> Guardado en DB</>
-              ) : isSaving ? (
-                <span className="animate-pulse">Guardando...</span>
-              ) : (
-                <><FiSave /> Reemplazar CV Actual</>
-              )}
-            </button>
+          >
+            {saved ? (
+              <><FiCheck /> Guardado en DB</>
+            ) : isSaving ? (
+              <span className="animate-pulse">Guardando...</span>
+            ) : (
+              <><FiSave /> Reemplazar CV Actual</>
+            )}
+          </button>
           <button
             onClick={handlePrint}
             className="flex items-center gap-2 px-6 py-2.5 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 transition-all shadow-md"
@@ -438,7 +406,6 @@ export default function CvTemplates({ data, onSaveToProfile }) {
         </div>
       </div>
 
-      {/* ── CV renderizado ── */}
       <div
         id="cv-print-container"
         className="shadow-2xl rounded-2xl overflow-hidden border border-gray-200 print:shadow-none print:rounded-none print:border-none"
@@ -446,8 +413,8 @@ export default function CvTemplates({ data, onSaveToProfile }) {
         {ActiveTemplate && <ActiveTemplate data={data} />}
       </div>
 
-      {/* ── Estilos de impresión ── */}
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @media print {
           /* Forzar impresión de colores de fondo en Chrome/Safari/Firefox */
           * {
@@ -478,7 +445,6 @@ export default function CvTemplates({ data, onSaveToProfile }) {
         }
       ` }} />
 
-      {/* ── Portal de impresión (fuera del flujo normal) ── */}
       {typeof document !== 'undefined' && showPrint &&
         ReactDOM.createPortal(
           <div id="cv-print-portal" style={{ display: 'none' }}>

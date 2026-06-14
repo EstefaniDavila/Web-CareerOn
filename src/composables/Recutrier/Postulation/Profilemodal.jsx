@@ -46,6 +46,18 @@ export default function ProfileModal({
               <p className="text-[#5F6368]"> {applicant.career} </p>
               <p className="mb-4 text-sm text-gray-500">Estado: {applicant.status}</p>
 
+              {applicant.ai_interview_score && (
+                <div className="bg-gradient-to-r from-amber-100 to-yellow-200 p-3 rounded-xl mb-4 border-l-4 border-yellow-500 shadow-sm animate-pulse">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xl">🏆</span>
+                    <span className="font-bold text-yellow-800">Top Performer en Entrevista IA</span>
+                  </div>
+                  <p className="text-sm text-yellow-900 leading-tight">
+                    El candidato superó nuestra simulación técnica privada con un espectacular <strong>{applicant.ai_interview_score}%</strong> de excelencia.
+                  </p>
+                </div>
+              )}
+
               <div className="bg-[#E8F3F4] p-4 rounded-xl mb-4 border-l-4 border-[#1C6B72]">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="font-bold text-[#1C6B72]">🤖 Análisis IA (Fit {applicant.ai_fit_score}%)</span>

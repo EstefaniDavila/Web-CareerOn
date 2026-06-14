@@ -7,25 +7,22 @@ export default function ChallengeAIModal({ offer, applicants = [], onClose, onCh
   const [loading, setLoading] = useState(false);
   const [loadingBalance, setLoadingBalance] = useState(true);
   const [challengeData, setChallengeData] = useState(null);
-  const [step, setStep] = useState(1); // 1: generate, 2: sponsor form
+  const [step, setStep] = useState(1);
 
   const [tokenBalance, setTokenBalance] = useState(null);
   const [maxWinners, setMaxWinners] = useState(1);
 
-  // Número real de postulantes activos (excluye rechazados)
   const activeApplicants = applicants.filter((a) => a.status !== "rechazado").length;
   const totalCost = maxWinners * TOKENS_PER_CHALLENGE;
   const canAfford = tokenBalance !== null && tokenBalance >= totalCost;
 
   const { insertModel, getModel } = useCrud("");
 
-  // Cargar saldo real al abrir el modal
   useEffect(() => {
     const fetchBalance = async () => {
       setLoadingBalance(true);
       try {
         const result = await getModel("/api/recruiter/dashboard");
-        // El dashboard devuelve recruiter_info.tokens_available
         if (result?.recruiter_info?.tokens_available !== undefined) {
           setTokenBalance(result.recruiter_info.tokens_available);
         } else {
@@ -40,7 +37,6 @@ export default function ChallengeAIModal({ offer, applicants = [], onClose, onCh
     fetchBalance();
   }, []);
 
-  // Inicializar maxWinners con los postulantes activos (pero al menos 1)
   useEffect(() => {
     if (activeApplicants > 0) setMaxWinners(activeApplicants);
   }, [activeApplicants]);
