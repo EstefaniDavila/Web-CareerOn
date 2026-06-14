@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMsal } from "@azure/msal-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useUserStatus } from "../../hooks/useUserStatus";
 import useCrud from "../../hooks/useCrud";
 import './RecruiterLeftSidebar.css';
@@ -9,6 +9,7 @@ const RecruiterLeftSidebar = () => {
   const { accounts } = useMsal();
   const { userData } = useUserStatus();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Estados para datos del backend
   const [dashboardData, setDashboardData] = useState(null);
@@ -43,6 +44,13 @@ const RecruiterLeftSidebar = () => {
             return [];
           })
         ]);
+
+        if (dashboard) {
+          console.log('📦 DATOS RECIBIDOS:', dashboard);
+          console.log('🏢 Empresa:', dashboard?.recruiter_info?.company_name);
+          console.log('🪙 Tokens:', dashboard?.recruiter_info?.tokens_available);
+          setDashboardData(dashboard);
+        }
 
         if (dashboard) {
           setDashboardData(dashboard);
@@ -93,7 +101,7 @@ const RecruiterLeftSidebar = () => {
         <div className="profile-info">
           <h2>{companyName}</h2>
           <p>
-             Fintech · Lima, Perú
+            Fintech · Lima, Perú
           </p>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
             <span className="badge-utp-partner">✦ Partner UTP</span>
@@ -149,7 +157,7 @@ const RecruiterLeftSidebar = () => {
           <li>
             <span className="icon">📊</span> Estadísticas
           </li>
-          <li>
+          <li className={location.pathname === '/recruiter/profile' ? 'active' : ''} onClick={() => navigate('/recruiter/profile')} style={{ cursor: 'pointer' }}>
             <span className="icon">🏢</span> Perfil empresa
           </li>
           <li>
