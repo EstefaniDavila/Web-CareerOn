@@ -212,7 +212,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #F25F63; /* Rojo institucional para cerrar sesión */
+  color: black; /* Rojo institucional para cerrar sesión */
   font-weight: 600;
   font-size: 14px;
   text-align: left;

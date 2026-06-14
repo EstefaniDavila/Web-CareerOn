@@ -10,15 +10,28 @@ import Offers from "../pages/offers/Offers";
 import CvOptimizer from "../pages/cv/CvOptimizer";
 import JobSwipe from "../pages/student/JobSwipe";
 import Profile from "../pages/student/Profile";
+import Favorites from "../pages/student/Favorites";
+import Events from "../pages/student/Events";
+import Stats from "../pages/student/Stats";
+import Rprofile from "../pages/recruiter/Rprofile";
+import MyApplications from "../components/student/MyApplications";
+import LeftSidebar from "../components/LeftSidebar";
+import MockInterview from "../components/MockInterview";
 
 export default function AppRoutes() {
   const isAuthenticated = !!localStorage.getItem("mock_token");
+  let redirectPath = "/dashboard";
+  try {
+    const userData = JSON.parse(localStorage.getItem("user_data"));
+    if (userData && userData.type === "Pending") redirectPath = "/onboarding";
+    else if (userData && userData.type === "Recruiter") redirectPath = "/recruiter/dashboard";
+  } catch (e) {}
 
   return (
     <Routes>
       <Route
         path="/"
-        element={isAuthenticated ? <Navigate to="/onboarding" replace /> : <Login />}
+        element={isAuthenticated ? <Navigate to={redirectPath} replace /> : <Login />}
       />
 
       <Route path="/unauthorized" element={<Unauthorized />} />
@@ -53,6 +66,22 @@ export default function AppRoutes() {
       />
 
       <Route
+        path="/applications"
+        element={
+          <Layout>
+            <div className="flex gap-6 w-full items-start">
+              <div className="hidden lg:block shrink-0 self-start sticky top-[88px] h-[calc(100vh-88px)] overflow-y-auto custom-scrollbar">
+                <LeftSidebar />
+              </div>
+              <div className="flex-1 min-w-0 pb-12">
+                <MyApplications />
+              </div>
+            </div>
+          </Layout>
+        }
+      />
+
+      <Route
         path="/recruiter/dashboard"
         element={
           //<ProtectedRoute>
@@ -67,9 +96,7 @@ export default function AppRoutes() {
       <Route
         path="/explorar"
         element={
-          <Layout>
-            <JobSwipe />
-          </Layout>
+          <JobSwipe />
         }
       />
       <Route
@@ -77,6 +104,15 @@ export default function AppRoutes() {
         element={
           <Layout>
             <CvOptimizer />
+          </Layout>
+        }
+      />
+      
+      <Route
+        path="/recruiter/profile"
+        element={
+          <Layout>
+            <Rprofile/>
           </Layout>
         }
       />
@@ -88,7 +124,46 @@ export default function AppRoutes() {
           </Layout>
         }
       />
-      
+      <Route
+        path="/favorites"
+        element={
+          <Layout>
+            <Favorites />
+          </Layout>
+        }
+      />
+      <Route
+        path="/events"
+        element={
+          <Layout>
+            <Events />
+          </Layout>
+        }
+      />
+      <Route
+        path="/stats"
+        element={
+          <Layout>
+            <Stats />
+          </Layout>
+        }
+      />
+      <Route
+        path="/interview"
+        element={
+          <Layout>
+            <MockInterview />
+          </Layout>
+        }
+      />
+      <Route
+        path="/interview/:jobId"
+        element={
+          <Layout>
+            <MockInterview />
+          </Layout>
+        }
+      />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem("mock_token");
@@ -28,11 +29,11 @@ const Navbar = () => {
 
         {/* Navigation Items */}
         <div className="navbar-links">
-          <div className="nav-item active" onClick={() => navigate('/dashboard')} style={{cursor: 'pointer'}}>
+          <div className={`nav-item ${location.pathname === '/dashboard' ? 'active' : ''}`} onClick={() => navigate('/dashboard')} style={{cursor: 'pointer'}}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
             <span>Inicio</span>
           </div>
-          <div className="nav-item">
+          <div className={`nav-item ${location.pathname === '/stats' ? 'active' : ''}`} onClick={() => navigate('/stats')} style={{cursor: 'pointer'}}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
             <span>Estadísticas</span>
           </div>
@@ -58,6 +59,13 @@ const Navbar = () => {
                 <strong>{userName}</strong>
                 <p>{userEmail}</p>
               </div>
+              <button className="dropdown-item" onClick={() => navigate('/recruiter/profile')}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Profile
+              </button>
               <div className="dropdown-divider"></div>
               <button className="dropdown-item logout-btn" onClick={handleLogout}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
